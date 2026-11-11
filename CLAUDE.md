@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 給 Claude Code 的專案指引。
 
 福爾摩沙自閉大公社（Discord 社群）的網站，https://asdtw.org，純靜態 HTML／CSS／JS，部署在 GitHub Pages（repo：`ivantw829/asdtw-org`，`main` 推上去即上線）。沒有 build 步驟、套件管理或測試框架。內容與介面文字一律繁體中文（zh-Hant-TW），語氣認真正式。
@@ -7,8 +9,8 @@
 ## Commands
 
 ```bash
-python3 -m http.server 8000        # 本機預覽
-python3 authoring/check.py         # 唯一的「測試」：結構、無障礙、連結、色票對比、sitemap。CI 與 pre-commit 都會跑
+python3 -m http.server 8000        # 本機預覽（頁面用 `/` 開頭的絕對路徑，必須從根目錄服務，不能開 file://）。看 404 請直接開 /404.html，伺服器自己的 404 頁不是網站的
+python3 authoring/check.py         # 唯一的「測試」：結構、無障礙、連結、色票對比、sitemap。CI 與 pre-commit 都會跑；沒有「只跑單一項」的選項，錯誤會一次全列出
 python3 authoring/build-sitemap.py # 重建 sitemap.xml（pre-commit 會自動做並 stage）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
@@ -27,7 +29,9 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 - **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；換圖示時三個檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
 - **切頁轉場**（CSS 跨頁 View Transitions：頁首固定、導覽黃色膠囊 `nav-pill` 滑動、內容淡入）：每頁（404 除外）`<head>` 要有 `<link rel="expect" href="#page-end" blocking="render">`，`</footer>` 後要有 `<span id="page-end" hidden></span>`，否則切換會閃空白；`prefers-reduced-motion` 時整個轉場關閉。`check.py` 會驗證。
+- **頁面都是手寫 HTML，沒有產生器或樣板引擎。** 改共用區塊（頁首、頁尾、`<head>` 的 meta）要對 5 個檔案做同樣的修改，建議用一段 Python／sed 腳本批次取代再跑 `check.py`，不要逐檔手改；不要憑記憶「重新產生」頁面，會蓋掉站長直接在 HTML 裡做的文案修改。
 - 新增頁面要同步：複製既有頁面的 `<head>` 與共用區塊 → 所有頁面的導覽加一項 → `build-sitemap.py` 重跑。
+- 品牌素材（標誌、圖示、主視覺）的原始檔在 repo 之外：`~/Pictures/福爾摩沙自閉大公社_品牌識別_v1/`（內含設計規格書，色票與使用規範以它為準）。
 
 ## 內容守則（來自站長的明確決定）
 
@@ -43,5 +47,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 
 - `main` 受保護：只能經 PR、CI（`check`、`pr-title`）通過後 squash merge。PR 標題即 `main` 的 commit 訊息，必須是約定式 commit：`type(scope): 描述`；分支前綴對應 type。
 - 本機 hooks 在 `.githooks/`，每個 clone 要自己啟用：`git config core.hooksPath .githooks`。pre-commit 拒絕在 `main` 提交、更新 sitemap、跑 `check.py`；pre-push 拒絕推 `main`。
+- **`ship.sh` 會 `git add -A`，把工作區所有未提交的變更都帶進這個 PR**（包含站長直接改的文案）。發布前先 `git status`，確認內容都是要一起發布的；站長可能在另一個流程已經合併過同樣的變更，這時 `ship.sh` 會回報「沒有任何變更可以發布」，並留下一個空分支，用 `git switch main && git branch -d <分支>` 清掉即可。
 - 一個 PR 做一件事。不要 force push、不要在 `main` 上 rebase。
+- `.claude/`（含預覽用的 `launch.json`）已被 `.gitignore` 排除，不會進 repo。
 - 沒有被要求就不要 commit、push 或開 PR。
