@@ -4,6 +4,7 @@
 檢查：頁面結構與地標、標題層級、跳過連結、外部資源、連結與錨點、導覽／頁尾一致、
 meta 一致、sitemap、CSS 色票對比（WCAG 相對亮度）、字級單位。
 """
+import json
 import re
 import sys
 from html.parser import HTMLParser
@@ -34,6 +35,8 @@ class Page(HTMLParser):
         self._stack: list[str] = []
         self.lang = ""
         self.first_focusable: dict | None = None
+        self.ldjson: list[str] = []
+        self._in_ld = False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -42,6 +45,9 @@ class Page(HTMLParser):
             self.lang = a.get("lang", "")
         if tag == "title":
             self._in_title = True
+        if tag == "script" and a.get("type") == "application/ld+json":
+            self._in_ld = True
+            self.ldjson.append("")
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
             self.headings.append(int(tag[1]))
         if "id" in a:
@@ -74,6 +80,8 @@ class Page(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "title":
             self._in_title = False
+        if tag == "script":
+            self._in_ld = False
         if tag == "a" and self._cur_a is not None:
             self.links.append(self._cur_a)
             self._cur_a = None
@@ -81,6 +89,9 @@ class Page(HTMLParser):
             self._stack.pop()
 
     def handle_data(self, data):
+        if self._in_ld:
+            self.ldjson[-1] += data
+            return
         if self._in_title:
             self.title += data
         if self._cur_a is not None:
@@ -99,6 +110,85 @@ domain = (ROOT / "CNAME").read_text().strip()
 html_files = sorted(ROOT.glob("*.html"))
 pages = {p.name: load(p) for p in html_files}
 public = [n for n in pages if n != "404.html"]
+
+
+def jpeg_size(path: Path) -> tuple[int, int] | None:
+    """讀 JPEG 標頭取得 (寬, 高)，不依賴任何套件。"""
+    data = path.read_bytes()
+    if data[:2] != b"\xff\xd8":
+        return None
+    i = 2
+    while i + 9 < len(data):
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if marker in (0xC0, 0xC1, 0xC2):
+            return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+        i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    return None
+
+
+def seo_checks(name: str, pg: Page) -> None:
+    m = pg.metas
+    base = f"https://{domain}"
+    # 搜尋引擎
+    robots = m.get("robots", "")
+    if name == "404.html":
+        if "noindex" not in robots:
+            err(name, '404 必須有 <meta name="robots" content="noindex">')
+    elif not robots.startswith("index,follow"):
+        err(name, '缺少 <meta name="robots" content="index,follow,…">')
+    desc = m.get("description", "")
+    if name != "404.html" and not 50 <= len(desc) <= 160:
+        err(name, f"description 長度應為 50～160 字（目前 {len(desc)} 字）")
+    # 社群分享
+    img = f"{base}/assets/img/og.jpg"
+    for key in ("og:image", "twitter:image"):
+        if m.get(key) != img:
+            err(name, f"{key} 必須是 {img}")
+    if m.get("twitter:card") != "summary_large_image":
+        err(name, 'twitter:card 必須是 "summary_large_image"')
+    if m.get("og:image:width") != "1200" or m.get("og:image:height") != "630":
+        err(name, "og:image:width／height 必須是 1200／630")
+    if not m.get("og:image:alt") or m.get("og:image:alt") != m.get("twitter:image:alt"):
+        err(name, "og:image:alt 與 twitter:image:alt 必須存在且一致")
+    # 圖示
+    rels = [(a.get("rel"), a.get("href")) for x, a in pg.tags if x == "link" and a.get("rel") in ("icon", "apple-touch-icon")]
+    for need in ("icon", "apple-touch-icon"):
+        if not any(r == need for r, _ in rels):
+            err(name, f"缺少 <link rel=\"{need}\">")
+    for _, href in rels:
+        if not href or not href.startswith("/") or not (ROOT / href.lstrip("/")).exists():
+            err(name, f"圖示檔案不存在：{href}")
+    # JSON-LD
+    if name == "404.html":
+        return
+    if not pg.ldjson:
+        err(name, "缺少 JSON-LD（<script type=\"application/ld+json\">）")
+        return
+    for raw in pg.ldjson:
+        try:
+            data = json.loads(raw)
+        except ValueError as e:
+            err(name, f"JSON-LD 不是合法 JSON：{e}")
+            continue
+        nodes = data.get("@graph", [data])
+        types = {n.get("@type") for n in nodes}
+        if name == "index.html":
+            if not {"Organization", "WebSite"} <= types:
+                err(name, "首頁 JSON-LD 需要 Organization 與 WebSite")
+        elif "BreadcrumbList" not in types:
+            err(name, "內頁 JSON-LD 需要 BreadcrumbList")
+        else:
+            last = nodes[0]["itemListElement"][-1]["item"]
+            if last != pg.canonical:
+                err(name, f"BreadcrumbList 最後一項 {last} 與 canonical 不一致")
+        blob = json.dumps(data, ensure_ascii=False)
+        for bad in ("捍衛全台學權行動", "ouob@"):
+            if bad in blob:
+                err(name, f"JSON-LD 不得出現：{bad}")
+
 
 # ---------------------------------------------------------------- 1. 各頁檢查
 for name, pg in pages.items():
@@ -150,8 +240,10 @@ for name, pg in pages.items():
         err(name, "不得使用行內事件屬性（onclick 等）")
     scripts = [a for x, a in tags if x == "script"]
     for s in scripts:
+        if s.get("type") == "application/ld+json" and "src" not in s:
+            continue
         if s.get("src") != "/assets/js/prefs.js":
-            err(name, f"只允許載入 /assets/js/prefs.js（發現：{s}）")
+            err(name, f"只允許載入 /assets/js/prefs.js 與 JSON-LD（發現：{s}）")
     if "<script>" in raw:
         err(name, "不得有行內 <script>")
     for x, a in tags:
@@ -182,6 +274,7 @@ for name, pg in pages.items():
     d = pg.metas.get("description")
     if d != pg.metas.get("og:description") or d != pg.metas.get("twitter:description"):
         err(name, "description、og:description、twitter:description 必須逐字一致")
+    seo_checks(name, pg)
     # 連結
     for lk in pg.links:
         a, text = lk["attrs"], lk["text"].strip()
@@ -312,6 +405,20 @@ for m in re.finditer(r"font-size:\s*([^;]+);", css):
         err("style.css", f"font-size 不得使用 px（會無法隨使用者設定縮放）：{m.group(0)}")
 if re.search(r"user-select:\s*none|outline:\s*(none|0)\b(?![^}]*:focus)", css) and "main:focus { outline: none; }" not in css:
     err("style.css", "不得移除焦點框或禁止選取文字")
+
+# ---------------------------------------------------------------- 5. 分享圖與圖示檔案
+og = ROOT / "assets/img/og.jpg"
+if not og.exists():
+    err("assets/img/og.jpg", "不存在，請執行 python3 authoring/build-og.py")
+else:
+    size = jpeg_size(og)
+    if size != (1200, 630):
+        err("assets/img/og.jpg", f"尺寸必須是 1200×630（目前 {size}）")
+    if og.stat().st_size > 300 * 1024:
+        err("assets/img/og.jpg", "檔案超過 300KB，請壓縮")
+for f in ("favicon.svg", "favicon-32.png", "apple-touch-icon.png"):
+    if not (ROOT / "assets/img" / f).exists():
+        err(f"assets/img/{f}", "不存在，請執行 python3 authoring/build-og.py（favicon.svg 為手寫）")
 
 # ---------------------------------------------------------------- 結果
 if errors:
