@@ -18,8 +18,9 @@ bash authoring/sync.sh             # 本機與 GitHub 對齊
 
 - 四個頁面：`index.html`、`about.html`（關於與加入須知）、`actions.html`（行動紀錄）、`accessibility.html`（無障礙與聯絡、隱私）；外加 `404.html`（noindex，不進 sitemap）。
 - **頁首、頁尾、閱讀設定面板是每頁手寫的靜態 HTML，必須逐字相同**（頁首只有 `aria-current="page"` 不同）。這是為了不依賴 JS 就能被螢幕報讀器完整讀取。改其中任何一處，要同步改全部頁面，`check.py` 會驗證。
-- 閱讀設定（字級 1–4、配色 default／high）：`assets/js/prefs.js` 在 `<head>` 同步載入，把偏好寫到 `<html data-text data-contrast>`，存 `localStorage`；面板預設 `hidden`，有 JS 才顯示。系統 `prefers-contrast: more` 在使用者沒手動選時自動啟用高對比。
-- **色票只有 `assets/css/style.css` 頂端的 token**，高對比有兩份（`[data-contrast="high"]` 與 `prefers-contrast: more`），改色必須兩處一起改；`check.py` 會算 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。
+- 閱讀設定（字級 1–4、配色 default／dark／high）：`assets/js/prefs.js` 在 `<head>` 同步載入，把偏好寫到 `<html data-text data-theme>`，存 `localStorage`；面板（`<details>` 預設收合）預設 `hidden`，有 JS 才顯示。使用者沒手動選時，系統 `prefers-contrast: more` → 高對比、`prefers-color-scheme: dark` → 深色。
+- **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。裝飾（青綠圓、鏤空字、×、條碼）只放首頁 `.hero-art`，且 `aria-hidden`。
+- **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
 - 新增頁面要同步：複製既有頁面的 `<head>` 與共用區塊 → 所有頁面的導覽加一項 → `build-sitemap.py` 重跑。

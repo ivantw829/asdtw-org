@@ -1,4 +1,4 @@
-/* 閱讀設定（字級、對比）。
+/* 閱讀設定（字級、配色）。
  * 沒有 JavaScript 時，網站仍以預設樣式完整可讀；這支程式只負責「記住並套用使用者的偏好」。
  * 偏好只存在這個瀏覽器的 localStorage，不會傳到任何伺服器。
  */
@@ -20,7 +20,7 @@
   }
   function apply(p) {
     if (p.text) root.setAttribute("data-text", p.text);
-    if (p.contrast) root.setAttribute("data-contrast", p.contrast);
+    if (p.theme) root.setAttribute("data-theme", p.theme);
   }
 
   var prefs = load();
@@ -34,21 +34,23 @@
     var status = panel.querySelector("[data-prefs-status]");
     var labels = {
       text: { "1": "標準字級", "2": "大字級", "3": "特大字級", "4": "最大字級" },
-      contrast: { "default": "預設配色", "high": "高對比" }
+      theme: { "default": "預設配色", "dark": "深色", "high": "高對比" }
     };
 
-    function currentContrast() {
-      if (prefs.contrast) return prefs.contrast;
-      return window.matchMedia && window.matchMedia("(prefers-contrast: more)").matches ? "high" : "default";
+    function currentTheme() {
+      if (prefs.theme) return prefs.theme;
+      var mq = function (q) { return window.matchMedia && window.matchMedia(q).matches; };
+      if (mq("(prefers-contrast: more)")) return "high";
+      return mq("(prefers-color-scheme: dark)") ? "dark" : "default";
     }
     function sync() {
       var text = prefs.text || "1";
-      var contrast = currentContrast();
+      var theme = currentTheme();
       panel.querySelectorAll("[data-pref-text]").forEach(function (b) {
         b.setAttribute("aria-pressed", String(b.getAttribute("data-pref-text") === text));
       });
-      panel.querySelectorAll("[data-pref-contrast]").forEach(function (b) {
-        b.setAttribute("aria-pressed", String(b.getAttribute("data-pref-contrast") === contrast));
+      panel.querySelectorAll("[data-pref-theme]").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.getAttribute("data-pref-theme") === theme));
       });
     }
     function announce(msg) {
@@ -63,13 +65,13 @@
       if (btn.hasAttribute("data-pref-text")) {
         prefs.text = btn.getAttribute("data-pref-text");
         announce("已切換為" + labels.text[prefs.text]);
-      } else if (btn.hasAttribute("data-pref-contrast")) {
-        prefs.contrast = btn.getAttribute("data-pref-contrast");
-        announce("已切換為" + labels.contrast[prefs.contrast]);
+      } else if (btn.hasAttribute("data-pref-theme")) {
+        prefs.theme = btn.getAttribute("data-pref-theme");
+        announce("已切換為" + labels.theme[prefs.theme]);
       } else if (btn.hasAttribute("data-pref-reset")) {
         prefs = {};
         root.removeAttribute("data-text");
-        root.removeAttribute("data-contrast");
+        root.removeAttribute("data-theme");
         announce("已還原為預設設定");
         save(prefs);
         sync();
