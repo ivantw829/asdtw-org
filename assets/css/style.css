@@ -1,0 +1,335 @@
+/* 福爾摩沙自閉大公社 — 單一樣式表
+ * 設計原則：
+ *  1. 全部使用 rem，字級由 <html data-text="1..4"> 縮放，版面隨之重排而不破版。
+ *  2. 顏色只用下方 token；文字對比以 WCAG AAA（7:1）為目標，由 authoring/check.py 驗證。
+ *  3. 資訊不單靠顏色傳達：連結一律有底線、目前頁面用文字標示。
+ *  4. 高對比有兩個來源：使用者按鈕（data-contrast="high"）與系統設定（prefers-contrast: more）。
+ *     兩處的 token 必須一致，改色票要同時改。
+ */
+
+/* ---------- 色票 token（預設：深藍底＋暖黃強調） ---------- */
+:root {
+  --bg: #0b1b3a;
+  --surface: #14284f;
+  --text: #f6f3ea;
+  --muted: #c9d3ea;
+  --accent: #ffc93c;
+  --on-accent: #0b1b3a;
+  --link: #ffd66b;
+  --border: #7d98d0;
+  --focus: #ffc93c;
+  color-scheme: dark;
+}
+
+/* ---------- 高對比：使用者按鈕 ---------- */
+:root[data-contrast="high"] {
+  --bg: #000000;
+  --surface: #000000;
+  --text: #ffffff;
+  --muted: #ffffff;
+  --accent: #ffff00;
+  --on-accent: #000000;
+  --link: #ffff00;
+  --border: #ffffff;
+  --focus: #00ffff;
+}
+
+/* ---------- 高對比：系統設定（使用者沒有手動選預設時才套用） ---------- */
+@media (prefers-contrast: more) {
+  :root:not([data-contrast="default"]) {
+    --bg: #000000;
+    --surface: #000000;
+    --text: #ffffff;
+    --muted: #ffffff;
+    --accent: #ffff00;
+    --on-accent: #000000;
+    --link: #ffff00;
+    --border: #ffffff;
+    --focus: #00ffff;
+  }
+}
+
+/* ---------- 字級（使用者按鈕） ---------- */
+:root[data-text="2"] { font-size: 125%; }
+:root[data-text="3"] { font-size: 150%; }
+:root[data-text="4"] { font-size: 200%; }
+
+/* ---------- 基礎 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
+    system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+main { flex: 1 0 auto; }
+
+.wrap {
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ---------- 焦點：永遠看得見 ---------- */
+:focus-visible {
+  outline: 0.1875rem solid var(--focus);
+  outline-offset: 0.25rem;
+  border-radius: 0.125rem;
+}
+main:focus { outline: none; }
+
+/* ---------- 跳到主要內容 ---------- */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+  text-decoration: none;
+  border: 0.125rem solid var(--on-accent);
+}
+.skip-link:focus { top: 0.5rem; }
+
+/* ---------- 標題 ---------- */
+h1, h2, h3 { line-height: 1.4; margin: 0; }
+h1 { font-size: 2rem; font-weight: 800; }
+h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 0.125rem solid var(--border);
+}
+h3 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; }
+
+p, ul, ol, dl, blockquote, figure { margin: 1rem 0 0; }
+ul, ol { padding-left: 1.5rem; }
+li { margin-top: 0.5rem; }
+
+/* ---------- 連結與按鈕 ---------- */
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 0.125rem;
+  text-underline-offset: 0.25em;
+}
+a:hover { text-decoration-thickness: 0.25rem; }
+
+.btn,
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+  background: transparent;
+  border: 0.125rem solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover, button:hover { border-color: var(--accent); }
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+  font-size: 1.25rem;
+  padding: 0.75rem 1.75rem;
+}
+.btn-primary:hover { text-decoration: underline; text-decoration-thickness: 0.125rem; }
+
+button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+/* ---------- 網站頁首 ---------- */
+.site-header {
+  border-bottom: 0.125rem solid var(--border);
+  padding: 1rem 0;
+}
+.site-title {
+  display: inline-block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+}
+.site-title:hover { text-decoration: underline; }
+
+.nav-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+}
+.nav-list li { margin: 0; }
+.nav-list a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  min-height: 2.75rem;
+  color: var(--text);
+}
+.nav-list a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration-thickness: 0.25rem;
+  text-underline-offset: 0.4em;
+}
+
+/* ---------- 閱讀設定 ---------- */
+.prefs {
+  background: var(--surface);
+  border-bottom: 0.125rem solid var(--border);
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.prefs[hidden] { display: none; }
+.prefs .wrap { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
+.prefs-group { border: 0; margin: 0; padding: 0; min-width: 0; }
+.prefs legend { padding: 0; font-weight: 800; }
+.prefs-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+
+/* ---------- 內容元件 ---------- */
+.lead { font-size: 1.25rem; margin-top: 1.5rem; }
+.hero { padding: 3rem 0 1rem; }
+.hero .btn-row { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+
+.eyebrow { margin: 0 0 0.75rem; color: var(--muted); font-weight: 700; }
+
+.rule {
+  margin: 1.5rem 0 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border: 0.125rem solid var(--border);
+  border-left: 0.5rem solid var(--accent);
+  font-size: 1.375rem;
+  font-weight: 800;
+}
+.rule p { margin: 0; }
+
+.note {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 0.125rem solid var(--border);
+  border-radius: 0.5rem;
+}
+.note > :first-child { margin-top: 0; }
+
+.muted { color: var(--muted); }
+
+.card-list { list-style: none; padding: 0; margin: 0; }
+.card-list > li {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 0.125rem solid var(--border);
+  border-radius: 0.5rem;
+}
+.card-list h3 { margin-top: 0; }
+
+/* 行動紀錄時間軸：用有序清單，螢幕報讀器會讀出項目數 */
+.timeline { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.timeline > li {
+  margin: 0;
+  padding: 1.5rem 0;
+  border-top: 0.125rem solid var(--border);
+}
+.timeline h3 { margin-top: 0.25rem; }
+.timeline dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin-top: 0.75rem; }
+.timeline dt { font-weight: 800; }
+.timeline dd { margin: 0; }
+.tag {
+  display: inline-block;
+  padding: 0 0.625rem;
+  border: 0.125rem solid var(--border);
+  border-radius: 62.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* ---------- 頁尾 ---------- */
+.site-footer {
+  margin-top: 4rem;
+  padding: 2rem 0 3rem;
+  border-top: 0.125rem solid var(--border);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.site-footer ul { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+.site-footer li { margin: 0; }
+.site-footer a { display: inline-block; padding: 0.5rem 0; }
+
+/* ---------- 小螢幕與超大字級 ---------- */
+@media (max-width: 30rem) {
+  h1 { font-size: 1.75rem; }
+  .timeline dl { grid-template-columns: 1fr; }
+  .timeline dd { margin-bottom: 0.5rem; }
+}
+:root[data-text="3"] .timeline dl,
+:root[data-text="4"] .timeline dl { grid-template-columns: 1fr; }
+:root[data-text="3"] .timeline dd,
+:root[data-text="4"] .timeline dd { margin-bottom: 0.5rem; }
+
+/* ---------- 減少動態：本站沒有動畫，這裡確保之後新增也會遵守 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 系統強制色彩（Windows 高對比等） ---------- */
+@media (forced-colors: active) {
+  .btn-primary, button[aria-pressed="true"] { border: 0.1875rem solid ButtonText; }
+  .rule { border-left-width: 0.5rem; }
+}
+
+/* ---------- 列印 ---------- */
+@media print {
+  :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #000; --link: #000; --border: #000; --accent: #000; --on-accent: #fff; }
+  .prefs, .skip-link { display: none !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; }
+}
+
+/* ---------- 只給輔助科技讀的文字 ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
