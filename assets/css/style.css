@@ -515,6 +515,42 @@ h3 { font-size: 1.2rem; margin-top: 2rem; }
 :root[data-text="3"] .hero,
 :root[data-text="4"] .hero { grid-template-columns: 1fr; }
 
+/* ---------- 品牌橫式標誌（頁尾、404；純裝飾，aria-hidden） ----------
+ * 淺色用珊瑚紅標誌＋炭灰字，深色與高對比用米白版；選擇規則與首頁主視覺一致。 */
+.brand-lockup {
+  width: min(100%, 18rem);
+  aspect-ratio: 4 / 1;
+  margin: 0 0 1rem;
+  background: url("/assets/img/brand/lockup-dark.svg") left center / contain no-repeat;
+}
+.brand-lockup-lg { width: min(100%, 26rem); margin-bottom: 1.5rem; }
+:root[data-theme="dark"] .brand-lockup,
+:root[data-theme="high"] .brand-lockup { background-image: url("/assets/img/brand/lockup-light.svg"); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .brand-lockup { background-image: url("/assets/img/brand/lockup-light.svg"); }
+}
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) .brand-lockup { background-image: url("/assets/img/brand/lockup-light.svg"); }
+}
+
+/* ---------- 行動紀錄頁的彩虹馬卡龍徽章 ----------
+ * 彩虹馬卡龍標誌固定搭配炭灰底（白色箭形在淺底會消失），所以只能放在這個炭灰方形徽章內。 */
+.page-head-badge { display: flex; flex-wrap: wrap-reverse; align-items: flex-end; justify-content: space-between; gap: 1.5rem; }
+.page-head-badge > div:first-child { flex: 1 1 20rem; min-width: 0; }
+.badge-pride {
+  flex: none;
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 19.5%;
+  background: #3a3a3c url("/assets/img/brand/mark-rainbow.svg") center / cover no-repeat;
+}
+:root[data-theme="high"] .badge-pride { outline: 0.125rem solid var(--text); outline-offset: 0.125rem; }
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) .badge-pride { outline: 0.125rem solid var(--text); outline-offset: 0.125rem; }
+}
+:root[data-text="3"] .badge-pride,
+:root[data-text="4"] .badge-pride { display: none; }
+
 /* ---------- 頁尾 ---------- */
 .site-footer {
   margin-top: 5rem;
@@ -567,6 +603,6 @@ h3 { font-size: 1.2rem; margin-top: 2rem; }
 /* ---------- 列印 ---------- */
 @media print {
   :root { --bg: #fff; --surface: #fff; --surface-2: #fff; --text: #000; --muted: #000; --accent-ink: #000; --line: #000; --border: #000; --accent: #fff; --accent-soft: #fff; }
-  .prefs, .skip-link, .hero-art { display: none !important; }
+  .prefs, .skip-link, .hero-art, .brand-lockup, .badge-pride { display: none !important; }
   a[href^="http"]::after { content: " (" attr(href) ")"; }
 }
