@@ -275,6 +275,13 @@ for name, pg in pages.items():
     if d != pg.metas.get("og:description") or d != pg.metas.get("twitter:description"):
         err(name, "description、og:description、twitter:description 必須逐字一致")
     seo_checks(name, pg)
+    # 切頁轉場：需要 rel=expect 與 #page-end，否則切換瞬間會閃空白
+    if name != "404.html":
+        has_expect = any(x == "link" and a.get("rel") == "expect" and a.get("href") == "#page-end" and "blocking" in a for x, a in tags)
+        if not has_expect:
+            err(name, '缺少 <link rel="expect" href="#page-end" blocking="render">（切頁轉場需要）')
+        if "page-end" not in pg.ids:
+            err(name, '缺少結尾的 <span id="page-end" hidden></span>（切頁轉場需要）')
     # 連結
     for lk in pg.links:
         a, text = lk["attrs"], lk["text"].strip()
@@ -399,6 +406,11 @@ for label, t in sets.items():
         r = ratio(t[fg], t[bg])
         if r < 3:
             err("style.css", f"{label}：介面元件 --{fg} 對 --{bg} 對比 {r:.2f}:1，未達 3:1")
+
+for needle, why in (("@view-transition { navigation: auto; }", "切頁轉場"), ("nav-pill", "導覽膠囊滑動"),
+                    ("@media (prefers-reduced-motion: reduce) {\n  @view-transition { navigation: none; }", "減少動態時關閉轉場")):
+    if needle not in css:
+        err("style.css", f"缺少{why}規則：{needle}")
 
 for m in re.finditer(r"font-size:\s*([^;]+);", css):
     if "px" in m.group(1):

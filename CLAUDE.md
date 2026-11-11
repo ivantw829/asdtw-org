@@ -25,6 +25,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
 - **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；換圖示時三個檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
+- **切頁轉場**（CSS 跨頁 View Transitions：頁首固定、導覽黃色膠囊 `nav-pill` 滑動、內容淡入）：每頁（404 除外）`<head>` 要有 `<link rel="expect" href="#page-end" blocking="render">`，`</footer>` 後要有 `<span id="page-end" hidden></span>`，否則切換會閃空白；`prefers-reduced-motion` 時整個轉場關閉。`check.py` 會驗證。
 - 新增頁面要同步：複製既有頁面的 `<head>` 與共用區塊 → 所有頁面的導覽加一項 → `build-sitemap.py` 重跑。
 
 ## 內容守則（來自站長的明確決定）
