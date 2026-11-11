@@ -416,9 +416,38 @@ else:
         err("assets/img/og.jpg", f"尺寸必須是 1200×630（目前 {size}）")
     if og.stat().st_size > 300 * 1024:
         err("assets/img/og.jpg", "檔案超過 300KB，請壓縮")
-for f in ("favicon.svg", "favicon-32.png", "apple-touch-icon.png"):
-    if not (ROOT / "assets/img" / f).exists():
-        err(f"assets/img/{f}", "不存在，請執行 python3 authoring/build-og.py（favicon.svg 為手寫）")
+for f in ("assets/img/favicon.svg", "assets/img/apple-touch-icon.png", "favicon.ico"):
+    if not (ROOT / f).exists():
+        err(f, "不存在（網站圖示來自品牌識別交件，請從交件包的 04_網站圖示 複製）")
+
+# ---------------------------------------------------------------- 6. 首頁主視覺 SVG
+HERO_PALETTES = {
+    "light": {"#3A3A3C", "#E8695A", "#F2C230", "#FFF6EC"},
+    "dark": {"#E8695A", "#F2C230", "#FFF6EC"},
+    "high": {"#FFFFFF", "#FFFF00"},
+}
+for v, allowed in HERO_PALETTES.items():
+    f = ROOT / "assets/img" / f"hero-{v}.svg"
+    if not f.exists():
+        err(f.name, "不存在（首頁主視覺需要 light／dark／high 三個版本）")
+        continue
+    svg = f.read_text(encoding="utf-8")
+    if f.stat().st_size > 50 * 1024:
+        err(f.name, "超過 50KB")
+    if 'viewBox="0 0 600 800"' not in svg:
+        err(f.name, 'viewBox 必須是 "0 0 600 800"')
+    if re.search(r"<(text|image|script|style|filter|linearGradient|radialGradient)\b|href=", svg):
+        err(f.name, "不得含 <text>、<image>、<script>、<style>、濾鏡、漸層、外部連結")
+    if re.search(r"<svg[^>]*\s(width|height)=", svg):
+        err(f.name, "最外層 <svg> 不得寫死 width／height，請只用 viewBox")
+    used = {c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}\b", svg)}
+    if not used <= allowed:
+        err(f.name, f"使用了色票以外的顏色：{sorted(used - allowed)}")
+    for m in re.finditer(r'stroke-width="(\d+(?:\.\d+)?)"', svg):
+        if float(m.group(1)) < 8:
+            err(f.name, f"描邊 {m.group(1)} 小於 8，縮小後會消失")
+if "hero-art" in css and not all(f"hero-{v}.svg" in css for v in HERO_PALETTES):
+    err("style.css", "hero-art 必須同時引用 light／dark／high 三個版本")
 
 # ---------------------------------------------------------------- 結果
 if errors:

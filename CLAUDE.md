@@ -12,7 +12,7 @@ python3 authoring/check.py         # 唯一的「測試」：結構、無障礙�
 python3 authoring/build-sitemap.py # 重建 sitemap.xml（pre-commit 會自動做並 stage）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
-python3 authoring/build-og.py      # 重產分享圖 og.jpg 與 apple-touch／favicon-32（需 Chrome 與 macOS sips；CI 沒有，產物要一併提交）
+python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 macOS sips；CI 沒有，產物要一併提交）
 ```
 
 ## 架構
@@ -20,10 +20,10 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg 與 apple-touch／fa
 - 四個頁面：`index.html`、`about.html`（關於與加入須知）、`actions.html`（行動紀錄）、`accessibility.html`（無障礙與聯絡、隱私）；外加 `404.html`（noindex，不進 sitemap）。
 - **頁首、頁尾、閱讀設定面板是每頁手寫的靜態 HTML，必須逐字相同**（頁首只有 `aria-current="page"` 不同）。這是為了不依賴 JS 就能被螢幕報讀器完整讀取。改其中任何一處，要同步改全部頁面，`check.py` 會驗證。
 - 閱讀設定（字級 1–4、配色 default／dark／high）：`assets/js/prefs.js` 在 `<head>` 同步載入，把偏好寫到 `<html data-text data-theme>`，存 `localStorage`；面板（`<details>` 預設收合）預設 `hidden`，有 JS 才顯示。使用者沒手動選時，系統 `prefers-contrast: more` → 高對比、`prefers-color-scheme: dark` → 深色。
-- **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。裝飾（青綠圓、鏤空字、×、條碼）只放首頁 `.hero-art`，且 `aria-hidden`。
+- **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。首頁主視覺 `.hero-art` 是設計師交付的三個 SVG（`assets/img/hero-light/dark/high.svg`，珊瑚紅＋炭灰＋琥珀黃；深色版炭灰換米白；高對比版只有白與黃），以 CSS 背景圖依配色載入，元素 `aria-hidden`；字級調到「特大」以上時隱藏。換圖須符合 `check.py` 第 6 節規格（色票、viewBox `0 0 600 800`、<50KB、無 text／漸層／濾鏡）。
 - **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
-- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；`favicon.svg` 是手寫的。JSON-LD 不得出現所屬團體名稱或舊信箱。
+- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；換圖示時三個檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
 - 新增頁面要同步：複製既有頁面的 `<head>` 與共用區塊 → 所有頁面的導覽加一項 → `build-sitemap.py` 重跑。
 
