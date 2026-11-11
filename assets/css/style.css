@@ -283,6 +283,19 @@ button[aria-pressed="true"]:hover { background: var(--accent); filter: brightnes
 }
 .site-title:hover { text-decoration: underline; text-decoration-thickness: 0.125rem; }
 
+/* 導覽列圓點動畫：載入時向外擴散的光圈（3 次、共約 3.6 秒後停止，符合 WCAG 2.2.2），
+ * 滑過或聚焦品牌名稱時圓點微微放大。減少動態偏好下由檔尾的全域規則關閉。 */
+.site-title::before {
+  animation: dot-ripple 1.2s ease-out 0.3s 3;
+  transition: transform 0.2s ease-out;
+}
+.site-title:hover::before,
+.site-title:focus-visible::before { transform: scale(1.15); }
+@keyframes dot-ripple {
+  from { box-shadow: 0 0 0 0.125rem var(--accent), 0 0 0 0.125rem color-mix(in srgb, var(--accent) 70%, transparent); }
+  to   { box-shadow: 0 0 0 0.125rem var(--accent), 0 0 0 0.875rem color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+
 .nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.125rem; }
 .nav-list li { margin: 0; }
 .nav-list a {
