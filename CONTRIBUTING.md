@@ -79,14 +79,20 @@ bash authoring/sync.sh
 
 自動檢查無法取代人工測試。涉及互動的變更，請在 PR 勾選：鍵盤走完整頁、字級最大與高對比下不破版；有條件時用 VoiceOver 或 NVDA 讀過。
 
-## 6. 隱私與內容守則
+## 6. Meta／SEO 規範（CI 強制）
+
+- 每頁需有 canonical、`robots`（404 為 `noindex`）、50～160 字的 description、OG／Twitter 圖（`twitter:card` 為 `summary_large_image`）與 favicon／apple-touch-icon。
+- 首頁需有 Organization＋WebSite JSON-LD，內頁需有 BreadcrumbList（最後一項須等於 canonical）。
+- 改站名、標語或分享圖設計後執行 `python3 authoring/build-og.py`（需 Chrome）並提交 `assets/img/` 的產物；`og.jpg` 必須是 1200×630、小於 300KB。
+
+## 7. 隱私與內容守則
 
 - **不放照片，不列成員名單。** 這是社群的決定，用來保護身心障礙者與性別少數成員。
 - 不提交：金鑰、私人信件、成員的全名與聯絡方式、可辨識的未成年人資訊。已提交的敏感內容即使刪除仍留在歷史裡，提交前請確認。
 - 不使用 Cookie、分析或追蹤碼，不載入外部字體與腳本；若要新增，須先更新「隱私說明」。
 - 提交信箱使用 GitHub noreply 位址。
 
-## 7. 初次設定（只需做一次）
+## 8. 初次設定（只需做一次）
 
 ```bash
 git config core.hooksPath .githooks
@@ -96,6 +102,6 @@ git config pull.ff only && git config push.autoSetupRemote true && git config fe
 
 GitHub 端（CI 已在 main 跑過一次後）：`bash authoring/setup-github.sh`（squash only、自動刪分支、保護 main）。
 
-## 8. 緊急情況
+## 9. 緊急情況
 
 站長可用 `ALLOW_MAIN_COMMIT=1` / `ALLOW_MAIN_PUSH=1` 略過本機 hook，僅限網站壞掉需要立刻處理時；事後補 PR 或 issue 說明。

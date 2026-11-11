@@ -12,6 +12,7 @@ python3 authoring/check.py         # 唯一的「測試」：結構、無障礙�
 python3 authoring/build-sitemap.py # 重建 sitemap.xml（pre-commit 會自動做並 stage）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
+python3 authoring/build-og.py      # 重產分享圖 og.jpg 與 apple-touch／favicon-32（需 Chrome 與 macOS sips；CI 沒有，產物要一併提交）
 ```
 
 ## 架構
@@ -22,6 +23,7 @@ bash authoring/sync.sh             # 本機與 GitHub 對齊
 - **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。裝飾（青綠圓、鏤空字、×、條碼）只放首頁 `.hero-art`，且 `aria-hidden`。
 - **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
+- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；`favicon.svg` 是手寫的。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
 - 新增頁面要同步：複製既有頁面的 `<head>` 與共用區塊 → 所有頁面的導覽加一項 → `build-sitemap.py` 重跑。
 
