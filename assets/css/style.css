@@ -322,6 +322,25 @@ button[aria-pressed="true"]:hover { background: var(--accent); filter: brightnes
   .nav-list { width: 100%; justify-content: space-between; }
 }
 
+/* ---------- 切頁轉場（跨頁 View Transitions） ----------
+ * 頁首固定不動；目前所在頁的黃色膠囊滑到新位置；頁面內容淡入。
+ * 每頁 <head> 的 <link rel="expect" href="#page-end" blocking="render"> 與結尾的 #page-end
+ * 讓瀏覽器等頁面畫完再轉場，新增頁面時不可漏掉。不支援的瀏覽器會直接換頁，功能不受影響。 */
+@view-transition { navigation: auto; }
+.site-header { view-transition-name: site-header; }
+.nav-list a[aria-current="page"] { view-transition-name: nav-pill; }
+.nav-list a { transition: background-color 0.2s, color 0.2s; }
+
+::view-transition-group(nav-pill) { animation-duration: 0.38s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
+::view-transition-old(root) { animation: vt-out 0.16s ease both; }
+::view-transition-new(root) { animation: vt-in 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-0.375rem); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(0.75rem); } }
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
 /* ---------- 排版元件 ---------- */
 .eyebrow { margin: 0 0 0.625rem; font-size: 0.875rem; letter-spacing: 0.12em; font-weight: 700; color: var(--accent-ink); }
 .page-head { padding-block: 3.5rem 0.5rem; }
