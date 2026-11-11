@@ -1,0 +1,9 @@
+name: 內容修改
+description: 文字錯誤、資訊過期、新增行動紀錄
+labels: [content]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 要改什麼？
+    validations: {required: true}

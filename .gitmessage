@@ -1,0 +1,11 @@
+# <type>(<scope>): <描述，72 字內，不加句號>
+#
+# type：feat fix content docs style refactor perf chore ci revert
+# scope（選填）：home about actions a11y design seo authoring ci
+#
+# 本文（選填）：說明「為什麼」這樣改，而不是「改了什麼」。
+#
+# 範例
+#   content(actions): 新增 2026 臺灣同志遊行紀錄
+#   fix(a11y): 修正高對比模式下按鈕焦點框不明顯
+#   style(home): 調整手機版標題間距

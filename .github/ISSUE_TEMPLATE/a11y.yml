@@ -1,0 +1,15 @@
+name: 無障礙問題回報
+description: 網站哪裡讀不到、點不到、看不清楚
+labels: [a11y]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: 哪一頁？
+    validations: {required: true}
+  - type: textarea
+    id: what
+    attributes:
+      label: 遇到什麼問題？
+      description: 請說明使用的裝置、瀏覽器與輔助科技（例如 NVDA、VoiceOver、放大鏡）。
+    validations: {required: true}

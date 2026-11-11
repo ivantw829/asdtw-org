@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 資料格式、文章規範、站內連結、sitemap 是否完整
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: 網站品質檢查
+        run: python3 authoring/check.py
+
+  # 採 squash merge，PR 標題就是最後進入 main 的 commit 訊息，必須符合約定式 commit
+  pr-title:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 檢查 PR 標題格式
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|content|docs|style|refactor|perf|chore|ci|revert)(\([a-z0-9-]+\))?!?: .+'
+          if ! printf '%s' "$TITLE" | grep -Eq "$pattern"; then
+            echo "PR 標題不符合約定式 commit：$TITLE"
+            echo "範例：content(article): 新增〈為氣候而走〉心得"
+            exit 1
+          fi

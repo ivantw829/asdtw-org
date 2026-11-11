@@ -1,0 +1,10 @@
+version: 2
+updates:
+  # 只追蹤 GitHub Actions 版本；標題前綴符合約定式 commit，能通過 pr-title 檢查
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "ci"
+      include: scope

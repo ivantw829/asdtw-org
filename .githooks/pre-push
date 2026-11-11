@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# 禁止直接推送到遠端 main，一律經由 PR
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ] && [ -z "$ALLOW_MAIN_PUSH" ]; then
+    echo "✗ 不直接推送 main，請推分支並開 PR。（緊急情況：ALLOW_MAIN_PUSH=1 git push）" >&2
+    exit 1
+  fi
+done
