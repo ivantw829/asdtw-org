@@ -1,51 +1,120 @@
 /* 福爾摩沙自閉大公社 — 單一樣式表
- * 設計原則：
- *  1. 全部使用 rem，字級由 <html data-text="1..4"> 縮放，版面隨之重排而不破版。
- *  2. 顏色只用下方 token；文字對比以 WCAG AAA（7:1）為目標，由 authoring/check.py 驗證。
- *  3. 資訊不單靠顏色傳達：連結一律有底線、目前頁面用文字標示。
- *  4. 高對比有兩個來源：使用者按鈕（data-contrast="high"）與系統設定（prefers-contrast: more）。
- *     兩處的 token 必須一致，改色票要同時改。
+ * 風格：溫暖人文的紙張感（沿用 me.asdtw.org）— 奶白紙張底、琥珀黃螢光筆、青綠與墨黑，
+ *       襯線標題 + 黑體內文，裝飾只放在首頁主視覺。
+ * 與個人站不同之處（為了無障礙）：
+ *  1. 文字一律以 WCAG AAA（7:1）為目標：灰字與琥珀褐比個人站更深，由 authoring/check.py 驗證。
+ *  2. 全部使用 rem，字級由 <html data-text="1..4"> 縮放。
+ *  3. 配色三種：預設（奶白）、深色（暖黑褐）、高對比（黑底白字黃連結）。
+ *     深色與高對比各有「使用者按鈕」與「系統設定」兩處 token，必須一致，改色要同時改。
+ *  4. 字體使用系統字體（不載入 Google Fonts），避免洩漏訪客連線資料。
  */
 
-/* ---------- 色票 token（預設：深藍底＋暖黃強調） ---------- */
+/* ---------- 色票 token：預設（奶白紙張） ---------- */
 :root {
-  --bg: #0b1b3a;
-  --surface: #14284f;
-  --text: #f6f3ea;
-  --muted: #c9d3ea;
-  --accent: #ffc93c;
-  --on-accent: #0b1b3a;
-  --link: #ffd66b;
-  --border: #7d98d0;
-  --focus: #ffc93c;
+  --bg: #f8f6ec;
+  --surface: #fffdf8;
+  --surface-2: #f3ecdc;
+  --text: #2b2620;
+  --muted: #52493c;
+  --line: #e4dac4;          /* 僅用於裝飾分隔線與卡片邊框 */
+  --border: #857860;        /* 按鈕等互動元件的外框，對比 ≥ 3:1 */
+  --accent: #f2c230;        /* 識別黃：色塊、按鈕、裝飾（不可當文字色） */
+  --accent-soft: #fbeccb;
+  --accent-ink: #6b3f00;    /* 文字用的琥珀褐：連結、eyebrow */
+  --on-accent: #2b2620;
+  --teal: #4a7b7f;          /* 識別青綠：只做裝飾色塊 */
+  --ink: #26281f;           /* 名字標籤底 */
+  --paper: #f8f6ec;         /* 名字標籤字 */
+  --focus: #6b3f00;
+  --shadow: 0 1px 2px rgba(60, 40, 10, .06), 0 6px 20px rgba(60, 40, 10, .06);
+  color-scheme: light;
+}
+
+/* ---------- 深色：使用者按鈕 ---------- */
+:root[data-theme="dark"] {
+  --bg: #1a1612;
+  --surface: #231e18;
+  --surface-2: #2c261e;
+  --text: #efe7d8;
+  --muted: #cdc3af;
+  --line: #3a3228;
+  --border: #8c8068;
+  --accent: #f2b84b;
+  --accent-soft: #3a2e14;
+  --accent-ink: #f2b84b;
+  --on-accent: #1a1612;
+  --teal: #7fb0b4;
+  --ink: #f8f6ec;
+  --paper: #1a1612;
+  --focus: #f2b84b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 20px rgba(0, 0, 0, .25);
   color-scheme: dark;
 }
 
-/* ---------- 高對比：使用者按鈕 ---------- */
-:root[data-contrast="high"] {
-  --bg: #000000;
-  --surface: #000000;
-  --text: #ffffff;
-  --muted: #ffffff;
-  --accent: #ffff00;
-  --on-accent: #000000;
-  --link: #ffff00;
-  --border: #ffffff;
-  --focus: #00ffff;
+/* ---------- 深色：系統設定（使用者沒有手動選時才套用） ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #1a1612;
+    --surface: #231e18;
+    --surface-2: #2c261e;
+    --text: #efe7d8;
+    --muted: #cdc3af;
+    --line: #3a3228;
+    --border: #8c8068;
+    --accent: #f2b84b;
+    --accent-soft: #3a2e14;
+    --accent-ink: #f2b84b;
+    --on-accent: #1a1612;
+    --teal: #7fb0b4;
+    --ink: #f8f6ec;
+    --paper: #1a1612;
+    --focus: #f2b84b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 20px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
 }
 
-/* ---------- 高對比：系統設定（使用者沒有手動選預設時才套用） ---------- */
+/* ---------- 高對比：使用者按鈕 ---------- */
+:root[data-theme="high"] {
+  --bg: #000000;
+  --surface: #000000;
+  --surface-2: #1a1a1a;
+  --text: #ffffff;
+  --muted: #ffffff;
+  --line: #ffffff;
+  --border: #ffffff;
+  --accent: #ffff00;
+  --accent-soft: #000000;
+  --accent-ink: #ffff00;
+  --on-accent: #000000;
+  --teal: #ffffff;
+  --ink: #ffffff;
+  --paper: #000000;
+  --focus: #00ffff;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+/* ---------- 高對比：系統設定（排在深色之後，優先於深色） ---------- */
 @media (prefers-contrast: more) {
-  :root:not([data-contrast="default"]) {
+  :root:not([data-theme]) {
     --bg: #000000;
     --surface: #000000;
+    --surface-2: #1a1a1a;
     --text: #ffffff;
     --muted: #ffffff;
-    --accent: #ffff00;
-    --on-accent: #000000;
-    --link: #ffff00;
+    --line: #ffffff;
     --border: #ffffff;
+    --accent: #ffff00;
+    --accent-soft: #000000;
+    --accent-ink: #ffff00;
+    --on-accent: #000000;
+    --teal: #ffffff;
+    --ink: #ffffff;
+    --paper: #000000;
     --focus: #00ffff;
+    --shadow: none;
+    color-scheme: dark;
   }
 }
 
@@ -64,33 +133,45 @@ html {
 }
 
 body {
+  --font-serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU", "Times New Roman", serif;
+  --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", system-ui, -apple-system, "Segoe UI", sans-serif;
   margin: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--bg);
   color: var(--text);
-  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
-    system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 1.125rem;
-  line-height: 1.9;
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
   overflow-wrap: anywhere;
 }
 
 main { flex: 1 0 auto; }
 
 .wrap {
-  width: 100%;
-  max-width: 44rem;
-  margin: 0 auto;
-  padding: 0 1rem;
+  width: min(100% - 2rem, 68rem);
+  margin-inline: auto;
+}
+.prose { max-width: 40rem; }
+
+h1, h2, h3 { font-family: var(--font-serif); line-height: 1.4; margin: 0; font-weight: 700; }
+p, ul, ol, dl, blockquote, figure { margin: 1rem 0 0; }
+ul, ol { padding-left: 1.5rem; }
+li { margin-top: 0.5rem; }
+
+/* 螢光筆：粗體不變色，而是下方刷一道淡黃 */
+strong {
+  font-weight: 700;
+  background: linear-gradient(transparent 62%, var(--accent-soft) 62%);
 }
 
 /* ---------- 焦點：永遠看得見 ---------- */
 :focus-visible {
   outline: 0.1875rem solid var(--focus);
-  outline-offset: 0.25rem;
-  border-radius: 0.125rem;
+  outline-offset: 0.1875rem;
+  border-radius: 0.25rem;
 }
 main:focus { outline: none; }
 
@@ -106,193 +187,327 @@ main:focus { outline: none; }
   font-weight: 700;
   text-decoration: none;
   border: 0.125rem solid var(--on-accent);
+  border-radius: 0.5rem;
 }
 .skip-link:focus { top: 0.5rem; }
 
-/* ---------- 標題 ---------- */
-h1, h2, h3 { line-height: 1.4; margin: 0; }
-h1 { font-size: 2rem; font-weight: 800; }
-h2 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-top: 3rem;
-  padding-top: 1rem;
-  border-top: 0.125rem solid var(--border);
-}
-h3 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; }
-
-p, ul, ol, dl, blockquote, figure { margin: 1rem 0 0; }
-ul, ol { padding-left: 1.5rem; }
-li { margin-top: 0.5rem; }
-
 /* ---------- 連結與按鈕 ---------- */
 a {
-  color: var(--link);
+  color: var(--accent-ink);
   text-decoration: underline;
-  text-decoration-thickness: 0.125rem;
-  text-underline-offset: 0.25em;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.2em;
 }
-a:hover { text-decoration-thickness: 0.25rem; }
+a:hover { text-decoration-thickness: 0.125rem; }
 
 .btn,
 button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.375rem;
   min-height: 2.75rem;
   min-width: 2.75rem;
   padding: 0.5rem 1.25rem;
   font: inherit;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.4;
   color: var(--text);
   background: transparent;
-  border: 0.125rem solid var(--border);
-  border-radius: 0.5rem;
+  border: 0.09375rem solid var(--border);
+  border-radius: 62.5rem;
   cursor: pointer;
   text-decoration: none;
 }
-.btn:hover, button:hover { border-color: var(--accent); }
+.btn:hover, button:hover { background: var(--surface-2); }
 
-.btn-primary {
-  background: var(--accent);
-  color: var(--on-accent);
-  border-color: var(--accent);
-  font-size: 1.25rem;
-  padding: 0.75rem 1.75rem;
-}
-.btn-primary:hover { text-decoration: underline; text-decoration-thickness: 0.125rem; }
-
+.btn-primary,
 button[aria-pressed="true"] {
   background: var(--accent);
   color: var(--on-accent);
   border-color: var(--accent);
+  font-weight: 700;
 }
+.btn-primary:hover,
+button[aria-pressed="true"]:hover { background: var(--accent); filter: brightness(1.05); }
+.btn-primary { font-size: 1.125rem; padding: 0.625rem 1.5rem; }
+:root[data-theme="high"] .btn-primary,
+:root[data-theme="high"] button[aria-pressed="true"] { border-color: var(--text); }
 
-/* ---------- 網站頁首 ---------- */
-.site-header {
-  border-bottom: 0.125rem solid var(--border);
-  padding: 1rem 0;
+/* ---------- 閱讀設定（預設收合） ---------- */
+.prefs { background: var(--surface-2); border-bottom: 0.0625rem solid var(--line); font-size: 1rem; line-height: 1.6; }
+.prefs[hidden] { display: none; }
+.prefs summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text);
+  padding-block: 0.25rem;
+}
+.prefs-panel { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; padding-bottom: 1rem; }
+.prefs-group { border: 0; margin: 0; padding: 0; min-width: 0; }
+.prefs legend { padding: 0; font-weight: 700; }
+.prefs-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+
+/* ---------- 頁首 ---------- */
+.site-header { border-bottom: 0.0625rem solid var(--line); background: var(--bg); }
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding-block: 0.75rem;
 }
 .site-title {
-  display: inline-block;
-  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-right: auto;
+  min-height: 2.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
   font-weight: 800;
   color: var(--text);
   text-decoration: none;
 }
-.site-title:hover { text-decoration: underline; }
-
-.nav-list {
-  list-style: none;
-  margin: 0.75rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
+.site-title::before {
+  content: "";
+  flex: none;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 0.125rem var(--accent);
 }
+.site-title:hover { text-decoration: underline; text-decoration-thickness: 0.125rem; }
+
+.nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.125rem; }
 .nav-list li { margin: 0; }
 .nav-list a {
-  display: inline-block;
-  padding: 0.5rem 0;
+  display: inline-flex;
+  align-items: center;
   min-height: 2.75rem;
-  color: var(--text);
+  padding: 0.25rem 0.875rem;
+  border-radius: 62.5rem;
+  color: var(--muted);
+  font-size: 0.96875rem;
+  text-decoration: none;
 }
+.nav-list a:hover { background: var(--surface-2); color: var(--text); text-decoration: underline; }
 .nav-list a[aria-current="page"] {
-  color: var(--accent);
-  font-weight: 800;
-  text-decoration-thickness: 0.25rem;
-  text-underline-offset: 0.4em;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+:root[data-theme="high"] .nav-list a { color: var(--text); text-decoration: underline; }
+:root[data-theme="high"] .nav-list a[aria-current="page"] { color: var(--on-accent); text-decoration: none; outline: 0.125rem solid var(--text); outline-offset: -0.125rem; }
+@media (forced-colors: active) { .nav-list a[aria-current="page"] { border: 0.125rem solid ButtonText; } }
+
+@media (max-width: 35rem) {
+  .nav-list { width: 100%; justify-content: space-between; }
 }
 
-/* ---------- 閱讀設定 ---------- */
-.prefs {
-  background: var(--surface);
-  border-bottom: 0.125rem solid var(--border);
-  padding: 0.75rem 0;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-.prefs[hidden] { display: none; }
-.prefs .wrap { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
-.prefs-group { border: 0; margin: 0; padding: 0; min-width: 0; }
-.prefs legend { padding: 0; font-weight: 800; }
-.prefs-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-
-/* ---------- 內容元件 ---------- */
-.lead { font-size: 1.25rem; margin-top: 1.5rem; }
-.hero { padding: 3rem 0 1rem; }
-.hero .btn-row { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
-
-.eyebrow { margin: 0 0 0.75rem; color: var(--muted); font-weight: 700; }
-
-.rule {
-  margin: 1.5rem 0 0;
-  padding: 1.25rem 1.5rem;
-  background: var(--surface);
-  border: 0.125rem solid var(--border);
-  border-left: 0.5rem solid var(--accent);
-  font-size: 1.375rem;
-  font-weight: 800;
-}
-.rule p { margin: 0; }
-
-.note {
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--surface);
-  border: 0.125rem solid var(--border);
-  border-radius: 0.5rem;
-}
-.note > :first-child { margin-top: 0; }
-
+/* ---------- 排版元件 ---------- */
+.eyebrow { margin: 0 0 0.625rem; font-size: 0.875rem; letter-spacing: 0.12em; font-weight: 700; color: var(--accent-ink); }
+.page-head { padding-block: 3.5rem 0.5rem; }
+.page-head h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); }
+.lead { font-size: 1.1875rem; margin-top: 1rem; max-width: 40rem; }
 .muted { color: var(--muted); }
 
-.card-list { list-style: none; padding: 0; margin: 0; }
-.card-list > li {
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--surface);
-  border: 0.125rem solid var(--border);
-  border-radius: 0.5rem;
+.section { padding-top: 3.5rem; }
+h2 {
+  font-size: 1.6rem;
+  margin-top: 3.5rem;
+  padding-left: 0.875rem;
+  border-left: 0.3125rem solid var(--accent);
 }
-.card-list h3 { margin-top: 0; }
+.section > h2 { margin-top: 0; }
+h3 { font-size: 1.2rem; margin-top: 2rem; }
 
-/* 行動紀錄時間軸：用有序清單，螢幕報讀器會讀出項目數 */
-.timeline { list-style: none; padding: 0; margin: 1.5rem 0 0; }
-.timeline > li {
+/* 名字標籤 */
+.name-tag {
+  display: inline-block;
   margin: 0;
-  padding: 1.5rem 0;
-  border-top: 0.125rem solid var(--border);
+  padding: 0.5rem 1.25rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  line-height: 1.35;
 }
-.timeline h3 { margin-top: 0.25rem; }
-.timeline dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin-top: 0.75rem; }
-.timeline dt { font-weight: 800; }
-.timeline dd { margin: 0; }
+:root[data-theme="high"] .name-tag { border: 0.125rem solid var(--text); }
+
+.tagline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  color: var(--muted);
+}
+.tagline::before { content: ""; flex: none; width: 2.25rem; height: 0.375rem; border-radius: 62.5rem; background: var(--ink); }
+
+/* 提示框／唯一規則 */
+.note, .rule {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--accent-soft);
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.75rem;
+}
+.note > :first-child, .rule > :first-child { margin-top: 0; }
+:root[data-theme="high"] .note, :root[data-theme="high"] .rule { border: 0.125rem solid var(--text); }
+
+.rule {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 1.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+  background: var(--surface);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow);
+}
+.rule::before, .rule::after { content: ""; display: block; width: 3rem; height: 0.1875rem; margin-inline: auto; background: var(--accent); }
+.rule::before { margin-bottom: 1rem; }
+.rule::after { margin-top: 1rem; }
+.rule p { margin: 0; }
+
+/* 卡片 */
+.cards {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1.25rem;
+}
+.cards > li {
+  margin: 0;
+  padding: 1.375rem;
+  background: var(--surface);
+  border: 0.0625rem solid var(--line);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow);
+}
+.cards h3 { margin: 0; font-size: 1.2rem; }
+.cards p { margin-top: 0.5rem; }
+:root[data-theme="high"] .cards > li { border: 0.125rem solid var(--text); }
+
+/* 連結列：每列一個圓角框 */
+.link-rows { list-style: none; padding: 0; margin: 1.25rem 0 0; }
+.link-rows > li {
+  margin: 0.75rem 0 0;
+  padding: 0.875rem 1.125rem;
+  background: var(--surface);
+  border: 0.0625rem solid var(--line);
+  border-radius: 0.75rem;
+}
+.link-rows a { font-weight: 700; }
+.link-rows .muted { font-size: 0.95rem; }
+:root[data-theme="high"] .link-rows > li { border: 0.125rem solid var(--text); }
+
 .tag {
   display: inline-block;
-  padding: 0 0.625rem;
-  border: 0.125rem solid var(--border);
+  padding: 0.125rem 0.75rem;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border: 0.0625rem solid var(--accent);
   border-radius: 62.5rem;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 700;
 }
+:root[data-theme="high"] .tag { border-color: var(--text); }
+
+/* 行動紀錄時間軸：左側直線、黃色圓點；用 <ol>，報讀器會讀出項目數 */
+.timeline { list-style: none; padding: 0 0 0 1.5rem; margin: 1.5rem 0 0; border-left: 0.125rem solid var(--line); }
+.timeline > li { position: relative; margin: 0; padding: 0 0 2.25rem; }
+.timeline > li::before {
+  content: "";
+  position: absolute;
+  left: -2.1875rem;
+  top: 0.375rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0.25rem var(--bg);
+}
+:root[data-theme="high"] .timeline { border-left-color: var(--text); }
+:root[data-theme="high"] .timeline > li::before { outline: 0.125rem solid var(--text); }
+.timeline p:first-child { margin-top: 0; }
+.timeline h3 { margin-top: 0.5rem; }
+.timeline dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin-top: 0.75rem; }
+.timeline dt { font-weight: 700; color: var(--muted); }
+.timeline dd { margin: 0; }
+
+/* ---------- 首頁主視覺 ---------- */
+.hero { display: grid; gap: 2rem; align-items: center; padding-block: 3.5rem 0.5rem; }
+.hero .btn-row { margin-top: 1.75rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; }
+.hero-text .lead { margin-top: 1.25rem; }
+
+/* 右欄裝飾（aria-hidden）：青綠大圓、黃色偏移圓、鏤空大字、× 與條碼 */
+.hero-art { position: relative; width: min(100%, 16rem); aspect-ratio: 3 / 4; margin-inline: auto; }
+.hero-art > * { position: absolute; }
+.hero-art .circle { width: 92%; aspect-ratio: 1; left: 4%; top: 6%; border-radius: 50%; background: var(--teal); }
+.hero-art .circle-2 { width: 46%; aspect-ratio: 1; right: 4%; top: 42%; border-radius: 50%; background: var(--accent); box-shadow: 0.625rem 0.5rem 0 var(--ink); }
+.hero-art .outline {
+  left: 0;
+  bottom: 4%;
+  font-family: var(--font-serif);
+  font-size: clamp(3.6rem, 13vw, 5.4rem);
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 0.125rem var(--teal);
+  letter-spacing: 0.04em;
+}
+.hero-art .xs { right: 0; top: 2%; color: var(--accent); font-size: 2rem; font-weight: 700; line-height: 1.1; display: flex; flex-direction: column; }
+.hero-art .barcode {
+  left: 0;
+  top: 0;
+  width: 4.625rem;
+  height: 2.375rem;
+  opacity: 0.75;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 0.1875rem, transparent 0.1875rem 0.375rem, var(--ink) 0.375rem 0.5625rem, transparent 0.5625rem 0.875rem, var(--ink) 0.875rem 1.0625rem, transparent 1.0625rem 1.25rem);
+}
+:root[data-theme="high"] .hero-art .circle { background: transparent; border: 0.25rem solid var(--text); }
+
+@media (min-width: 52rem) {
+  .hero { grid-template-columns: 1.15fr 1fr; gap: 3rem; }
+  .hero-art { width: min(100%, 22rem); }
+}
+/* 字級放大後不要硬擠兩欄，也隱藏裝飾以保留版面給文字 */
+:root[data-text="3"] .hero-art,
+:root[data-text="4"] .hero-art { display: none; }
+:root[data-text="3"] .hero,
+:root[data-text="4"] .hero { grid-template-columns: 1fr; }
 
 /* ---------- 頁尾 ---------- */
 .site-footer {
-  margin-top: 4rem;
-  padding: 2rem 0 3rem;
-  border-top: 0.125rem solid var(--border);
-  font-size: 1rem;
+  margin-top: 5rem;
+  padding: 1.75rem 0 3rem;
+  border-top: 0.0625rem solid var(--line);
+  font-size: 0.96875rem;
   line-height: 1.8;
+  color: var(--muted);
 }
-.site-footer ul { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+.site-footer p { margin-top: 0; }
+.site-footer ul { list-style: none; padding: 0; margin: 0.75rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
 .site-footer li { margin: 0; }
 .site-footer a { display: inline-block; padding: 0.5rem 0; }
 
 /* ---------- 小螢幕與超大字級 ---------- */
 @media (max-width: 30rem) {
-  h1 { font-size: 1.75rem; }
   .timeline dl { grid-template-columns: 1fr; }
   .timeline dd { margin-bottom: 0.5rem; }
 }
@@ -313,14 +528,7 @@ button[aria-pressed="true"] {
 /* ---------- 系統強制色彩（Windows 高對比等） ---------- */
 @media (forced-colors: active) {
   .btn-primary, button[aria-pressed="true"] { border: 0.1875rem solid ButtonText; }
-  .rule { border-left-width: 0.5rem; }
-}
-
-/* ---------- 列印 ---------- */
-@media print {
-  :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #000; --link: #000; --border: #000; --accent: #000; --on-accent: #fff; }
-  .prefs, .skip-link { display: none !important; }
-  a[href^="http"]::after { content: " (" attr(href) ")"; }
+  .site-title::before { background: CanvasText; }
 }
 
 /* ---------- 只給輔助科技讀的文字 ---------- */
@@ -332,4 +540,11 @@ button[aria-pressed="true"] {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* ---------- 列印 ---------- */
+@media print {
+  :root { --bg: #fff; --surface: #fff; --surface-2: #fff; --text: #000; --muted: #000; --accent-ink: #000; --line: #000; --border: #000; --accent: #fff; --accent-soft: #fff; }
+  .prefs, .skip-link, .hero-art { display: none !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; }
 }

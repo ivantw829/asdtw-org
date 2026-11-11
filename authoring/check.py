@@ -266,28 +266,37 @@ def ratio(a: str, b: str) -> float:
 
 
 def tokens(block: str) -> dict[str, str]:
-    return dict(re.findall(r"--([a-z-]+):\s*(#[0-9a-fA-F]{6})", block))
+    return dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block))
 
 
 sets: dict[str, dict[str, str]] = {}
-m = re.search(r":root\s*\{(.*?)\}", css, re.S)
-sets["預設"] = tokens(m.group(1)) if m else {}
-m = re.search(r':root\[data-contrast="high"\]\s*\{(.*?)\}', css, re.S)
-sets["高對比（按鈕）"] = tokens(m.group(1)) if m else {}
-m = re.search(r"prefers-contrast: more\)\s*\{\s*:root:not\(\[data-contrast=\"default\"\]\)\s*\{(.*?)\}", css, re.S)
-sets["高對比（系統）"] = tokens(m.group(1)) if m else {}
 
-if sets["高對比（按鈕）"] != sets["高對比（系統）"]:
-    err("style.css", "兩份高對比色票（data-contrast=high 與 prefers-contrast）不一致，請同步修改")
 
-TEXT_PAIRS = [("text", "bg"), ("text", "surface"), ("muted", "bg"), ("muted", "surface"),
-              ("link", "bg"), ("link", "surface"), ("accent", "bg"), ("accent", "surface"),
-              ("on-accent", "accent")]
-UI_PAIRS = [("border", "bg"), ("border", "surface"), ("focus", "bg"), ("focus", "surface")]
+def block(pattern: str) -> dict[str, str]:
+    m = re.search(pattern, css, re.S)
+    return tokens(m.group(1)) if m else {}
+
+
+sets["預設"] = block(r":root\s*\{(.*?)\}")
+sets["深色（按鈕）"] = block(r':root\[data-theme="dark"\]\s*\{(.*?)\}')
+sets["深色（系統）"] = block(r"prefers-color-scheme: dark\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{(.*?)\}")
+sets["高對比（按鈕）"] = block(r':root\[data-theme="high"\]\s*\{(.*?)\}')
+sets["高對比（系統）"] = block(r"prefers-contrast: more\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{(.*?)\}")
+
+for a_, b_ in (("深色（按鈕）", "深色（系統）"), ("高對比（按鈕）", "高對比（系統）")):
+    if sets[a_] != sets[b_]:
+        err("style.css", f"兩份色票「{a_}」與「{b_}」不一致，請同步修改")
+
+TEXT_PAIRS = [("text", "bg"), ("text", "surface"), ("text", "surface-2"), ("text", "accent-soft"),
+              ("muted", "bg"), ("muted", "surface"), ("muted", "surface-2"),
+              ("accent-ink", "bg"), ("accent-ink", "surface"), ("accent-ink", "surface-2"), ("accent-ink", "accent-soft"),
+              ("on-accent", "accent"), ("paper", "ink")]
+UI_PAIRS = [("border", "bg"), ("border", "surface"), ("border", "surface-2"), ("focus", "bg"), ("focus", "surface")]
+NEED = {"bg", "surface", "surface-2", "text", "muted", "line", "border", "accent", "accent-soft", "accent-ink",
+        "on-accent", "teal", "ink", "paper", "focus"}
 for label, t in sets.items():
-    need = {"bg", "surface", "text", "muted", "accent", "on-accent", "link", "border", "focus"}
-    if not need <= t.keys():
-        err("style.css", f"{label} 色票缺少 token：{sorted(need - t.keys())}")
+    if not NEED <= t.keys():
+        err("style.css", f"{label} 色票缺少 token：{sorted(NEED - t.keys())}")
         continue
     for fg, bg in TEXT_PAIRS:
         r = ratio(t[fg], t[bg])
@@ -310,4 +319,4 @@ if errors:
     for e in errors:
         print("  - " + e, file=sys.stderr)
     sys.exit(1)
-print(f"✓ 檢查通過（{len(pages)} 頁、3 組色票）")
+print(f"✓ 檢查通過（{len(pages)} 頁、5 組色票）")
