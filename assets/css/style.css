@@ -551,6 +551,15 @@ h3 { font-size: 1.2rem; margin-top: 2rem; }
 :root[data-text="3"] .badge-pride,
 :root[data-text="4"] .badge-pride { display: none; }
 
+/* ---------- 說明性圖片（figure） ---------- */
+.figure { margin: 1.5rem 0 0; }
+.figure img { display: block; width: 100%; height: auto; border-radius: 0.875rem; box-shadow: var(--shadow); }
+:root[data-theme="high"] .figure img { outline: 0.125rem solid var(--text); }
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) .figure img { outline: 0.125rem solid var(--text); }
+}
+.figure figcaption { margin-top: 0.625rem; font-size: 0.95rem; color: var(--muted); }
+
 /* ---------- 頁尾 ---------- */
 .site-footer {
   margin-top: 5rem;
