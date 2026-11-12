@@ -470,6 +470,7 @@ BRAND_ASSETS = {
     "assets/img/brand/lockup-dark.svg": {"#E8695A", "#3A3A3C"},
     "assets/img/brand/lockup-light.svg": {"#FFF6EC"},
     "assets/img/brand/lockup-rainbow.svg": None,   # 彩虹馬卡龍多色，不限制顏色，但不得有其他禁用元素
+    "assets/img/brand/lockup-rainbow-clear.svg": None,
     "authoring/og/banner-coral.svg": {"#E8695A", "#EE8576", "#FFF6EC"},
 }
 for rel, allowed in BRAND_ASSETS.items():
@@ -486,7 +487,7 @@ for rel, allowed in BRAND_ASSETS.items():
         used = {c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}\b", svg)}
         if not used <= allowed:
             err(rel, f"使用了色票以外的顏色：{sorted(used - allowed)}")
-for needle in ("lockup-dark.svg", "lockup-light.svg", "lockup-rainbow.svg"):
+for needle in ("lockup-dark.svg", "lockup-light.svg", "lockup-rainbow.svg", "lockup-rainbow-clear.svg"):
     if needle not in css:
         err("style.css", f"必須引用品牌素材 {needle}")
 # 彩虹馬卡龍只能出現在炭灰底的徽章內

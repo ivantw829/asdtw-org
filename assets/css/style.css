@@ -545,7 +545,7 @@ h3 { font-size: 1.2rem; margin-top: 2rem; }
 }
 
 /* ---------- 行動紀錄頁的彩虹馬卡龍橫式標誌 ----------
- * 彩虹馬卡龍標誌固定搭配炭灰底（白色箭形在淺底會消失），圖檔本身已含炭灰底，只能放在這個 .badge-pride 內。 */
+ * 彩虹馬卡龍標誌固定搭配炭灰底（白色箭形在淺底會消失），淺色配色用自帶炭灰底的版本；深色與高對比用去背淺字版。只能放在這個 .badge-pride 內。 */
 .page-head-badge { display: flex; flex-direction: column; gap: 1.5rem; }
 .badge-pride {
   width: min(100%, 24rem);
@@ -553,9 +553,14 @@ h3 { font-size: 1.2rem; margin-top: 2rem; }
   border-radius: 0.875rem;
   background: #3a3a3c url("/assets/img/brand/lockup-rainbow.svg") center / cover no-repeat;
 }
-:root[data-theme="high"] .badge-pride { outline: 0.125rem solid var(--text); outline-offset: 0.125rem; }
+/* 深色與高對比的頁面底本來就是深色：改用去背版（淺字），標誌直接浮在頁面上，不再有方框 */
+:root[data-theme="dark"] .badge-pride,
+:root[data-theme="high"] .badge-pride { background: url("/assets/img/brand/lockup-rainbow-clear.svg") left center / contain no-repeat; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .badge-pride { background: url("/assets/img/brand/lockup-rainbow-clear.svg") left center / contain no-repeat; }
+}
 @media (prefers-contrast: more) {
-  :root:not([data-theme]) .badge-pride { outline: 0.125rem solid var(--text); outline-offset: 0.125rem; }
+  :root:not([data-theme]) .badge-pride { background: url("/assets/img/brand/lockup-rainbow-clear.svg") left center / contain no-repeat; }
 }
 :root[data-text="3"] .badge-pride,
 :root[data-text="4"] .badge-pride { display: none; }
