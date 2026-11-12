@@ -23,7 +23,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 - **頁首、頁尾、閱讀設定面板是每頁手寫的靜態 HTML，必須逐字相同**（頁首只有 `aria-current="page"` 不同）。這是為了不依賴 JS 就能被螢幕報讀器完整讀取。改其中任何一處，要同步改全部頁面，`check.py` 會驗證。
 - 閱讀設定（字級 1–4、配色 default／dark／high）：`assets/js/prefs.js` 在 `<head>` 同步載入，把偏好寫到 `<html data-text data-theme>`，存 `localStorage`；面板（`<details>` 預設收合）預設 `hidden`，有 JS 才顯示。使用者沒手動選時，系統 `prefers-contrast: more` → 高對比、`prefers-color-scheme: dark` → 深色。
 - **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。首頁主視覺 `.hero-art` 是設計師交付的三個 SVG（`assets/img/hero-light/dark/high.svg`，珊瑚紅＋炭灰＋琥珀黃；深色版炭灰換米白；高對比版只有白與黃），以 CSS 背景圖依配色載入，元素 `aria-hidden`；字級調到「特大」以上時隱藏。換圖須符合 `check.py` 第 6 節規格（色票、viewBox `0 0 600 800`、<50KB、無 text／漸層／濾鏡）。
-- **品牌素材**（來自品牌識別交件，放 `assets/img/brand/`）：`lockup-dark.svg`／`lockup-light.svg`（橫式組合，頁尾與 404 以背景圖載入，淺色用 dark、深色與高對比用 light）、`mark-rainbow.svg`（彩虹馬卡龍標誌，**只能放在炭灰底的 `.badge-pride` 徽章內**，目前僅用於行動紀錄頁）。分享圖由 `authoring/og/banner-coral.svg` 經 `card.html` 產生。以上裝飾元素一律 `aria-hidden="true"`；**頁首站名維持真文字**，不要改成圖片。`check.py` 第 7 節會驗證這些素材（不得含 text／漸層／濾鏡等、色票限制）。
+- **品牌素材**（來自品牌識別交件，放 `assets/img/brand/`）：`lockup-dark.svg`／`lockup-light.svg`（橫式組合，頁尾與 404 以背景圖載入，淺色用 dark、深色與高對比用 light）、`lockup-rainbow.svg`（彩虹馬卡龍橫式組合，自帶炭灰底，**只能放在 `.badge-pride` 內**，目前僅用於行動紀錄頁）。分享圖由 `authoring/og/banner-coral.svg` 經 `card.html` 產生。以上裝飾元素一律 `aria-hidden="true"`；**頁首站名維持真文字**，不要改成圖片。`check.py` 第 7 節會驗證這些素材（不得含 text／漸層／濾鏡等、色票限制）。
 - **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
 - **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；`favicon.ico` 必須含 16／32／48 三種尺寸、另有 `icon-192.png`（Google 搜尋結果要求圖示邊長為 48 的倍數）；這兩個由品牌包的 `標誌-含底色` PNG 縮製。換圖示時這些檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
@@ -38,6 +38,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 - **網站上不得出現「捍衛全台學權行動」**（社群所屬團體）；活動只寫社群自己的參與。
 - **不放照片、不列成員名單**；站長也不打算放照片。
 - 說明社群設計（如身分組）時，**用重畫的示意圖，不用站長或成員的截圖**；示意圖不得出現真實成員的選擇、頭像或政黨名稱，並標明「示意圖」。目前只有 `assets/img/roles-mock.svg`（關於頁），`check.py` 第 8 節會驗證；說明性圖片必須有非空 alt、width／height 與 `<figcaption>`，圖中資訊在正文要有同樣內容的文字。
+- 首頁「左翼立場」卡片裡那句關於疫苗的話是站長刻意做的嘲諷（反疫苗陰謀論），藏在原生 `<details class="aside">` 裡，點開才看到「以上是對反疫苗陰謀論的嘲諷。疫苗不會導致自閉症。」。**不要移除聲明、不要改成純文字或隱藏連結**；`<summary>` 內的 `visually-hidden`「（可展開聲明）」是給螢幕報讀器的提示，要保留。
 - 不要編造事實（日期、人數、經歷、無障礙測試結果）。沒有提供就留空或詢問。無障礙聲明不得宣稱已通過認證或實機測試，除非真的做過。
 - 本群唯一規則原文：「本群沒有規則，有委屈自己提告去。」說明為管理員保有最終裁量權，不要改寫成其他規則。
 - 歡迎對象措辭為「當事人優先」：歡迎各程度身心障礙者、任何性別與性傾向；健全者與異性戀者可加入但以當事人需求為優先。不要寫成「不歡迎」。

@@ -469,7 +469,7 @@ if "hero-art" in css and not all(f"hero-{v}.svg" in css for v in HERO_PALETTES):
 BRAND_ASSETS = {
     "assets/img/brand/lockup-dark.svg": {"#E8695A", "#3A3A3C"},
     "assets/img/brand/lockup-light.svg": {"#FFF6EC"},
-    "assets/img/brand/mark-rainbow.svg": None,   # 彩虹馬卡龍多色，不限制顏色，但不得有其他禁用元素
+    "assets/img/brand/lockup-rainbow.svg": None,   # 彩虹馬卡龍多色，不限制顏色，但不得有其他禁用元素
     "authoring/og/banner-coral.svg": {"#E8695A", "#EE8576", "#FFF6EC"},
 }
 for rel, allowed in BRAND_ASSETS.items():
@@ -486,12 +486,12 @@ for rel, allowed in BRAND_ASSETS.items():
         used = {c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}\b", svg)}
         if not used <= allowed:
             err(rel, f"使用了色票以外的顏色：{sorted(used - allowed)}")
-for needle in ("lockup-dark.svg", "lockup-light.svg", "mark-rainbow.svg"):
+for needle in ("lockup-dark.svg", "lockup-light.svg", "lockup-rainbow.svg"):
     if needle not in css:
         err("style.css", f"必須引用品牌素材 {needle}")
 # 彩虹馬卡龍只能出現在炭灰底的徽章內
-if "mark-rainbow.svg" in css and not re.search(r"\.badge-pride\s*\{[^}]*#3a3a3c[^}]*mark-rainbow\.svg", css, re.I):
-    err("style.css", "mark-rainbow.svg 只能用在炭灰底（#3a3a3c）的 .badge-pride 內")
+if "lockup-rainbow.svg" in css and not re.search(r"\.badge-pride\s*\{[^}]*#3a3a3c[^}]*lockup-rainbow\.svg", css, re.I):
+    err("style.css", "lockup-rainbow.svg 只能用在炭灰底（#3a3a3c）的 .badge-pride 內")
 for name, pg in pages.items():
     for x, a in pg.tags:
         cls = a.get("class", "").split()
