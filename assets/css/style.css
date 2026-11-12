@@ -432,6 +432,17 @@ h3 { font-size: 1.2rem; margin-top: 2rem; }
 }
 .cards h3 { margin: 0; font-size: 1.2rem; }
 .cards p { margin-top: 0.5rem; }
+.cards details { margin-top: 0.5rem; }
+.cards details p {
+  margin-top: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 0.25rem solid var(--accent);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.cards summary { list-style: none; }
+.cards summary::-webkit-details-marker { display: none; }
 :root[data-theme="high"] .cards > li { border: 0.125rem solid var(--text); }
 
 /* 連結列：每列一個圓角框 */
