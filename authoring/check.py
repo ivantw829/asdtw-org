@@ -250,8 +250,10 @@ for name, pg in pages.items():
         if x == "link" and a.get("rel") == "stylesheet" and a.get("href") != "/assets/css/style.css":
             err(name, f"不得載入外部或額外的 CSS：{a.get('href')}")
         if x in ("img",):
-            if "alt" not in a:
-                err(name, "<img> 缺少 alt")
+            if not a.get("alt", "").strip():
+                err(name, "<img> 必須有非空的 alt（裝飾圖請改用 CSS 背景圖並 aria-hidden）")
+            if not (a.get("width") and a.get("height")):
+                err(name, "<img> 必須指定 width 與 height（避免版面位移）")
         if x in ("iframe", "video", "audio", "embed", "object"):
             err(name, f"<{x}> 尚未有無障礙規範，請先更新 check.py 與無障礙聲明再加入")
         if x == "button" and a.get("type") != "button":
@@ -275,6 +277,8 @@ for name, pg in pages.items():
     if d != pg.metas.get("og:description") or d != pg.metas.get("twitter:description"):
         err(name, "description、og:description、twitter:description 必須逐字一致")
     seo_checks(name, pg)
+    if raw.count("<img") != raw.count("<figcaption"):
+        err(name, "每張 <img> 都要放在 <figure> 並附 <figcaption>")
     # 切頁轉場：需要 rel=expect 與 #page-end，否則切換瞬間會閃空白
     if name != "404.html":
         has_expect = any(x == "link" and a.get("rel") == "expect" and a.get("href") == "#page-end" and "blocking" in a for x, a in tags)
@@ -428,7 +432,7 @@ else:
         err("assets/img/og.jpg", f"尺寸必須是 1200×630（目前 {size}）")
     if og.stat().st_size > 300 * 1024:
         err("assets/img/og.jpg", "檔案超過 300KB，請壓縮")
-for f in ("assets/img/favicon.svg", "assets/img/apple-touch-icon.png", "favicon.ico"):
+for f in ("assets/img/favicon.svg", "assets/img/apple-touch-icon.png", "assets/img/icon-192.png", "favicon.ico"):
     if not (ROOT / f).exists():
         err(f, "不存在（網站圖示來自品牌識別交件，請從交件包的 04_網站圖示 複製）")
 
@@ -493,6 +497,27 @@ for name, pg in pages.items():
         cls = a.get("class", "").split()
         if ("brand-lockup" in cls or "badge-pride" in cls) and a.get("aria-hidden") != "true":
             err(name, f'裝飾元素 .{ "brand-lockup" if "brand-lockup" in cls else "badge-pride" } 必須有 aria-hidden="true"')
+
+# ---------------------------------------------------------------- 8. 說明性圖片（身分組示意圖）
+mock = ROOT / "assets/img/roles-mock.svg"
+if not mock.exists():
+    err("assets/img/roles-mock.svg", "不存在（關於頁的身分組示意圖）")
+else:
+    svg = mock.read_text(encoding="utf-8")
+    if mock.stat().st_size > 60 * 1024:
+        err("roles-mock.svg", "超過 60KB")
+    if re.search(r"<(image|script|style|filter|linearGradient|radialGradient|mask|pattern|foreignObject)\b|href=", svg):
+        err("roles-mock.svg", "不得含 <image>、<script>、<style>、濾鏡、漸層、外部連結")
+    if "<title" not in svg or "<desc" not in svg:
+        err("roles-mock.svg", "需要 <title> 與 <desc>")
+    used = {c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}\b", svg)}
+    allowed = {"#232325", "#3A3A3C", "#4A4A4D", "#CFC8BC", "#E8695A", "#F2C230", "#FFF6EC"}
+    if not used <= allowed:
+        err("roles-mock.svg", f"使用了色票以外的顏色：{sorted(used - allowed)}")
+    # 隱私：示意圖不得出現政黨名稱
+    for bad in ("共產黨", "民進黨", "國民黨", "民眾黨", "時代力量", "綠黨", "社會民主黨", "親民黨", "新黨"):
+        if bad in svg:
+            err("roles-mock.svg", f"示意圖不得出現政黨名稱：{bad}")
 
 # ---------------------------------------------------------------- 結果
 if errors:

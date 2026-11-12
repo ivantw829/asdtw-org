@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 780" role="img" aria-labelledby="t d">
+<title id="t">身分組領取頁面示意圖</title>
+<desc id="d">示意圖：「頻道與身分組」頁面，分為「神經多樣性」與「你的性取向」兩區，每區是可複選的選項方塊，被選取的方塊有珊瑚紅外框與勾選記號。圖中的選取只是範例。</desc>
+<rect width="960" height="780" rx="28" fill="#232325"/>
+<g font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif">
+<text x="40" y="60" font-size="32" font-weight="700" fill="#FFF6EC">頻道與身分組</text>
+<rect x="772" y="26" width="148" height="46" rx="23" fill="#F2C230"/>
+<text x="846" y="58" font-size="22" font-weight="700" fill="#3A3A3C" text-anchor="middle">示意圖</text>
+<rect x="0" y="92" width="960" height="2" fill="#3A3A3C"/>
+<text x="40" y="146" font-size="28" font-weight="700" fill="#FFF6EC">神經多樣性（有正式診斷才可領取）</text>
+<rect x="40" y="168" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="64" y="203" font-size="24" font-weight="500" fill="#FFF6EC">自閉症</text>
+<rect x="490" y="168" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="514" y="203" font-size="24" font-weight="500" fill="#FFF6EC">過動症</text>
+<rect x="40" y="232" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="64" y="267" font-size="24" font-weight="500" fill="#FFF6EC">雙相</text>
+<rect x="490" y="232" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#E8695A" stroke-width="3"/>
+<text x="514" y="267" font-size="24" font-weight="700" fill="#FFF6EC">妥瑞</text>
+<circle cx="914" cy="238" r="15" fill="#E8695A"/>
+<path d="M907 239l5 5 9-10" fill="none" stroke="#FFF6EC" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="296" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="64" y="331" font-size="24" font-weight="500" fill="#FFF6EC">強迫症</text>
+<rect x="490" y="296" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#E8695A" stroke-width="3"/>
+<text x="514" y="331" font-size="24" font-weight="700" fill="#FFF6EC">閱讀／學習障礙</text>
+<circle cx="914" cy="302" r="15" fill="#E8695A"/>
+<path d="M907 303l5 5 9-10" fill="none" stroke="#FFF6EC" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="360" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="64" y="395" font-size="24" font-weight="500" fill="#FFF6EC">選擇性緘默症</text>
+<text x="40" y="446" font-size="22" fill="#CFC8BC">選擇所有適用的項目。</text>
+<text x="40" y="510" font-size="28" font-weight="700" fill="#FFF6EC">你的性取向</text>
+<rect x="40" y="532" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="64" y="567" font-size="24" font-weight="500" fill="#FFF6EC">泛性戀</text>
+<rect x="490" y="532" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="514" y="567" font-size="24" font-weight="500" fill="#FFF6EC">無性戀</text>
+<rect x="40" y="596" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#E8695A" stroke-width="3"/>
+<text x="64" y="631" font-size="24" font-weight="700" fill="#FFF6EC">雙性戀</text>
+<circle cx="464" cy="602" r="15" fill="#E8695A"/>
+<path d="M457 603l5 5 9-10" fill="none" stroke="#FFF6EC" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="490" y="596" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="514" y="631" font-size="24" font-weight="500" fill="#FFF6EC">同性戀</text>
+<rect x="40" y="660" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="64" y="695" font-size="24" font-weight="500" fill="#FFF6EC">異性戀</text>
+<text x="40" y="746" font-size="22" fill="#CFC8BC">選擇所有適用的項目。</text>
+</g>
+</svg>

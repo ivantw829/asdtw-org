@@ -26,7 +26,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 - **品牌素材**（來自品牌識別交件，放 `assets/img/brand/`）：`lockup-dark.svg`／`lockup-light.svg`（橫式組合，頁尾與 404 以背景圖載入，淺色用 dark、深色與高對比用 light）、`mark-rainbow.svg`（彩虹馬卡龍標誌，**只能放在炭灰底的 `.badge-pride` 徽章內**，目前僅用於行動紀錄頁）。分享圖由 `authoring/og/banner-coral.svg` 經 `card.html` 產生。以上裝飾元素一律 `aria-hidden="true"`；**頁首站名維持真文字**，不要改成圖片。`check.py` 第 7 節會驗證這些素材（不得含 text／漸層／濾鏡等、色票限制）。
 - **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
-- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；換圖示時三個檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
+- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；`favicon.ico` 必須含 16／32／48 三種尺寸、另有 `icon-192.png`（Google 搜尋結果要求圖示邊長為 48 的倍數）；這兩個由品牌包的 `標誌-含底色` PNG 縮製。換圖示時這些檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
 - **切頁轉場**（CSS 跨頁 View Transitions：頁首固定、導覽黃色膠囊 `nav-pill` 滑動、內容淡入）：每頁（404 除外）`<head>` 要有 `<link rel="expect" href="#page-end" blocking="render">`，`</footer>` 後要有 `<span id="page-end" hidden></span>`，否則切換會閃空白；`prefers-reduced-motion` 時整個轉場關閉。`check.py` 會驗證。
 - **頁面都是手寫 HTML，沒有產生器或樣板引擎。** 改共用區塊（頁首、頁尾、`<head>` 的 meta）要對 5 個檔案做同樣的修改，建議用一段 Python／sed 腳本批次取代再跑 `check.py`，不要逐檔手改；不要憑記憶「重新產生」頁面，會蓋掉站長直接在 HTML 裡做的文案修改。
@@ -37,6 +37,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 mac
 
 - **網站上不得出現「捍衛全台學權行動」**（社群所屬團體）；活動只寫社群自己的參與。
 - **不放照片、不列成員名單**；站長也不打算放照片。
+- 說明社群設計（如身分組）時，**用重畫的示意圖，不用站長或成員的截圖**；示意圖不得出現真實成員的選擇、頭像或政黨名稱，並標明「示意圖」。目前只有 `assets/img/roles-mock.svg`（關於頁），`check.py` 第 8 節會驗證；說明性圖片必須有非空 alt、width／height 與 `<figcaption>`，圖中資訊在正文要有同樣內容的文字。
 - 不要編造事實（日期、人數、經歷、無障礙測試結果）。沒有提供就留空或詢問。無障礙聲明不得宣稱已通過認證或實機測試，除非真的做過。
 - 本群唯一規則原文：「本群沒有規則，有委屈自己提告去。」說明為管理員保有最終裁量權，不要改寫成其他規則。
 - 歡迎對象措辭為「當事人優先」：歡迎各程度身心障礙者、任何性別與性傾向；健全者與異性戀者可加入但以當事人需求為優先。不要寫成「不歡迎」。
