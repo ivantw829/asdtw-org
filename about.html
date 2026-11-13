@@ -31,6 +31,7 @@
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/css/style.css">
 <script src="/assets/js/prefs.js"></script>
+<script src="/assets/js/funcs.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -108,7 +109,7 @@
     <ul>
       <li>成立日期：2026 年 7 月 31 日。</li>
       <li>創辦人：賴奕帆。<a href="https://me.asdtw.org/" target="_blank" rel="noopener">個人網站（另開新視窗）</a></li>
-      <li>規模：逾 370 位成員（2026 年 11 月）。</li>
+      <li>成員：<span name="members"></span> 位。</li>
       <li>立場：左翼。</li>
       <li>行動：曾組織成員參加現場的社會運動，見<a href="/actions.html">行動紀錄</a>。</li>
     </ul>
@@ -168,5 +169,11 @@
   </div>
 </footer>
 <span id="page-end" hidden></span>
+
+<script type="module">
+  const members = await getServerMembers();
+  const membersLabel = document.querySelector("span[name='members']");
+  membersLabel.textContent = members.toString() || "約 400"
+</script>
 </body>
 </html>
