@@ -10,7 +10,8 @@ fi
 python3 authoring/build-lists.py | while read -r f; do git add "$f"; done
 python3 authoring/build-feed.py >/dev/null && git add feed.xml
 if [ -n "$(git diff --cached --name-only -- data/articles.json authoring/og/article-card.html)" ]; then
-  python3 authoring/build-og.py --articles && git add assets/img/og authoring/og/manifest.json
+  # 用 -A 讓已刪除文章的分享圖也被 stage；沒有任何文章時資料夾不存在，就只 stage manifest
+  python3 authoring/build-og.py --articles && git add -A authoring/og/manifest.json $( [ -d assets/img/og ] || git ls-files --error-unmatch assets/img/og >/dev/null 2>&1 && echo assets/img/og )
 fi
 python3 authoring/build-sitemap.py >/dev/null && git add sitemap.xml
 python3 authoring/check.py
