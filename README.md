@@ -18,8 +18,9 @@ python3 authoring/check.py      # 品質與無障礙檢查（CI 也會跑）
 | 路徑 | 說明 |
 |---|---|
 | `index.html` `about.html` `actions.html` `accessibility.html` | 四個頁面，共用頁首／頁尾／閱讀設定須逐字相同 |
+| `articles.html` `articles/` `data/articles.json` `feed.xml` | 文章欄位：文章頁由 `authoring/md2article.py` 從 Markdown 產生 |
 | `assets/css/style.css` | 唯一的樣式表，含色票 token、字級與高對比 |
 | `assets/js/prefs.js` | 閱讀設定（字級、對比），只用 `localStorage` |
-| `authoring/` | 檢查與工具：`check.py`、`build-sitemap.py`、`ship.sh`、`sync.sh`、`setup-github.sh` |
+| `authoring/` | 檢查與工具：`check.py`、`build-sitemap.py`、`md2article.py`、`build-lists.py`、`build-feed.py`、`build-og.py`、`ship.sh`、`sync.sh`、`setup-github.sh` |
 
 協作規範請見 [CONTRIBUTING.md](CONTRIBUTING.md)；與 Claude Code 協作請見 [CLAUDE.md](CLAUDE.md)。
