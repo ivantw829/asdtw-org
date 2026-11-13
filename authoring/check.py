@@ -2,15 +2,18 @@
 """網站品質與無障礙檢查。CI 與 pre-commit 都會執行；任何問題都會列出後以非 0 結束。
 
 檢查：頁面結構與地標、標題層級、跳過連結、外部資源、連結與錨點、導覽／頁尾一致、
-meta 一致、sitemap、CSS 色票對比（WCAG 相對亮度）、字級單位。
+meta 一致、sitemap、CSS 色票對比（WCAG 相對亮度）、字級單位、文章（資料、分享圖、列表、訂閱源）。
 """
 import json
 import re
+import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "authoring"))
+import articles_lib as AL  # noqa: E402
 errors: list[str] = []
 
 
@@ -107,9 +110,11 @@ def load(p: Path) -> Page:
 
 
 domain = (ROOT / "CNAME").read_text().strip()
-html_files = sorted(ROOT.glob("*.html"))
-pages = {p.name: load(p) for p in html_files}
-public = [n for n in pages if n != "404.html"]
+html_files = sorted(ROOT.glob("*.html")) + sorted(ROOT.glob("articles/*.html"))
+pages = {p.relative_to(ROOT).as_posix(): load(p) for p in html_files}
+# 公開頁：404 以外、沒有 noindex 的頁面（未公開的文章列表與草稿文章是 noindex）
+public = [n for n in pages if n != "404.html" and "noindex" not in pages[n].metas.get("robots", "")]
+root_public = [n for n in public if "/" not in n]
 
 
 def jpeg_size(path: Path) -> tuple[int, int] | None:
@@ -137,6 +142,9 @@ def seo_checks(name: str, pg: Page) -> None:
     if name == "404.html":
         if "noindex" not in robots:
             err(name, '404 必須有 <meta name="robots" content="noindex">')
+    elif robots.startswith("noindex"):
+        if not (name == "articles.html" or name.startswith("articles/")):
+            err(name, "只有文章列表（上線前）與草稿文章可以是 noindex")
     elif not robots.startswith("index,follow"):
         err(name, '缺少 <meta name="robots" content="index,follow,…">')
     desc = m.get("description", "")
@@ -144,6 +152,8 @@ def seo_checks(name: str, pg: Page) -> None:
         err(name, f"description 長度應為 50～160 字（目前 {len(desc)} 字）")
     # 社群分享
     img = f"{base}/assets/img/og.jpg"
+    if name.startswith("articles/"):
+        img = AL.og_url(Path(name).stem)  # 文章各自的分享圖，第 9 節檢查檔案
     for key in ("og:image", "twitter:image"):
         if m.get(key) != img:
             err(name, f"{key} 必須是 {img}")
@@ -181,7 +191,8 @@ def seo_checks(name: str, pg: Page) -> None:
         elif "BreadcrumbList" not in types:
             err(name, "內頁 JSON-LD 需要 BreadcrumbList")
         else:
-            last = nodes[0]["itemListElement"][-1]["item"]
+            crumbs = next(n for n in nodes if n.get("@type") == "BreadcrumbList")
+            last = crumbs["itemListElement"][-1]["item"]
             if last != pg.canonical:
                 err(name, f"BreadcrumbList 最後一項 {last} 與 canonical 不一致")
         blob = json.dumps(data, ensure_ascii=False)
@@ -194,6 +205,9 @@ def seo_checks(name: str, pg: Page) -> None:
 for name, pg in pages.items():
     raw = (ROOT / name).read_text(encoding="utf-8")
     tags = pg.tags
+
+    if "捍衛全台學權行動" in raw:
+        err(name, "網站上不得出現「捍衛全台學權行動」（內容守則）")
 
     def count(t):
         return sum(1 for x, _ in tags if x == t)
@@ -316,7 +330,9 @@ for name, pg in pages.items():
                 err(name, f"站內連結不應另開新視窗：{href}")
             path, _, frag = href.partition("#")
             target_name = name if path == "" else ("index.html" if path == "/" else path.lstrip("/"))
-            if target_name not in pages:
+            if not path.startswith("/") and path != "":
+                err(name, f"站內連結請用 / 開頭的絕對路徑：{href}")
+            elif target_name not in pages and not (not frag and (ROOT / target_name).is_file()):
                 err(name, f"站內連結指向不存在的頁面：{href}")
             elif frag and frag not in pages[target_name].ids:
                 err(name, f"站內錨點不存在：{href}")
@@ -329,8 +345,16 @@ for region in ("header", "footer", "prefs"):
         if name != ref_name and pages[name].regions[region] != ref:
             err(name, f"{region} 區塊與 index.html 不一致（共用區塊必須逐字相同；header 只允許 aria-current 不同）")
 
-# 導覽：恰好一個 aria-current，且指向自己
-for name in public:
+# 導覽：根目錄的公開頁恰好一個 aria-current，且指向自己；文章頁與未公開頁沒有
+for name in pages:
+    if name in root_public:
+        continue
+    if any(lk["attrs"].get("aria-current") for lk in pages[name].links):
+        err(name, "這一頁不在導覽中，不應有 aria-current")
+nav_hrefs = {lk["attrs"].get("href") for lk in pages["index.html"].links if lk["attrs"].get("href", "").startswith("/")}
+if "articles.html" in pages and ("articles.html" in public) != ("/articles.html" in nav_hrefs):
+    err("articles.html", "上線狀態不一致：articles.html 公開（index）時導覽必須有「文章」，未公開（noindex）時導覽不能有")
+for name in root_public:
     cur = [lk for lk in pages[name].links if lk["attrs"].get("aria-current") == "page"]
     expect = "/" if name == "index.html" else "/" + name
     if len(cur) != 1 or cur[0]["attrs"].get("href") != expect:
@@ -342,10 +366,14 @@ if not sm.exists():
     err("sitemap.xml", "不存在，請執行 python3 authoring/build-sitemap.py")
 else:
     locs = set(re.findall(r"<loc>(.*?)</loc>", sm.read_text(encoding="utf-8")))
-    for name in public:
+    for name in pages:
+        if name == "404.html":
+            continue
         u = f"https://{domain}/" if name == "index.html" else f"https://{domain}/{name}"
-        if u not in locs:
-            err("sitemap.xml", f"缺少 {u}")
+        if name in public and u not in locs:
+            err("sitemap.xml", f"缺少 {u}（請執行 python3 authoring/build-sitemap.py）")
+        if name not in public and u in locs:
+            err("sitemap.xml", f"不應收錄 noindex 頁面 {u}（請執行 python3 authoring/build-sitemap.py）")
     if any("404" in u for u in locs):
         err("sitemap.xml", "不應收錄 404")
 robots = (ROOT / "robots.txt").read_text(encoding="utf-8") if (ROOT / "robots.txt").exists() else ""
@@ -520,10 +548,107 @@ else:
         if bad in svg:
             err("roles-mock.svg", f"示意圖不得出現政黨名稱：{bad}")
 
+# ---------------------------------------------------------------- 9. 文章（data/articles.json ⇄ articles/*.html）
+articles = AL.load_articles()
+by_slug = {a.get("slug"): a for a in articles}
+if len(by_slug) != len(articles):
+    err("data/articles.json", "slug 重複")
+files = {Path(n).stem for n in pages if n.startswith("articles/")}
+for slug in sorted(files - set(by_slug)):
+    err(f"articles/{slug}.html", "沒有登錄在 data/articles.json（請用 authoring/md2article.py 產生）")
+for slug in sorted(set(by_slug) - files):
+    err("data/articles.json", f"{slug} 找不到 articles/{slug}.html")
+known_actions = set(pages["actions.html"].ids) if "actions.html" in pages else set()
+manifest = AL.load_manifest()
+for slug, a in by_slug.items():
+    where = f"data/articles.json（{slug}）"
+    for k in ("title", "date", "category", "tags", "summary", "readingTime"):
+        if not a.get(k):
+            err(where, f"缺少 {k}")
+    if not a.get("title") or not a.get("date") or not a.get("summary"):
+        continue
+    if not AL.SLUG_RE.fullmatch(str(slug)):
+        err(where, "slug 只能是小寫英文、數字與連字號")
+    for k in ("date", "updated"):
+        if a.get(k) and not AL.DATE_RE.fullmatch(a[k]):
+            err(where, f"{k} 格式必須是 YYYY-MM-DD")
+    if a.get("updated") and a["updated"] < a["date"]:
+        err(where, "updated 不能早於 date")
+    if a.get("category") not in AL.CATEGORIES:
+        err(where, f"category 必須是：{'、'.join(AL.CATEGORIES)}")
+    if not 1 <= len(a.get("tags", [])) <= 3:
+        err(where, "tags 必須是 1～3 個")
+    if not 50 <= len(a["summary"]) <= 160:
+        err(where, f"summary 應為 50～160 字（目前 {len(a['summary'])} 字）")
+    if a.get("action") and a["action"] not in known_actions:
+        err(where, f"action「{a['action']}」不是 actions.html 的錨點")
+    extra = set(a) - {"slug", "title", "date", "category", "tags", "summary", "readingTime", "author", "updated", "draft", "action"}
+    if extra:
+        err(where, f"未知欄位：{sorted(extra)}")
+    name = f"articles/{slug}.html"
+    if name not in pages:
+        continue
+    pg = pages[name]
+    raw = (ROOT / name).read_text(encoding="utf-8")
+    full = f"{a['title']}｜{AL.SITE_NAME}"
+    if pg.title.strip() != full:
+        err(name, f"<title> 必須是「{full}」（與 data/articles.json 一致）")
+    if pg.metas.get("description") != a["summary"]:
+        err(name, "description 必須與 data/articles.json 的 summary 逐字一致")
+    if pg.metas.get("og:type") != "article":
+        err(name, 'og:type 必須是 "article"')
+    if pg.metas.get("article:published_time") != a["date"]:
+        err(name, "article:published_time 必須與 date 一致")
+    if pg.metas.get("og:image:alt") != AL.og_alt(a["title"]):
+        err(name, f"og:image:alt 必須是「{AL.og_alt(a['title'])}」")
+    if f'data-slug="{slug}"' not in raw:
+        err(name, f'缺少 <article data-slug="{slug}">')
+    is_noindex = "noindex" in pg.metas.get("robots", "")
+    if bool(a.get("draft")) != is_noindex:
+        err(name, "draft 與 robots 不一致：草稿必須 noindex，正式文章必須 index")
+    if f'href="/articles.html#{AL.CATEGORIES.get(a.get("category"), "")}"' not in raw:
+        err(name, "分類標籤必須連到 /articles.html 的對應分類")
+    if "<!--articlenav:start-->" not in raw:
+        err(name, "缺少上一篇／下一篇的 articlenav 標記")
+    try:
+        graph = json.loads(pg.ldjson[0]).get("@graph", []) if pg.ldjson else []
+        art = next(n for n in graph if n.get("@type") == "Article")
+    except (ValueError, StopIteration):
+        err(name, "JSON-LD 需要 @graph 內的 Article")
+    else:
+        want = {"headline": a["title"], "datePublished": a["date"], "dateModified": a.get("updated") or a["date"],
+                "articleSection": a["category"]}
+        for k, v in want.items():
+            if art.get(k) != v:
+                err(name, f"JSON-LD Article.{k} 應為 {v!r}（目前 {art.get(k)!r}）")
+        au = art.get("author", {})
+        if au.get("name") != AL.author_name(a) or au.get("@type") != ("Person" if a.get("author") else "Organization"):
+            err(name, f"JSON-LD Article.author 應為 {AL.author_name(a)}")
+    if AL.author_name(a) not in raw:
+        err(name, "頁面沒有顯示作者")
+    # 分享圖
+    og_file = AL.OG_DIR / f"{slug}.jpg"
+    if not og_file.exists():
+        err(name, f"缺少分享圖 {og_file.relative_to(ROOT)}（請執行 python3 authoring/build-og.py {slug}）")
+    else:
+        if jpeg_size(og_file) != (1200, 630):
+            err(str(og_file.relative_to(ROOT)), "尺寸必須是 1200×630")
+        if og_file.stat().st_size > 300 * 1024:
+            err(str(og_file.relative_to(ROOT)), "檔案超過 300KB")
+        if manifest.get(slug) != AL.og_hash(a):
+            err(str(og_file.relative_to(ROOT)), f"分享圖過期（標題、分類或卡片範本改過；請執行 python3 authoring/build-og.py {slug}）")
+for f in sorted(AL.OG_DIR.glob("*")) if AL.OG_DIR.exists() else []:
+    if f.suffix != ".jpg" or f.stem not in by_slug:
+        err(str(f.relative_to(ROOT)), "沒有對應的文章（請執行 python3 authoring/build-og.py --articles 清除）")
+for script, what in (("build-lists.py", "文章列表"), ("build-feed.py", "訂閱源")):
+    r = subprocess.run([sys.executable, str(ROOT / "authoring" / script), "--check"], capture_output=True, text=True)
+    if r.returncode:
+        err(script, (r.stderr.strip() or f"{what}過期") + "")
+
 # ---------------------------------------------------------------- 結果
 if errors:
     print(f"✗ 發現 {len(errors)} 個問題：", file=sys.stderr)
     for e in errors:
         print("  - " + e, file=sys.stderr)
     sys.exit(1)
-print(f"✓ 檢查通過（{len(pages)} 頁、5 組色票）")
+print(f"✓ 檢查通過（{len(pages)} 頁，其中 {len(files)} 篇文章；5 組色票）")

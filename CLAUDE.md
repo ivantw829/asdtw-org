@@ -11,26 +11,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 python3 -m http.server 8000        # 本機預覽（頁面用 `/` 開頭的絕對路徑，必須從根目錄服務，不能開 file://）。看 404 請直接開 /404.html，伺服器自己的 404 頁不是網站的
 python3 authoring/check.py         # 唯一的「測試」：結構、無障礙、連結、色票對比、sitemap。CI 與 pre-commit 都會跑；沒有「只跑單一項」的選項，錯誤會一次全列出
-python3 authoring/build-sitemap.py # 重建 sitemap.xml（pre-commit 會自動做並 stage）
+python3 authoring/build-sitemap.py # 重建 sitemap.xml（含文章、排除 noindex；pre-commit 會自動做並 stage）
+python3 authoring/md2article.py 原稿.md [--images 資料夾]  # Markdown → 文章頁，並登錄 JSON、轉 webp、產分享圖、更新列表／feed／sitemap、跑 check（格式見 authoring/article-sample.md）
+python3 authoring/build-lists.py   # 把文章列表、上下篇（與上線後首頁「最新文章」）靜態寫進 HTML（pre-commit 自動）
+python3 authoring/build-feed.py    # 重建 Atom 訂閱源 feed.xml（pre-commit 自動）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
-python3 authoring/build-og.py      # 重產分享圖 og.jpg（需 Chrome 與 macOS sips；CI 沒有，產物要一併提交）
+python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分享圖（需 Chrome 與 macOS sips；CI 沒有，產物要一併提交）；--articles 只補文章圖、<slug> 只產該篇
 ```
 
 ## 架構
 
-- 四個頁面：`index.html`、`about.html`（關於與加入須知）、`actions.html`（行動紀錄）、`accessibility.html`（無障礙與聯絡、隱私）；外加 `404.html`（noindex，不進 sitemap）。
+- 四個頁面：`index.html`、`about.html`（關於與加入須知）、`actions.html`（行動紀錄）、`accessibility.html`（無障礙與聯絡、隱私）；外加 `404.html`（noindex，不進 sitemap），以及文章欄位 `articles.html`＋`articles/`（見下方「文章」）。
 - **頁首、頁尾、閱讀設定面板是每頁手寫的靜態 HTML，必須逐字相同**（頁首只有 `aria-current="page"` 不同）。這是為了不依賴 JS 就能被螢幕報讀器完整讀取。改其中任何一處，要同步改全部頁面，`check.py` 會驗證。
 - 閱讀設定（字級 1–4、配色 default／dark／high）：`assets/js/prefs.js` 在 `<head>` 同步載入，把偏好寫到 `<html data-text data-theme>`，存 `localStorage`；面板（`<details>` 預設收合）預設 `hidden`，有 JS 才顯示。使用者沒手動選時，系統 `prefers-contrast: more` → 高對比、`prefers-color-scheme: dark` → 深色。
 - **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。首頁主視覺 `.hero-art` 是設計師交付的三個 SVG（`assets/img/hero-light/dark/high.svg`，珊瑚紅＋炭灰＋琥珀黃；深色版炭灰換米白；高對比版只有白與黃），以 CSS 背景圖依配色載入，元素 `aria-hidden`；字級調到「特大」以上時隱藏。換圖須符合 `check.py` 第 6 節規格（色票、viewBox `0 0 600 800`、<50KB、無 text／漸層／濾鏡）。
 - **品牌素材**（來自品牌識別交件，放 `assets/img/brand/`）：`lockup-dark.svg`／`lockup-light.svg`（橫式組合，頁尾與 404 以背景圖載入，淺色用 dark、深色與高對比用 light）、`lockup-rainbow.svg`（彩虹馬卡龍橫式組合，淺色配色用自帶炭灰底的版本、深色與高對比用 `lockup-rainbow-clear.svg`（去背淺字，淺底看不見），**只能放在 `.badge-pride` 內**，目前僅用於行動紀錄頁）。分享圖由 `authoring/og/banner-coral.svg` 經 `card.html` 產生。以上裝飾元素一律 `aria-hidden="true"`；**頁首站名維持真文字**，不要改成圖片。`check.py` 第 7 節會驗證這些素材（不得含 text／漸層／濾鏡等、色票限制）。
 - **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
-- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，圖固定為 `/assets/img/og.jpg` 1200×630）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；`favicon.ico` 必須含 16／32／48 三種尺寸、另有 `icon-192.png`（Google 搜尋結果要求圖示邊長為 48 的倍數）；這兩個由品牌包的 `標誌-含底色` PNG 縮製。換圖示時這些檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
+- **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，根目錄頁的圖固定為 `/assets/img/og.jpg` 1200×630，文章頁用各自的 `/assets/img/og/<slug>.jpg`）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；`favicon.ico` 必須含 16／32／48 三種尺寸、另有 `icon-192.png`（Google 搜尋結果要求圖示邊長為 48 的倍數）；這兩個由品牌包的 `標誌-含底色` PNG 縮製。換圖示時這些檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
 - **切頁轉場**（CSS 跨頁 View Transitions：頁首固定、導覽黃色膠囊 `nav-pill` 滑動、內容淡入）：每頁（404 除外）`<head>` 要有 `<link rel="expect" href="#page-end" blocking="render">`，`</footer>` 後要有 `<span id="page-end" hidden></span>`，否則切換會閃空白；`prefers-reduced-motion` 時整個轉場關閉。`check.py` 會驗證。
-- **頁面都是手寫 HTML，沒有產生器或樣板引擎。** 改共用區塊（頁首、頁尾、`<head>` 的 meta）要對 5 個檔案做同樣的修改，建議用一段 Python／sed 腳本批次取代再跑 `check.py`，不要逐檔手改；不要憑記憶「重新產生」頁面，會蓋掉站長直接在 HTML 裡做的文案修改。
+- **行動紀錄**：`actions.html` 的時間軸由新到舊手寫，每筆有 `id`（如 `tywd-2026`）、標籤（線下聚會、技術支援等）與標題上方的「共 N 場」；新增一筆時要同步改「共 N 場」，並更新首頁 `index.html`「最近的行動」（固定列最新三筆，連到 `actions.html#<id>`，舊的移出首頁）。地點等沒提供的資訊不要寫。
+- **頁面都是手寫 HTML，沒有樣板引擎**（例外：文章頁由 `md2article.py` 產生，見下方「文章」）。改共用區塊（頁首、頁尾、`<head>` 的 meta）要對根目錄所有 HTML 與 `articles/*.html` 做同樣的修改，建議用一段 Python／sed 腳本批次取代再跑 `check.py`，不要逐檔手改；不要憑記憶「重新產生」頁面，會蓋掉站長直接在 HTML 裡做的文案修改。
 - 新增頁面要同步：複製既有頁面的 `<head>` 與共用區塊 → 所有頁面的導覽加一項 → `build-sitemap.py` 重跑。
+- **文章（參考 me.asdtw.org，改成完全靜態）**：`data/articles.json` 是單一來源；`articles/<slug>.html` 由 `authoring/md2article.py` 套 `authoring/article-template.html` 產生，閱讀設定／頁首／頁尾在產生時從 `index.html` 逐字複製（去掉 aria-current）。分類、日期格式、共用區塊擷取、分享圖雜湊都在 `authoring/articles_lib.py`，改分類只改那裡。分類固定四類：行動記事、社群公告、議題觀點、技術教學；`author` 選填（可用筆名，沒填即社群名義，JSON-LD 為 Organization）；`action` 選填，連到 `actions.html#<id>`；`draft: true` 為 noindex 且不進列表／sitemap／feed。列表（`articles.html` 依分類分區）、上下篇、首頁最新文章都由 `build-lists.py` 寫在 `<!--lists:…-->`／`<!--articlenav:…-->` 標記之間，不依賴 JS；沒有留言、18+ 閘門與標籤篩選（都需要 JS 或外部資源）。每篇分享圖 `assets/img/og/<slug>.jpg` 由 `authoring/og/article-card.html` 產生，`authoring/og/manifest.json` 記錄輸入雜湊，`check.py` 以此判斷過期。`check.py` 第 9 節驗證 JSON ⇄ HTML 逐字一致、分享圖、列表與 feed 是否最新。`authoring/article-sample.md` 是範例原稿（`draft: true`）。
+- **文章欄位已公開**：導覽在「行動紀錄」後有「文章」；`check.py` 要求「`articles.html` 公開（index）⇔ 導覽有『文章』」。首頁「最新文章」區塊的 `<!--lists:latest-->` 標記由 `build-lists.py` 填入最新三篇（沒有文章時顯示「還沒有文章，敬請期待。」），不要手改。範例原稿 `authoring/article-sample.md` 只在本機產生來看版型，看完要刪掉產出的 `articles/sample-article.html` 與 JSON 那一筆，不要提交假文章。
 - 品牌素材（標誌、圖示、主視覺）的原始檔在 repo 之外：`~/Pictures/福爾摩沙自閉大公社_品牌識別_v1/`（內含設計規格書，色票與使用規範以它為準）。
 
 ## 內容守則（來自站長的明確決定）

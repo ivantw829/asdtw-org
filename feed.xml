@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-Hant-TW">
+  <title>福爾摩沙自閉大公社｜文章</title>
+  <link rel="alternate" type="text/html" href="https://asdtw.org/articles.html"/>
+  <link rel="self" type="application/atom+xml" href="https://asdtw.org/feed.xml"/>
+  <id>https://asdtw.org/</id>
+  <updated>2026-07-31T00:00:00+08:00</updated>
+  <author><name>福爾摩沙自閉大公社</name><uri>https://asdtw.org/</uri></author>
+</feed>

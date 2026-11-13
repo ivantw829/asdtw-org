@@ -6,7 +6,7 @@
 
 | 前綴 | 用途 | 範例 |
 |---|---|---|
-| `content/` | 文字、行動紀錄 | `content/actions-2026-pride` |
+| `content/` | 文字、行動紀錄、文章 | `content/actions-2026-pride` |
 | `feat/` | 新功能或新頁面 | `feat/faq-page` |
 | `fix/` | 錯誤修正 | `fix/nav-focus-ring` |
 | `a11y/` | 無障礙改善（commit type 用 `fix` 或 `feat`，scope 用 `a11y`） | `a11y/larger-touch-targets` |
@@ -23,7 +23,7 @@ type(scope): 描述
 ```
 
 - **type**：`feat` `fix` `content` `docs` `style` `refactor` `perf` `chore` `ci` `revert`
-- **scope**（選填）：`home` `about` `actions` `a11y` `design` `seo` `authoring` `ci`
+- **scope**（選填）：`home` `about` `actions` `articles` `article` `a11y` `design` `seo` `authoring` `ci`
 - 描述 72 字內、不加句號；說明「為什麼」比「改了什麼」重要。
 - 破壞性變更在 type 後加 `!`。
 
@@ -64,6 +64,19 @@ bash authoring/sync.sh
 3. 首頁「最近的行動」只列最新 3 場，同步更新 `index.html`。
 4. `bash authoring/ship.sh "content(actions): 新增〈行動名稱〉紀錄"`
 
+## 4.1 發表文章
+
+文章頁由 Markdown 原稿產生，不要手寫或手改產生的 HTML（重跑會被覆蓋）。
+
+1. 照 `authoring/article-sample.md` 的格式寫原稿（想先看版型，可在本機對它跑 md2article，看完刪掉產出的頁面與 JSON 那一筆，不要提交）（frontmatter：`title`、`slug`、`date`、`category`、`tags`、`summary`、`lead`，選填 `author`、`action`、`updated`、`draft`）。分類只有「行動記事、社群公告、議題觀點、技術教學」；副標籤先看 `data/articles.json` 已有哪些，意思相近就沿用。
+2. `python3 authoring/md2article.py 原稿.md --images 圖片資料夾`：產生 `articles/<slug>.html`、登錄 `data/articles.json`、轉 webp、產分享圖（需 Chrome）、更新列表／上下篇／訂閱源／sitemap，最後跑 `check.py`。改稿後重跑同一份原稿即更新。
+3. 本機預覽 `/articles/<slug>.html` 與 `/articles.html`，確認後 `bash authoring/ship.sh "content(article): 新增〈標題〉"`。
+
+- 作者可用筆名，沒填就是社群名義；未經本人同意不寫成員的真名。
+- 不放現場照片與成員截圖；說明用的圖重畫成示意圖，圖說標明「示意圖」，圖中資訊在正文也要有文字。
+- 草稿（`draft: true`）不會出現在列表、sitemap 與訂閱源，但知道網址的人看得到，不要放敏感內容。
+- 刪除文章：刪掉 `articles/<slug>.html` 與 `data/articles.json` 那一筆，再跑 `python3 authoring/build-og.py --articles`、`build-lists.py`、`build-feed.py`、`build-sitemap.py`。
+
 ## 5. 無障礙規範（嚴格實施，CI 強制）
 
 `authoring/check.py` 會擋下以下任一項：
@@ -84,6 +97,7 @@ bash authoring/sync.sh
 - 每頁需有 canonical、`robots`（404 為 `noindex`）、50～160 字的 description、OG／Twitter 圖（`twitter:card` 為 `summary_large_image`）與 favicon／apple-touch-icon。
 - 首頁需有 Organization＋WebSite JSON-LD，內頁需有 BreadcrumbList（最後一項須等於 canonical）。
 - 改站名、標語或分享圖設計後執行 `python3 authoring/build-og.py`（需 Chrome）並提交 `assets/img/` 的產物；`og.jpg` 必須是 1200×630、小於 300KB。
+- 文章頁的分享圖是 `assets/img/og/<slug>.jpg`（`authoring/og/article-card.html` 產生），標題或分類改了會被判定過期，`check.py` 會提示重產。
 
 ## 7. 隱私與內容守則
 

@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
-# 提交前：禁止直接在 main 提交 → 自動更新 sitemap → 網站品質與無障礙檢查
+# 提交前：禁止直接在 main 提交 → 自動更新文章列表、訂閱源、文章分享圖與 sitemap → 網站品質與無障礙檢查
 branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 if [ "$branch" = "main" ] && [ -z "$ALLOW_MAIN_COMMIT" ]; then
   echo "✗ 請不要直接在 main 上提交。先開分支：git switch -c content/<名稱>（或用 authoring/ship.sh）" >&2
   echo "  （緊急情況可用 ALLOW_MAIN_COMMIT=1 git commit …）" >&2
   exit 1
+fi
+# 文章產物：列表／上下篇、訂閱源；分享圖需要本機 Chrome（沒有時 check.py 會指出哪張過期）
+python3 authoring/build-lists.py | while read -r f; do git add "$f"; done
+python3 authoring/build-feed.py >/dev/null && git add feed.xml
+if [ -n "$(git diff --cached --name-only -- data/articles.json authoring/og/article-card.html)" ]; then
+  python3 authoring/build-og.py --articles && git add assets/img/og authoring/og/manifest.json
 fi
 python3 authoring/build-sitemap.py >/dev/null && git add sitemap.xml
 python3 authoring/check.py
