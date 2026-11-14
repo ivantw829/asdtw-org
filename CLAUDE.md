@@ -2,15 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-給 Claude Code 的專案指引。
-
 福爾摩沙自閉大公社（Discord 社群）的網站，https://asdtw.org，純靜態 HTML／CSS／JS，部署在 GitHub Pages（repo：`ivantw829/asdtw-org`，`main` 推上去即上線）。沒有 build 步驟、套件管理或測試框架。內容與介面文字一律繁體中文（zh-Hant-TW），語氣認真正式。
+
+本檔與 `CONTRIBUTING.md`（給人類維護者的完整指引）內容重疊；**改規則時兩份要同步改**。
 
 ## Commands
 
 ```bash
-python3 -m http.server 8000        # 本機預覽（頁面用 `/` 開頭的絕對路徑，必須從根目錄服務，不能開 file://）。看 404 請直接開 /404.html，伺服器自己的 404 頁不是網站的
-python3 authoring/check.py         # 唯一的「測試」：結構、無障礙、連結、色票對比、sitemap。CI 與 pre-commit 都會跑；沒有「只跑單一項」的選項，錯誤會一次全列出
+python3 -m http.server 8000        # 本機預覽（預覽工具請用 `.claude/launch.json` 的 `site` 設定，埠號 8765；頁面用 `/` 開頭的絕對路徑，必須從根目錄服務，不能開 file://）。看 404 請直接開 /404.html，伺服器自己的 404 頁不是網站的
+python3 authoring/check.py         # 唯一的「測試」：結構、無障礙、連結、色票對比、sitemap。CI 與 pre-commit 都會跑；本身不能只跑單一節，錯誤會一次全列出（產物是否最新可單獨用 build-shared／build-lists／build-feed 的 --check 確認）
 python3 authoring/build-sitemap.py # 重建 sitemap.xml（含文章、排除 noindex；pre-commit 會自動做並 stage）
 python3 authoring/md2article.py 原稿.md [--images 資料夾]  # Markdown → 文章頁，並登錄 JSON、轉 webp、產分享圖、更新列表／feed／sitemap、跑 check（格式見 authoring/article-sample.md）
 python3 authoring/build-shared.py  # 把閱讀設定、頁首、頁尾從 authoring/partials/ 寫進每一頁（改片段檔時 pre-commit 自動）；--check 只檢查
@@ -58,6 +58,8 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 
 - `main` 受保護：只能經 PR、CI（`check`、`pr-title`）通過後 squash merge。PR 標題即 `main` 的 commit 訊息，必須是約定式 commit：`type(scope): 描述`；分支前綴對應 type。
 - 本機 hooks 在 `.githooks/`，每個 clone 要自己啟用：`git config core.hooksPath .githooks`。pre-commit 拒絕在 `main` 提交、更新 sitemap、跑 `check.py`；pre-push 拒絕推 `main`。
+- **`ship.sh` 會在 CI 通過後自動 squash merge，等於直接上線**；使用者只要求 commit 或開 PR 時不要用它，改用 `git commit`／`git push`／`gh pr create`。
+- **pre-commit 會把成員數（`build-members.py` 連 Discord）與 sitemap 日期的變更一起帶進 commit**。提交後用 `git show --stat` 檢查，與本次工作無關的變更要告知使用者，必要時拆成另一個 PR。
 - **`ship.sh` 會 `git add -A`，把工作區所有未提交的變更都帶進這個 PR**（包含站長直接改的文案）。發布前先 `git status`，確認內容都是要一起發布的；站長可能在另一個流程已經合併過同樣的變更，這時 `ship.sh` 會回報「沒有任何變更可以發布」，並留下一個空分支，用 `git switch main && git branch -d <分支>` 清掉即可。
 - 一個 PR 做一件事。不要 force push、不要在 `main` 上 rebase。
 - `.claude/`（含預覽用的 `launch.json`）已被 `.gitignore` 排除，不會進 repo。
