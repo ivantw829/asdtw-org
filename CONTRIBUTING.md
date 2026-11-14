@@ -56,6 +56,7 @@ bash authoring/sync.sh
 
 - **一個 PR 做一件事**。PR 標題就是 `main` 上的 commit 訊息，必須符合約定式 commit。
 - 還原用 `git revert` 開 PR，不改歷史；`main` 不得 force push 或 rebase。
+- pre-commit 會執行 `build-members.py`，在本機向 Discord 取得人數，更新首頁與關於頁的「逾 N 位」（往下取整到十位數）。為了不讓人數在十位邊界晃動時污染無關的 PR，只有即時人數 ≥ N + 11 才往上、≤ N − 5 才往下，其餘維持原數字；關於頁的年月只在數字改寫時更新。連不上 Discord 只警告，不擋提交。
 
 ## 4. 新增一場行動紀錄
 
