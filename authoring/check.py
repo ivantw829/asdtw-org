@@ -645,6 +645,13 @@ for script, what in (("build-lists.py", "文章列表"), ("build-feed.py", "訂�
     if r.returncode:
         err(script, (r.stderr.strip() or f"{what}過期") + "")
 
+# ---------------------------------------------------------------- 10. 成員數（build-members.py 寫入的靜態文字）
+for name, keys in (("index.html", ("count",)), ("about.html", ("count", "date"))):
+    text = (ROOT / name).read_text(encoding="utf-8")
+    for k in keys:
+        if not re.search(rf"<!--members:{k}-->[^<]+<!--/members:{k}-->", text):
+            err(name, f"缺少或清空了 <!--members:{k}--> 標記（成員數由 authoring/build-members.py 寫入）")
+
 # ---------------------------------------------------------------- 結果
 if errors:
     print(f"✗ 發現 {len(errors)} 個問題：", file=sys.stderr)
