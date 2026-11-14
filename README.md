@@ -23,4 +23,4 @@ python3 authoring/check.py      # 品質與無障礙檢查（CI 也會跑）
 | `assets/js/prefs.js` | 閱讀設定（字級、對比），只用 `localStorage` |
 | `authoring/` | 檢查與工具：`check.py`、`build-sitemap.py`、`md2article.py`、`build-lists.py`、`build-feed.py`、`build-members.py`、`build-og.py`、`ship.sh`、`sync.sh`、`setup-github.sh` |
 
-協作規範請見 [CONTRIBUTING.md](CONTRIBUTING.md)；與 Claude Code 協作請見 [CLAUDE.md](CLAUDE.md)。
+協作規範請見 [CONTRIBUTING.md](CONTRIBUTING.md)；所有 AI coding agent 的共用規範請見 [AGENTS.md](AGENTS.md)。Claude Code、Gemini、GitHub Copilot 與 Cursor 的入口檔案會指向同一份規範。
