@@ -34,8 +34,6 @@ class Page(HTMLParser):
         self.title = ""
         self._in_title = False
         self._cur_a: dict | None = None
-        self.regions: dict[str, list[str]] = {"header": [], "footer": [], "prefs": []}
-        self._stack: list[str] = []
         self.lang = ""
         self.first_focusable: dict | None = None
         self.ldjson: list[str] = []
@@ -67,18 +65,6 @@ class Page(HTMLParser):
                 self.first_focusable = a
         if tag == "button" and self.first_focusable is None:
             self.first_focusable = a
-        # 區塊內容擷取（用於比對各頁是否一致）
-        if tag in ("header", "footer"):
-            self._stack.append(tag)
-        if tag == "section" and "data-prefs" in a:
-            self._stack.append("prefs")
-        for r in self._stack[-1:]:
-            self.regions[r].append(self._fmt(tag, a))
-
-    @staticmethod
-    def _fmt(tag, a):
-        a = {k: v for k, v in a.items() if k != "aria-current"}
-        return "<" + tag + "".join(f' {k}="{v}"' for k, v in sorted(a.items())) + ">"
 
     def handle_endtag(self, tag):
         if tag == "title":
@@ -88,8 +74,6 @@ class Page(HTMLParser):
         if tag == "a" and self._cur_a is not None:
             self.links.append(self._cur_a)
             self._cur_a = None
-        if self._stack and ((tag in ("header", "footer") and self._stack[-1] == tag) or (tag == "section" and self._stack[-1] == "prefs")):
-            self._stack.pop()
 
     def handle_data(self, data):
         if self._in_ld:
@@ -99,8 +83,6 @@ class Page(HTMLParser):
             self.title += data
         if self._cur_a is not None:
             self._cur_a["text"] += data
-        if self._stack and data.strip():
-            self.regions[self._stack[-1]].append(data.strip())
 
 
 def load(p: Path) -> Page:
@@ -338,12 +320,7 @@ for name, pg in pages.items():
                 err(name, f"站內錨點不存在：{href}")
 
 # ---------------------------------------------------------------- 2. 共用區塊一致
-ref_name = "index.html"
-for region in ("header", "footer", "prefs"):
-    ref = pages[ref_name].regions[region]
-    for name in pages:
-        if name != ref_name and pages[name].regions[region] != ref:
-            err(name, f"{region} 區塊與 index.html 不一致（共用區塊必須逐字相同；header 只允許 aria-current 不同）")
+# 內容是否與 authoring/partials/ 一致由 build-shared.py --check 驗證（見第 9 節末尾）；這裡只驗 aria-current
 
 # 導覽：根目錄的公開頁恰好一個 aria-current，且指向自己；文章頁與未公開頁沒有
 for name in pages:
@@ -640,7 +617,7 @@ for slug, a in by_slug.items():
 for f in sorted(AL.OG_DIR.glob("*")) if AL.OG_DIR.exists() else []:
     if f.suffix != ".jpg" or f.stem not in by_slug:
         err(str(f.relative_to(ROOT)), "沒有對應的文章（請執行 python3 authoring/build-og.py --articles 清除）")
-for script, what in (("build-lists.py", "文章列表"), ("build-feed.py", "訂閱源")):
+for script, what in (("build-shared.py", "共用區塊"), ("build-lists.py", "文章列表"), ("build-feed.py", "訂閱源")):
     r = subprocess.run([sys.executable, str(ROOT / "authoring" / script), "--check"], capture_output=True, text=True)
     if r.returncode:
         err(script, (r.stderr.strip() or f"{what}過期") + "")

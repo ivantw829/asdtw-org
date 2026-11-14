@@ -9,7 +9,6 @@
 草稿（draft）不會出現在任何列表。md2article.py 與 pre-commit 會自動執行；會印出被改寫的檔案。
 用法：python3 authoring/build-lists.py [--check]   （--check 只檢查是否最新，過期回傳 1）
 """
-import re
 import sys
 from pathlib import Path
 
@@ -66,11 +65,7 @@ def article_nav(a: dict, items: list[dict]) -> str:
     return "\n      <ul>\n        " + "\n        ".join(parts) + "\n      </ul>\n    "
 
 
-def replace(text: str, start: str, end: str, inner: str, where: str) -> str:
-    pat = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
-    if not pat.search(text):
-        sys.exit(f"{where} 找不到標記 {start}")
-    return pat.sub(lambda _: start + inner + end, text, count=1)
+replace = L.replace_marked
 
 
 def render() -> dict[Path, str]:
