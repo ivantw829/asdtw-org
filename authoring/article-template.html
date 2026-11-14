@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   文章頁範本（authoring/md2article.py 使用；本註解與所有 {{…}} 會在產生時移除或替換）
-  - 閱讀設定、頁首、頁尾不寫在這裡：產生時從 index.html 逐字複製（{{PREFS}}／{{HEADER}}／{{FOOTER}}）。
+  - 閱讀設定、頁首、頁尾不寫在這裡：產生時從 authoring/partials/ 複製（{{PREFS}}／{{HEADER}}／{{FOOTER}}，含 <!--shared:…--> 標記），之後由 build-shared.py 維護。
   - 標題、摘要、日期、分類、作者全部來自 data/articles.json，check.py 會逐字比對。
   - 上一篇／下一篇在 articlenav:start／end 標記之間，由 build-lists.py 靜態寫入（不依賴 JS）。
   - 不得加入 style=、<style>、行內 <script>、外部資源；圖片一律 <figure class="figure"> 並附 <figcaption>。

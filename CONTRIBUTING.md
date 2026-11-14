@@ -86,7 +86,7 @@ bash authoring/sync.sh
 - `font-size` 使用 px；`style=`、`<style>`、行內事件、行內 `<script>`、外部 CSS／JS。
 - `<img>` 沒有 `alt`；`<button>` 沒有 `type`；連結文字空白或只有「點此」「更多」。
 - 另開新視窗的連結沒有 `rel="noopener"`，或文字沒註明「另開新視窗」。
-- 頁首／頁尾／閱讀設定在各頁不一致；導覽沒有恰好一個 `aria-current="page"`。
+- 頁首／頁尾／閱讀設定與 `authoring/partials/` 不一致（只改片段檔，再執行 `python3 authoring/build-shared.py`）；導覽沒有恰好一個 `aria-current="page"`。
 - 站內連結或錨點指向不存在的目標；sitemap 缺頁。
 - 加入 `<video>` `<audio>` `<iframe>` 等多媒體：必須先補上字幕／文字稿規範與更新 `check.py`。
 

@@ -8,6 +8,10 @@ if [ "$branch" = "main" ] && [ -z "$ALLOW_MAIN_COMMIT" ]; then
 fi
 # 成員數：本機向 Discord 取得並寫進 HTML（訪客端不連外）；連不上時只警告、不擋提交
 python3 authoring/build-members.py | while read -r f; do git add "$f"; done
+# 共用區塊：只在片段檔有變更時才同步到各頁；否則不自動寫入，避免蓋掉直接改在頁面裡的內容（交給 check.py 報錯）
+if [ -n "$(git diff --cached --name-only -- authoring/partials)" ]; then
+  python3 authoring/build-shared.py | while read -r f; do git add "$f"; done
+fi
 # 文章產物：列表／上下篇、訂閱源；分享圖需要本機 Chrome（沒有時 check.py 會指出哪張過期）
 python3 authoring/build-lists.py | while read -r f; do git add "$f"; done
 python3 authoring/build-feed.py >/dev/null && git add feed.xml

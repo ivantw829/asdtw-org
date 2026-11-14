@@ -75,18 +75,34 @@ def og_alt(title: str) -> str:
     return f"{title}｜{SITE_NAME}的文章分享卡"
 
 
+PARTIALS_DIR = ROOT / "authoring" / "partials"
+SHARED_KEYS = ("prefs", "header", "footer")  # 閱讀設定、頁首、頁尾；唯一來源是 authoring/partials/<key>.html
+
+
+def partial(key: str) -> str:
+    """片段檔內容（不含標記、不含 aria-current）。"""
+    p = PARTIALS_DIR / f"{key}.html"
+    if not p.exists():
+        raise SystemExit(f"找不到共用區塊的片段檔：{p.relative_to(ROOT)}")
+    return p.read_text(encoding="utf-8").strip("\n")
+
+
+def wrap_shared(key: str, inner: str) -> str:
+    return f"<!--shared:{key}-->\n{inner}\n<!--/shared:{key}-->"
+
+
 def shared_blocks() -> dict[str, str]:
-    """從 index.html 複製閱讀設定、頁首、頁尾（去掉 aria-current），文章頁一律用這份，避免漂移。"""
-    src = (ROOT / "index.html").read_text(encoding="utf-8")
-    out = {}
-    for key, pat in (("prefs", r'<section class="prefs".*?</section>'),
-                     ("header", r'<header class="site-header">.*?</header>'),
-                     ("footer", r'<footer class="site-footer">.*?</footer>')):
-        m = re.search(pat, src, re.S)
-        if not m:
-            raise SystemExit(f"index.html 找不到共用區塊：{key}")
-        out[key] = m.group(0).replace(' aria-current="page"', "")
-    return out
+    """閱讀設定、頁首、頁尾（連同 <!--shared:…--> 標記、沒有 aria-current）。文章頁產生時用這份，
+    之後由 build-shared.py 跟其他頁面一起維護。"""
+    return {k: wrap_shared(k, partial(k)) for k in SHARED_KEYS}
+
+
+def replace_marked(text: str, start: str, end: str, inner: str, where: str) -> str:
+    """把 start 與 end 標記之間的內容換成 inner；找不到標記就結束程式並說明是哪個檔案。"""
+    pat = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
+    if not pat.search(text):
+        raise SystemExit(f"{where} 找不到標記 {start} … {end}")
+    return pat.sub(lambda _: start + inner + end, text, count=1)
 
 
 def action_title(anchor: str) -> str | None:
