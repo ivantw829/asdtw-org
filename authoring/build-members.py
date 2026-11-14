@@ -5,6 +5,14 @@
   about.html               <!--members:date--> … <!--/members:date-->     如「2026 年 11 月」（人數有變才更新）
 
 人數取自首頁「加入 Discord 社群」按鈕的邀請碼，往下取整到十位數（409 → 逾 400）。
+Discord 的 approximate_member_count 會在十位邊界上下晃（409／411／408），為了不讓每次提交
+都把「逾 400」與「逾 410」來回改寫，以首頁標記裡現有的數字 N 為準做遲滯判斷：
+
+  往上：即時人數跨過下一個十（> N + 10，例如 N = 400 時要 411 以上）才更新。
+  往下：即時人數明顯低於 N（≤ N − 5，例如 N = 410 時要 405 以下）才更新。
+  其餘情況維持原數字（關於頁若與首頁不同，對齊首頁）。更新時一律改成即時人數往下取整的值。
+
+關於頁的年月只在數字真的改寫時更新。
 連不上 Discord 時只印警告、不改檔案，不會擋下提交。pre-commit 會自動執行；會印出被改寫的檔案。
 用法：python3 authoring/build-members.py
 """
@@ -35,9 +43,27 @@ def fetch_count(code: str) -> int:
         return int(json.load(res)["approximate_member_count"])
 
 
-def label(n: int) -> str:
+def floor_ten(n: int) -> int:
     # 「逾」是「超過」，剛好整十時要往下一級（400 → 逾 390）
-    return f"逾 {(n - 1) // 10 * 10} 位"
+    return (n - 1) // 10 * 10
+
+
+LOWER_MARGIN = 5  # 低於現有數字多少才往下修
+
+
+def current(text: str) -> int | None:
+    m = re.search(r"<!--members:count-->\s*逾\s*(\d+)\s*位\s*<!--/members:count-->", text)
+    return int(m.group(1)) if m else None
+
+
+def decide(n: int, shown: int | None) -> int | None:
+    """回傳要寫入的「逾 X」的 X；維持原數字時回傳 None。"""
+    target = floor_ten(n)
+    if shown is None:
+        return target
+    if target > shown or n <= shown - LOWER_MARGIN:
+        return target
+    return None
 
 
 def sub(text: str, key: str, inner: str) -> tuple[str, bool]:
@@ -53,7 +79,11 @@ def main() -> None:
         n = fetch_count(code)
     except Exception as exc:  # 離線、限流、API 改版都一樣：保留現有數字
         return warn(f"無法取得 Discord 人數（{exc}）")
-    count = label(n)
+    shown = current((ROOT / "index.html").read_text(encoding="utf-8"))
+    value = decide(n, shown)
+    if value is None:  # 維持首頁的數字；關於頁若不一致仍會對齊首頁
+        value = shown
+    count = f"逾 {value} 位"
     today = datetime.date.today()
     date = f"{today.year} 年 {today.month} 月"
     for f in FILES:
