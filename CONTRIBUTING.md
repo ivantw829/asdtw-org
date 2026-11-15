@@ -1,6 +1,6 @@
 # 工作流程
 
-> 這份文件是接手維護的完整指引，不需要用 Claude 也能照著做。`CLAUDE.md` 內容與本檔重疊（給 Claude Code 讀）；**改規則時兩份要同步改**。
+> 這份文件是接手維護的完整指引，不需要用 Claude 也能照著做。`AGENTS.md` 內容與本檔重疊（給 Claude Code、Gemini、Copilot、Cursor 等 AI agent 讀）；**改規則時兩份要同步改**。
 
 採 **trunk-based development**：`main` 永遠可部署（推到 `main` 即自動上線 asdtw.org），所有變更都在短命分支完成，經 PR 與 CI 通過後 squash merge。
 

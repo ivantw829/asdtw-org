@@ -1,0 +1,6 @@
+---
+description: 福爾摩沙自閉大公社網站的共用 Agent 規範
+alwaysApply: true
+---
+
+請先閱讀 repo 根目錄的 `AGENTS.md`，並遵守其中全部規範。該檔案是本專案所有 AI coding agent 的唯一共用規範來源；不要在本規則檔複製或另訂專案規則。
