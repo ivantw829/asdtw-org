@@ -27,7 +27,7 @@
   draft: true                 # 選填：草稿。不進列表／sitemap／feed，頁面 noindex；拿掉後重跑就是正式發布
   ---
   內文 Markdown。支援：
-    ## 大標、### 小標、段落、- 清單、1. 清單、| 表格 |、> 引言、--- 分隔線、```程式碼區塊```
+    ## 大標、### 小標、#### 小小標、段落、- 清單、1. 清單、| 表格 |、> 引言、--- 分隔線、```程式碼區塊```
     ![圖說](檔名.png)         # 圖說同時當 alt；輸出一律 .webp。只放示意圖，不放現場照片或成員截圖
     [[提示框：標題]] 下一段文字（到空行為止）
     [[金句：一句話]]
@@ -199,6 +199,7 @@ def convert(body: str, slug: str, dims):
     sources = None
     want_toc = False
     tables = 0
+    seen_h3 = -1  # 最近一個 ### 所屬的 ## 序號，用來擋 ## 之後直接 ####
     i = 0
     while i < len(lines):
         s = lines[i].strip()
@@ -270,6 +271,13 @@ def convert(body: str, slug: str, dims):
             if not h2s:
                 die(f"「{s}」：### 小標前必須先有 ## 大標（標題不能跳級）")
             out.append(f"<h3>{inline(s[4:])}</h3>")
+            seen_h3 = len(h2s)
+            i += 1
+            continue
+        if s.startswith("#### "):
+            if seen_h3 != len(h2s) or not h2s:
+                die(f"「{s}」：#### 小標前必須先有 ### 小標（標題不能跳級）")
+            out.append(f"<h4>{inline(s[5:])}</h4>")
             i += 1
             continue
         if s.startswith(">"):
