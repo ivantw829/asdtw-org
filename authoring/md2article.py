@@ -27,8 +27,9 @@
   draft: true                 # 選填：草稿。不進列表／sitemap／feed，頁面 noindex；拿掉後重跑就是正式發布
   ---
   內文 Markdown。支援：
-    ## 大標、### 小標、段落、- 清單、1. 清單、| 表格 |、> 引言、--- 分隔線、```程式碼區塊```
-    ![圖說](檔名.png)         # 圖說同時當 alt；輸出一律 .webp。只放示意圖，不放現場照片或成員截圖
+    ## 大標、### 小標、#### 小小標、段落、- 清單、1. 清單、| 表格 |、> 引言、--- 分隔線、```程式碼區塊```
+    ![替代文字](檔名.png "圖說")  # 輸出一律 .webp。只放示意圖，不放現場照片或成員截圖
+                              # 省略 "圖說" 時替代文字兼作圖說；兩者都有時報讀器才不會重複念同一段
     [[提示框：標題]] 下一段文字（到空行為止）
     [[金句：一句話]]
     [[目錄]]                  # 在第一個大標前產生目錄
@@ -101,13 +102,13 @@ def normalize_refs(body: str) -> str:
         stem, ext = (name.rsplit(".", 1) + [""])[:2]
         if ext.lower() in ("png", "jpg", "jpeg", "webp"):
             name = f"{stem}.webp"
-        return f"![{m.group(1)}]({name})"
-    return re.sub(r"!\[(.*?)\]\(([^)]*)\)", fix, body)
+        return f"![{m.group(1)}]({name}{m.group(3)})"
+    return re.sub(r'!\[(.*?)\]\(([^)\s]*)((?:\s+"[^"]*")?)\)', fix, body)
 
 
 def prepare_images(body: str, slug: str, images_dir):
     """依原稿引用的圖片處理檔案，回傳 {檔名: (寬, 高)}。"""
-    refs = sorted(set(re.findall(r"!\[.*?\]\(([^)/]+\.webp)\)", body)))
+    refs = sorted(set(re.findall(r'!\[.*?\]\(([^)/\s]+\.webp)(?:\s+"[^"]*")?\)', body)))
     if refs:
         print("! 提醒：本站不放現場照片與成員截圖；說明用的圖請重畫成示意圖，並在圖說標明「示意圖」。")
     out_dir = ROOT / "assets" / "img" / "articles" / slug
@@ -192,6 +193,11 @@ def inline(t: str) -> str:
     return t
 
 
+def plain(t: str) -> str:
+    """標題的純文字（給 aria-label 用）"""
+    return html.unescape(re.sub(r"<[^>]+>", "", inline(t))).replace(NEW_WINDOW, "").strip()
+
+
 def convert(body: str, slug: str, dims):
     """回傳 (內文 HTML, 參考資料清單)"""
     lines = body.strip("\n").split("\n")
@@ -199,6 +205,8 @@ def convert(body: str, slug: str, dims):
     sources = None
     want_toc = False
     tables = 0
+    last_head, head_tables = "", {}  # 表格的區域名稱用最近的標題，報讀器才知道是哪張表
+    seen_h3 = -1  # 最近一個 ### 所屬的 ## 序號，用來擋 ## 之後直接 ####
     i = 0
     while i < len(lines):
         s = lines[i].strip()
@@ -222,15 +230,15 @@ def convert(body: str, slug: str, dims):
             out.append("<hr>")
             i += 1
             continue
-        m = re.match(r"!\[(.*?)\]\((.*?)\)$", s)
+        m = re.match(r'!\[(.*?)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$', s)
         if m:
-            alt, fname = m.group(1).strip(), m.group(2)
+            alt, fname, cap = m.group(1).strip(), m.group(2), (m.group(3) or "").strip()
             if not alt:
-                die(f"圖片 {fname} 缺少圖說（![圖說](檔名)），圖說同時是替代文字，不能空白")
+                die(f"圖片 {fname} 缺少替代文字（![替代文字](檔名 \"圖說\")），不能空白")
             w, h = dims[fname]
-            a = html.escape(alt)
+            a, c = html.escape(alt), html.escape(cap or alt)
             out.append(f'<figure class="figure">\n  <img src="/assets/img/articles/{slug}/{fname}" alt="{a}" '
-                       f'loading="lazy" width="{w}" height="{h}">\n  <figcaption>{a}</figcaption>\n</figure>')
+                       f'loading="lazy" width="{w}" height="{h}">\n  <figcaption>{c}</figcaption>\n</figure>')
             i += 1
             continue
         m = re.match(r"\[\[提示框：(.*?)\]\]$", s)
@@ -261,6 +269,7 @@ def convert(body: str, slug: str, dims):
                 sources = items
                 continue
             h2s.append(title)
+            last_head = plain(title)
             if len(h2s) == 1 and want_toc:
                 out.append("@@TOC@@")
             out.append(f'<h2 id="s{len(h2s)}">{inline(title)}</h2>')
@@ -270,6 +279,15 @@ def convert(body: str, slug: str, dims):
             if not h2s:
                 die(f"「{s}」：### 小標前必須先有 ## 大標（標題不能跳級）")
             out.append(f"<h3>{inline(s[4:])}</h3>")
+            last_head = plain(s[4:])
+            seen_h3 = len(h2s)
+            i += 1
+            continue
+        if s.startswith("#### "):
+            if seen_h3 != len(h2s) or not h2s:
+                die(f"「{s}」：#### 小標前必須先有 ### 小標（標題不能跳級）")
+            out.append(f"<h4>{inline(s[5:])}</h4>")
+            last_head = plain(s[5:])
             i += 1
             continue
         if s.startswith(">"):
@@ -289,7 +307,10 @@ def convert(body: str, slug: str, dims):
             cells = lambda r: [c.strip() for c in r.strip("|").split("|")]  # noqa: E731
             head, rest = cells(rows[0]), [cells(r) for r in rows[2:]]
             tables += 1
-            out.append(f'<div class="table-wrap" role="region" aria-label="表格 {tables}（可左右捲動）" tabindex="0">\n'
+            head_tables[last_head] = head_tables.get(last_head, 0) + 1
+            n = head_tables[last_head]
+            label = (f"表格{' ' + str(n) if n > 1 else ''}：{last_head}" if last_head else f"表格 {tables}")
+            out.append(f'<div class="table-wrap" role="region" aria-label="{html.escape(label)}（可左右捲動）" tabindex="0">\n'
                        "<table>\n  <thead><tr>" + "".join(f'<th scope="col">{inline(c)}</th>' for c in head)
                        + "</tr></thead>\n  <tbody>\n"
                        + "\n".join("    <tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in rest)
