@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>投稿指引：怎麼寫一篇本站文章｜福爾摩沙自閉大公社</title>
+<meta name="description" content="想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://asdtw.org/articles/writing-guide.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="福爾摩沙自閉大公社">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="投稿指引：怎麼寫一篇本站文章｜福爾摩沙自閉大公社">
+<meta property="og:description" content="想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。">
+<meta property="og:url" content="https://asdtw.org/articles/writing-guide.html">
+<meta property="og:image" content="https://asdtw.org/assets/img/og/writing-guide.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="投稿指引：怎麼寫一篇本站文章｜福爾摩沙自閉大公社的文章分享卡">
+<meta property="article:published_time" content="2026-11-16">
+<meta property="article:section" content="技術教學">
+<meta property="article:tag" content="投稿">
+<meta property="article:tag" content="寫作指引">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="投稿指引：怎麼寫一篇本站文章｜福爾摩沙自閉大公社">
+<meta name="twitter:description" content="想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。">
+<meta name="twitter:image" content="https://asdtw.org/assets/img/og/writing-guide.jpg">
+<meta name="twitter:image:alt" content="投稿指引：怎麼寫一篇本站文章｜福爾摩沙自閉大公社的文章分享卡">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f8f6ec">
+<link rel="expect" href="#page-end" blocking="render">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="alternate" type="application/atom+xml" title="福爾摩沙自閉大公社｜文章" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script src="/assets/js/prefs.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "投稿指引：怎麼寫一篇本站文章",
+      "description": "想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。",
+      "datePublished": "2026-11-16",
+      "dateModified": "2026-11-16",
+      "inLanguage": "zh-Hant-TW",
+      "articleSection": "技術教學",
+      "keywords": "投稿、寫作指引",
+      "image": [
+        "https://asdtw.org/assets/img/og/writing-guide.jpg"
+      ],
+      "mainEntityOfPage": "https://asdtw.org/articles/writing-guide.html",
+      "author": {
+        "@type": "Organization",
+        "name": "福爾摩沙自閉大公社",
+        "url": "https://asdtw.org/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福爾摩沙自閉大公社",
+        "url": "https://asdtw.org/",
+        "logo": "https://asdtw.org/assets/img/icon-192.png"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首頁",
+          "item": "https://asdtw.org/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "文章",
+          "item": "https://asdtw.org/articles.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "投稿指引：怎麼寫一篇本站文章",
+          "item": "https://asdtw.org/articles/writing-guide.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要內容</a>
+<!--shared:prefs-->
+<section class="prefs" aria-label="閱讀設定" data-prefs hidden>
+  <div class="wrap">
+    <details>
+      <summary>閱讀設定：字級與配色</summary>
+      <div class="prefs-panel">
+        <fieldset class="prefs-group">
+          <legend>字級</legend>
+          <div class="prefs-buttons">
+            <button type="button" data-pref-text="1" aria-pressed="true">標準</button>
+            <button type="button" data-pref-text="2" aria-pressed="false">大</button>
+            <button type="button" data-pref-text="3" aria-pressed="false">特大</button>
+            <button type="button" data-pref-text="4" aria-pressed="false">最大</button>
+          </div>
+        </fieldset>
+        <fieldset class="prefs-group">
+          <legend>配色</legend>
+          <div class="prefs-buttons">
+            <button type="button" data-pref-theme="default" aria-pressed="true">預設配色</button>
+            <button type="button" data-pref-theme="dark" aria-pressed="false">深色</button>
+            <button type="button" data-pref-theme="high" aria-pressed="false">高對比</button>
+            <button type="button" data-pref-reset>還原預設</button>
+          </div>
+        </fieldset>
+        <p class="visually-hidden" role="status" aria-live="polite" data-prefs-status></p>
+      </div>
+    </details>
+  </div>
+</section>
+<!--/shared:prefs-->
+<!--shared:header-->
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-title" href="/">福爾摩沙自閉大公社</a>
+    <nav aria-label="主要導覽">
+      <ul class="nav-list">
+        <li><a href="/">首頁</a></li>
+        <li><a href="/about.html">關於與加入須知</a></li>
+        <li><a href="/actions.html">行動紀錄</a></li>
+        <li><a href="/articles.html">文章</a></li>
+        <li><a href="/accessibility.html">無障礙與聯絡</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!--/shared:header-->
+<main id="main" tabindex="-1">
+  <div class="wrap">
+    <article class="article" data-slug="writing-guide">
+      <div class="article-head">
+        <p class="article-tags"><span class="visually-hidden">分類：</span><a class="tag" href="/articles.html#tutorials">技術教學</a><span class="visually-hidden">；標籤：</span><span class="tag tag-sub">投稿</span><span class="tag tag-sub">寫作指引</span></p>
+        <h1>投稿指引：怎麼寫一篇本站文章</h1>
+        <p class="lead">在 HackMD 寫好原稿、公開連結，再到 Discord 開工單投稿。</p>
+        <p class="article-meta"><time datetime="2026-11-16">2026 年 11 月 16 日</time><span aria-hidden="true"> · </span>作者：福爾摩沙自閉大公社<span aria-hidden="true"> · </span>閱讀約 8 分鐘</p>
+      </div>
+      <div class="prose">
+
+        <p>這篇給想在本站發表文章的寫手。你只要在 HackMD 用 Markdown 寫好原稿、把連結發到 Discord 的工單，站長會轉成網頁、產生分享圖並上線；你不需要會寫程式，也不需要碰 GitHub。</p>
+
+        <p>照下面的格式與守則寫，可以省掉來回修改的時間。不確定的地方先問站長，不要猜。</p>
+
+        <nav class="note toc" aria-label="本文目錄">
+          <p class="note-title">本文目錄</p>
+          <ol>
+            <li><a href="#s1">整體流程</a></li>
+            <li><a href="#s2">分類</a></li>
+            <li><a href="#s3">原稿格式</a></li>
+            <li><a href="#s4">內文寫法</a></li>
+            <li><a href="#s5">排版與用字</a></li>
+            <li><a href="#s6">內容守則</a></li>
+            <li><a href="#s7">無障礙寫作</a></li>
+            <li><a href="#s8">投稿流程</a></li>
+            <li><a href="#s9">交稿前檢查清單</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="s1">整體流程</h2>
+
+        <ol>
+          <li>選定分類與主題</li>
+          <li>在 HackMD 照「原稿格式」寫好原稿</li>
+          <li>用文末的交稿前檢查清單自我檢查</li>
+          <li>公開 HackMD 連結，發到 Discord「#派出所」的工單</li>
+          <li>站長轉檔、預覽、確認後上線</li>
+        </ol>
+
+        <h2 id="s2">分類</h2>
+
+        <p>每篇文章只能選一個分類，共四類，不能自創。不確定放哪一類就問站長。</p>
+
+        <div class="table-wrap" role="region" aria-label="表格：分類（可左右捲動）" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">分類</th><th scope="col">適合寫什麼</th></tr></thead>
+          <tbody>
+            <tr><td>行動記事</td><td>社群參與過的活動（遊行、線下聚會、技術支援等）的紀錄與心得</td></tr>
+            <tr><td>社群公告</td><td>招募、抽獎、規劃中的活動、社群異動</td></tr>
+            <tr><td>議題觀點</td><td>身心障礙、自閉、性別等議題的論述與應對指南</td></tr>
+            <tr><td>技術教學</td><td>軟體、輔具、Discord 等操作教學</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>寫「行動記事」時，如果該活動已列在<a href="/actions.html">行動紀錄</a>，請告訴站長，文章頁會連到那一筆。</p>
+
+        <h2 id="s3">原稿格式</h2>
+
+        <p>原稿寫在 HackMD 的一份筆記裡。開頭用兩條 <code>---</code> 夾住標題與標籤，接著寫作者，再接內文。<code>title</code>、<code>tags</code> 用英文、不要翻譯，冒號用半形。</p>
+
+        <pre><code>---
+title: 文章標題
+tags: 議題觀點, 標籤1, 標籤2
+---
+
+&gt; 作者：筆名
+
+[[目錄]]
+
+開頭段落……
+
+## 第一個大標
+
+內文……</code></pre>
+
+        <div class="table-wrap" role="region" aria-label="表格：原稿格式（可左右捲動）" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">項目</th><th scope="col">必填</th><th scope="col">規則</th></tr></thead>
+          <tbody>
+            <tr><td>title</td><td>是</td><td>文章標題，也會印在分享圖上，建議 30 字內</td></tr>
+            <tr><td>tags</td><td>是</td><td>第一個寫分類（四類之一，字要完全一樣），後面接 1～3 個標籤，用半形逗號分隔；先看現有文章用過哪些標籤，意思相近就沿用</td></tr>
+            <tr><td>作者</td><td>否</td><td>寫成「&gt; 作者：筆名」，可用筆名；不寫就以「福爾摩沙自閉大公社」名義發表</td></tr>
+            <tr><td>摘要</td><td>否</td><td>50～160 字，用在文章列表、搜尋結果與分享預覽；可寫在工單訊息裡，沒寫由站長撰寫</td></tr>
+            <tr><td>導言</td><td>否</td><td>一句話，30～60 字，顯示在標題下；可寫在工單訊息裡，沒寫由站長撰寫</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>發布日期、網址名稱等技術欄位由站長處理，不用寫。</p>
+
+        <h2 id="s4">內文寫法</h2>
+
+        <p>網站只支援下表這些寫法；表外的語法（斜體、多層清單、HTML 等）不會正確顯示。</p>
+
+        <div class="table-wrap" role="region" aria-label="表格：內文寫法（可左右捲動）" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">要做什麼</th><th scope="col">寫法</th></tr></thead>
+          <tbody>
+            <tr><td>大標</td><td><code>## 標題</code></td></tr>
+            <tr><td>小標</td><td><code>### 標題</code>（前面必須先有大標）</td></tr>
+            <tr><td>小小標</td><td><code>#### 標題</code>（前面必須先有小標）</td></tr>
+            <tr><td>粗體重點</td><td><code>**重點**</code></td></tr>
+            <tr><td>無序清單</td><td>每項開頭 <code>- </code></td></tr>
+            <tr><td>有序清單</td><td>每項開頭 <code>1. </code>、<code>2. </code></td></tr>
+            <tr><td>連結</td><td><code>[文字](https://網址)</code>，外部連結會自動加「（另開新視窗）」</td></tr>
+            <tr><td>引言</td><td>每行開頭 <code>&gt; </code>，最後一行寫 <code>&gt; — 出處</code></td></tr>
+            <tr><td>表格</td><td>每列開頭與結尾放半形直線，欄位之間也用直線隔開；第二列每欄寫 ---</td></tr>
+            <tr><td>提示框</td><td><code>[[提示框：標題]]</code>，下一行起是內容，到空行為止</td></tr>
+            <tr><td>金句</td><td><code>[[金句：一句話]]</code></td></tr>
+            <tr><td>目錄</td><td>在開頭放 <code>[[目錄]]</code>，會列出所有大標</td></tr>
+            <tr><td>分隔線</td><td>單獨一行 <code>---</code></td></tr>
+            <tr><td>示意圖</td><td>在 HackMD 直接貼上圖片，再把方括號裡的文字改成圖說，圖說不能空白</td></tr>
+            <tr><td>參考資料</td><td>文末 <code>## 參考資料</code>，下面用編號清單</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>幾個容易踩到的地方：</p>
+
+        <ul>
+          <li><strong>一個段落就是一行。</strong> 段落中間按 Enter 換行，會被拆成兩段；段落之間空一行。</li>
+          <li><strong>標題不能跳級。</strong> 文章標題已經是最大一級，內文從 <code>##</code> 開始，不要用 <code>#</code>。</li>
+          <li><strong>清單只有一層。</strong> 需要細項就拆成小標加清單，或改用表格。</li>
+          <li><strong>連結一律用 https。</strong> 站內頁面寫 <code>/about.html</code> 這種以 <code>/</code> 開頭的路徑。</li>
+          <li><strong>示意圖可以直接貼進 HackMD。</strong> 也可以把原始檔傳到工單；png、jpg 或 webp 皆可，站長會下載轉檔。不要引用別的網站上的圖。</li>
+          <li><strong>圖說就是替代文字。</strong> 寫成完整句子，讓看不到圖的人也知道圖在說什麼。</li>
+        </ul>
+
+        <p>HackMD 的預覽不認得 <code>[[提示框]]</code>、<code>[[金句]]</code>、<code>[[目錄]]</code>，會照原文顯示，這是正常的，轉成網頁後就會變成對應的元件。</p>
+
+        <h2 id="s5">排版與用字</h2>
+
+        <p>全站一律使用繁體中文（台灣用語），語氣認真、正式。</p>
+
+        <div class="table-wrap" role="region" aria-label="表格：排版與用字（可左右捲動）" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">規則</th><th scope="col">正確</th><th scope="col">錯誤</th></tr></thead>
+          <tbody>
+            <tr><td>標點用全形</td><td>今天，我們出發。</td><td>今天,我們出發.</td></tr>
+            <tr><td>引號用「」，引號內再引用用『』</td><td>她說「我聽到『加油』了」</td><td>她說“我聽到‘加油’了”</td></tr>
+            <tr><td>中文與英文、數字之間加半形空格</td><td>第 17 屆高雄同志大遊行在 Discord 公告</td><td>第17屆高雄同志大遊行在Discord公告</td></tr>
+            <tr><td>全形標點前後不加空格</td><td>使用 Discord。</td><td>使用 Discord 。</td></tr>
+            <tr><td>日期寫法</td><td>2026 年 12 月 5 日（六）</td><td>2026/12/5</td></tr>
+            <tr><td>書名、片名用《》，篇名用〈〉</td><td>《自閉者的面具》</td><td>自閉者的面具</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>用詞提醒：</p>
+
+        <ul>
+          <li>講到社群時用全名「福爾摩沙自閉大公社」，第二次之後可以寫「本社群」。</li>
+          <li>介紹歡迎對象時用「當事人優先」：健全者與異性戀者可以加入，但以當事人需求為優先；不要寫成「不歡迎」。</li>
+          <li>提到群組規則時照原文：「本群沒有規則，有委屈自己提告去。」不要改寫成別的規則。</li>
+          <li>外文專有名詞第一次出現時，可以在括號內註明中文譯名或簡單說明。</li>
+        </ul>
+
+        <h2 id="s6">內容守則</h2>
+
+        <p>前四條是本站的編輯原則，不符合的稿件會退回修改；後三條是寫作建議。</p>
+
+        <ul>
+          <li><strong>活動只寫社群自己的參與。</strong> 和其他團體一起參加的活動，只寫本社群做了什麼，不代替其他團體發言。</li>
+          <li><strong>不放照片、不列成員名單。</strong> 包括活動現場照、合照與成員的 Discord 暱稱；作者署名的筆名除外。</li>
+          <li><strong>說明用的圖一律重畫成示意圖。</strong> 不用站長或成員的截圖；圖中不得出現真實成員的選擇、頭像或政黨名稱，圖說要標明「示意圖」。</li>
+          <li><strong>不編造事實。</strong> 日期、人數、地點、經歷都要有根據；不確定就不寫，或先問站長。沒有提供的資訊（例如地點）不要自己補。</li>
+          <li><strong>引用要標出處。</strong> 重要論點與數據放在文末「參考資料」，引用他人文字以短句為限，不整段複製。</li>
+          <li><strong>保護隱私。</strong> 不寫出可辨識個人的資訊（真名、學校、病史、聯絡方式），寫別人的經歷要先取得同意，並去除可辨識細節。</li>
+          <li><strong>個人觀點請署名。</strong> 以社群名義（不寫作者）發表的文章代表整個社群。</li>
+        </ul>
+
+        <h2 id="s7">無障礙寫作</h2>
+
+        <p>本站讀者可能使用螢幕報讀器、放大字級或需要易讀文字，寫稿時請注意：</p>
+
+        <ul>
+          <li><strong>一句話講一件事。</strong> 句子太長就拆開；段落以三、四句為限。</li>
+          <li><strong>結論先講。</strong> 開頭段落說清楚這篇要讓讀者知道什麼、做什麼。</li>
+          <li><strong>用大小標切分段落。</strong> 報讀器使用者靠標題跳讀；標題要能單獨看懂，不要只寫「其他」。</li>
+          <li><strong>連結文字要說明去哪裡。</strong> 寫「<a href="/about.html">加入須知</a>」，不要寫「點這裡」。</li>
+          <li><strong>圖片只是補充。</strong> 圖中的資訊在正文裡要有同樣內容的文字，圖說寫成完整句子。</li>
+          <li><strong>不要只靠顏色、位置或表情符號表達意思。</strong> 例如不要寫「請參考右邊紅色的字」。</li>
+          <li><strong>涉及創傷的內容放提示。</strong> 在開頭用提示框說明內容提及什麼（例如自傷、暴力），讓讀者自己決定是否繼續。</li>
+          <li><strong>縮寫第一次出現要寫全名。</strong> 例如「自閉症譜系（ASD）」。</li>
+        </ul>
+
+        <h2 id="s8">投稿流程</h2>
+
+        <p>在 HackMD 寫好原稿、開放公開閱讀，再把連結發到 Discord 的工單。</p>
+
+        <h3>在 HackMD 寫稿並公開連結</h3>
+
+        <ol>
+          <li>到 <a href="https://hackmd.io/" target="_blank" rel="noopener">HackMD（另開新視窗）</a> 新增一份筆記，照「原稿格式」寫好。</li>
+          <li>點右上角「分享」。</li>
+          <li>「可閱讀」選「所有人」，再按「複製共享連結」。</li>
+          <li>用瀏覽器的無痕視窗開一次連結，確認沒登入也看得到。</li>
+        </ol>
+
+        <p>「可編輯」若也設為「所有人」，拿到連結的人都能改你的稿，請自行權衡。</p>
+
+        <figure class="figure">
+          <img src="/assets/img/articles/writing-guide/hackmd-share.webp" alt="示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。" loading="lazy" width="1600" height="1376">
+          <figcaption>示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。</figcaption>
+        </figure>
+
+        <h3>把連結發到工單</h3>
+
+        <ol>
+          <li>在 Discord 進入「#派出所」頻道。</li>
+          <li>點擊 OuO BOT 客服中心的「開啟工單」。</li>
+          <li>在私人討論串貼上標題、分類與 HackMD 連結，一篇文章開一張工單。示意圖的原始檔也可以一起傳在工單裡。</li>
+          <li>站長轉檔、預覽後會在工單回覆；需要修改時，直接改 HackMD 上的同一份原稿。</li>
+        </ol>
+
+        <figure class="figure">
+          <img src="/assets/img/articles/writing-guide/ticket-submit.webp" alt="示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。" loading="lazy" width="1600" height="1344">
+          <figcaption>示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。</figcaption>
+        </figure>
+
+        <p>還不是成員的話，請先看<a href="/about.html">加入須知</a>。</p>
+
+        <h2 id="s9">交稿前檢查清單</h2>
+
+        <ul>
+          <li>分類是四類之一，標籤 1～3 個</li>
+          <li>內文從 <code>##</code> 開始，標題沒有跳級</li>
+          <li>每個段落只有一行，清單只有一層</li>
+          <li>全形標點、「」引號、中英數之間有半形空格</li>
+          <li>連結都是 https，連結文字說得出要去哪裡</li>
+          <li>沒有照片、截圖與成員名單；示意圖的圖說標明「示意圖」</li>
+          <li>活動只寫社群自己的參與，沒有可辨識個人的資訊</li>
+          <li>日期、人數等事實都確認過，引用有列出處</li>
+          <li>HackMD 連結在無痕視窗打得開</li>
+        </ul>
+
+      </div>
+    </article>
+    <nav class="article-nav" aria-label="上一篇與下一篇"><!--articlenav:start-->
+      <ul>
+        <li class="article-nav-prev"><span class="muted">上一篇</span><a href="/articles/unmasking-autism-giveaway-626.html">群組 626 人抽獎預告：《自閉者的面具，為何戴上，如何卸下》</a></li>
+        <li class="article-nav-all"><a href="/articles.html">回到文章列表</a></li>
+      </ul>
+    <!--articlenav:end--></nav>
+  </div>
+</main>
+<!--shared:footer-->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="brand-lockup" aria-hidden="true"></div>
+    <p>福爾摩沙自閉大公社　建立於 2026 年 7 月 31 日　創辦人：<a href="https://me.asdtw.org/" target="_blank" rel="noopener">賴奕帆（個人網站，另開新視窗）</a></p>
+    <ul>
+      <li><a href="https://discord.gg/NV6Y4vcUNt" target="_blank" rel="noopener">加入 Discord（另開新視窗）</a></li>
+      <li><a href="mailto:info@asdtw.org">info@asdtw.org</a></li>
+      <li><a href="/accessibility.html#privacy">隱私說明</a></li>
+    </ul>
+  </div>
+</footer>
+<!--/shared:footer-->
+<span id="page-end" hidden></span>
+</body>
+</html>
