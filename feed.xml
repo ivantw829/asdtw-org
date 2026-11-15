@@ -4,6 +4,46 @@
   <link rel="alternate" type="text/html" href="https://asdtw.org/articles.html"/>
   <link rel="self" type="application/atom+xml" href="https://asdtw.org/feed.xml"/>
   <id>https://asdtw.org/</id>
-  <updated>2026-07-31T00:00:00+08:00</updated>
+  <updated>2026-11-16T00:00:00+08:00</updated>
   <author><name>福爾摩沙自閉大公社</name><uri>https://asdtw.org/</uri></author>
+  <entry>
+    <title>投稿指引：怎麼寫一篇本站文章</title>
+    <link rel="alternate" type="text/html" href="https://asdtw.org/articles/writing-guide.html"/>
+    <id>https://asdtw.org/articles/writing-guide.html</id>
+    <published>2026-11-16T00:00:00+08:00</published>
+    <updated>2026-11-16T00:00:00+08:00</updated>
+    <author><name>福爾摩沙自閉大公社</name></author>
+    <summary type="text">想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。</summary>
+    <category term="技術教學"/>
+  </entry>
+  <entry>
+    <title>群組 626 人抽獎預告：《自閉者的面具，為何戴上，如何卸下》</title>
+    <link rel="alternate" type="text/html" href="https://asdtw.org/articles/unmasking-autism-giveaway-626.html"/>
+    <id>https://asdtw.org/articles/unmasking-autism-giveaway-626.html</id>
+    <published>2026-11-16T00:00:00+08:00</published>
+    <updated>2026-11-16T00:00:00+08:00</updated>
+    <author><name>福爾摩沙自閉大公社</name></author>
+    <summary type="text">福爾摩沙自閉大公社目前有 411 位成員。群組人數達到 626 人時，將在群組內抽出 1 位成員，送出《自閉者的面具，為何戴上，如何卸下》一本，平裝書或電子書由獲獎者自選。</summary>
+    <category term="社群公告"/>
+  </entry>
+  <entry>
+    <title>在外遇到疑似精神疾病患者應對指南</title>
+    <link rel="alternate" type="text/html" href="https://asdtw.org/articles/mental-health-crisis-in-public.html"/>
+    <id>https://asdtw.org/articles/mental-health-crisis-in-public.html</id>
+    <published>2026-11-15T00:00:00+08:00</published>
+    <updated>2026-11-16T00:00:00+08:00</updated>
+    <author><name>賴奕帆</name></author>
+    <summary type="text">路上遇到行為怪異的人，拍下來上傳只會傷害當事人，對公共安全也沒有幫助。本文說明為什麼不要拍、不要傳，以及對方需要幫忙、帶有敵意或有立即危險時，你可以怎麼站、怎麼說、什麼時候該離開，還有怎麼報案。</summary>
+    <category term="議題觀點"/>
+  </entry>
+  <entry>
+    <title>12 月 5 日高雄同志大遊行，招募社群旗手</title>
+    <link rel="alternate" type="text/html" href="https://asdtw.org/articles/kh-pride-2026-flag-bearer.html"/>
+    <id>https://asdtw.org/articles/kh-pride-2026-flag-bearer.html</id>
+    <published>2026-11-14T00:00:00+08:00</published>
+    <updated>2026-11-14T00:00:00+08:00</updated>
+    <author><name>福爾摩沙自閉大公社</name></author>
+    <summary type="text">第 17 屆高雄同志大遊行將於 12 月 5 日（六）在鹽埕舉行，福爾摩沙自閉大公社已組隊參加，現在招募 1 位當天能到場的成員擔任旗手，旗子與旗杆會用超商寄給你。</summary>
+    <category term="社群公告"/>
+  </entry>
 </feed>

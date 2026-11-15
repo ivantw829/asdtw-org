@@ -39,7 +39,9 @@
 <rect x="490" y="596" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
 <text x="514" y="631" font-size="24" font-weight="500" fill="#FFF6EC">同性戀</text>
 <rect x="40" y="660" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
-<text x="64" y="695" font-size="24" font-weight="500" fill="#FFF6EC">異性戀</text>
+<text x="64" y="695" font-size="24" font-weight="500" fill="#FFF6EC">流性戀</text>
+<rect x="490" y="660" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
+<text x="514" y="695" font-size="24" font-weight="500" fill="#FFF6EC">異性戀</text>
 <text x="40" y="746" font-size="22" fill="#CFC8BC">選擇所有適用的項目。</text>
 </g>
 </svg>

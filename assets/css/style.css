@@ -156,7 +156,7 @@ main { flex: 1 0 auto; }
 }
 .prose { max-width: 40rem; }
 
-h1, h2, h3 { font-family: var(--font-serif); line-height: 1.4; margin: 0; font-weight: 700; }
+h1, h2, h3, h4 { font-family: var(--font-serif); line-height: 1.4; margin: 0; font-weight: 700; }
 p, ul, ol, dl, blockquote, figure { margin: 1rem 0 0; }
 ul, ol { padding-left: 1.5rem; }
 li { margin-top: 0.5rem; }
@@ -357,6 +357,7 @@ h2 {
 }
 .section > h2 { margin-top: 0; }
 h3 { font-size: 1.2rem; margin-top: 2rem; }
+h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 
 /* 名字標籤 */
 .name-tag {
