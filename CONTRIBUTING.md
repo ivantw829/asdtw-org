@@ -143,7 +143,7 @@ bash authoring/sync.sh
 |---|---|---|---|
 | 頁首、頁尾、閱讀設定（`<!--shared:…-->`） | `authoring/partials/` | `build-shared.py` | 片段檔有變更時由 pre-commit 執行 |
 | 文章列表、上下篇、首頁最新文章（`<!--lists:…-->` 等） | `data/articles.json` | `build-lists.py` | pre-commit |
-| 訂閱源 `feed.xml` | `data/articles.json` | `build-feed.py` | pre-commit |
+| 訂閱源 `feed.xml`（含全文） | `data/articles.json`＋`articles/*.html` | `build-feed.py` | pre-commit |
 | `sitemap.xml` | 各頁的 robots 設定 | `build-sitemap.py` | pre-commit |
 | 成員數「逾 N 位」（`<!--members:…-->`） | Discord 邀請連結 | `build-members.py` | pre-commit（連不上只警告） |
 | 分享圖 `og.jpg`、`assets/img/og/<slug>.jpg` | `authoring/og/*.html` | `build-og.py`（需要 Chrome 與 macOS） | 文章有變更時由 pre-commit 執行 |
