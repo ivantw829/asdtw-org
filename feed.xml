@@ -24,6 +24,233 @@
     <updated>2026-11-16T00:00:00+08:00</updated>
     <author><name>福爾摩沙自閉大公社</name></author>
     <summary type="text">想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。</summary>
+    <content type="html" xml:base="https://asdtw.org/articles/writing-guide.html">&lt;p class="lead"&gt;在 HackMD 寫好原稿、公開連結，再到 Discord 開工單投稿。&lt;/p&gt;
+&lt;p&gt;這篇給想在本站發表文章的寫手。你只要在 HackMD 用 Markdown 寫好原稿、把連結發到 Discord 的工單，站長會轉成網頁、產生分享圖並上線；你不需要會寫程式，也不需要碰 GitHub。&lt;/p&gt;
+
+        &lt;p&gt;照下面的格式與守則寫，可以省掉來回修改的時間。不確定的地方先問站長，不要猜。&lt;/p&gt;
+
+        &lt;nav class="note toc" aria-label="本文目錄"&gt;
+          &lt;p class="note-title"&gt;本文目錄&lt;/p&gt;
+          &lt;ol&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s1"&gt;整體流程&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s2"&gt;分類&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s3"&gt;原稿格式&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s4"&gt;內文寫法&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s5"&gt;排版與用字&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s6"&gt;內容守則&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s7"&gt;無障礙寫作&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s8"&gt;投稿流程&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s9"&gt;交稿前檢查清單&lt;/a&gt;&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/nav&gt;
+
+        &lt;h2 id="s1"&gt;整體流程&lt;/h2&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;選定分類與主題&lt;/li&gt;
+          &lt;li&gt;在 HackMD 照「原稿格式」寫好原稿&lt;/li&gt;
+          &lt;li&gt;用文末的交稿前檢查清單自我檢查&lt;/li&gt;
+          &lt;li&gt;公開 HackMD 連結，發到 Discord「#派出所」的工單&lt;/li&gt;
+          &lt;li&gt;站長轉檔、預覽、確認後上線&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;h2 id="s2"&gt;分類&lt;/h2&gt;
+
+        &lt;p&gt;每篇文章只能選一個分類，共四類，不能自創。不確定放哪一類就問站長。&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：分類（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;分類&lt;/th&gt;&lt;th scope="col"&gt;適合寫什麼&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;行動記事&lt;/td&gt;&lt;td&gt;社群參與過的活動（遊行、線下聚會、技術支援等）的紀錄與心得&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;社群公告&lt;/td&gt;&lt;td&gt;招募、抽獎、規劃中的活動、社群異動&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;議題觀點&lt;/td&gt;&lt;td&gt;身心障礙、自閉、性別等議題的論述與應對指南&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;技術教學&lt;/td&gt;&lt;td&gt;軟體、輔具、Discord 等操作教學&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;寫「行動記事」時，如果該活動已列在&lt;a href="https://asdtw.org/actions.html"&gt;行動紀錄&lt;/a&gt;，請告訴站長，文章頁會連到那一筆。&lt;/p&gt;
+
+        &lt;h2 id="s3"&gt;原稿格式&lt;/h2&gt;
+
+        &lt;p&gt;原稿寫在 HackMD 的一份筆記裡。開頭用兩條 &lt;code&gt;---&lt;/code&gt; 夾住標題與標籤，接著寫作者，再接內文。&lt;code&gt;title&lt;/code&gt;、&lt;code&gt;tags&lt;/code&gt; 用英文、不要翻譯，冒號用半形。&lt;/p&gt;
+
+        &lt;pre&gt;&lt;code&gt;---
+title: 文章標題
+tags: 議題觀點, 標籤1, 標籤2
+---
+
+&amp;gt; 作者：筆名
+
+[[目錄]]
+
+開頭段落……
+
+## 第一個大標
+
+內文……&lt;/code&gt;&lt;/pre&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：原稿格式（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;項目&lt;/th&gt;&lt;th scope="col"&gt;必填&lt;/th&gt;&lt;th scope="col"&gt;規則&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;title&lt;/td&gt;&lt;td&gt;是&lt;/td&gt;&lt;td&gt;文章標題，也會印在分享圖上，建議 30 字內&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;tags&lt;/td&gt;&lt;td&gt;是&lt;/td&gt;&lt;td&gt;第一個寫分類（四類之一，字要完全一樣），後面接 1～3 個標籤，用半形逗號分隔；先看現有文章用過哪些標籤，意思相近就沿用&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;作者&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;寫成「&amp;gt; 作者：筆名」，可用筆名；不寫就以「福爾摩沙自閉大公社」名義發表&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;摘要&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;50～160 字，用在文章列表、搜尋結果與分享預覽；可寫在工單訊息裡，沒寫由站長撰寫&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;導言&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;一句話，30～60 字，顯示在標題下；可寫在工單訊息裡，沒寫由站長撰寫&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;發布日期、網址名稱等技術欄位由站長處理，不用寫。&lt;/p&gt;
+
+        &lt;h2 id="s4"&gt;內文寫法&lt;/h2&gt;
+
+        &lt;p&gt;網站只支援下表這些寫法；表外的語法（斜體、多層清單、HTML 等）不會正確顯示。&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：內文寫法（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;要做什麼&lt;/th&gt;&lt;th scope="col"&gt;寫法&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;大標&lt;/td&gt;&lt;td&gt;&lt;code&gt;## 標題&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;小標&lt;/td&gt;&lt;td&gt;&lt;code&gt;### 標題&lt;/code&gt;（前面必須先有大標）&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;小小標&lt;/td&gt;&lt;td&gt;&lt;code&gt;#### 標題&lt;/code&gt;（前面必須先有小標）&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;粗體重點&lt;/td&gt;&lt;td&gt;&lt;code&gt;**重點**&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;無序清單&lt;/td&gt;&lt;td&gt;每項開頭 &lt;code&gt;- &lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;有序清單&lt;/td&gt;&lt;td&gt;每項開頭 &lt;code&gt;1. &lt;/code&gt;、&lt;code&gt;2. &lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;連結&lt;/td&gt;&lt;td&gt;&lt;code&gt;[文字](https://網址)&lt;/code&gt;，外部連結會自動加「（另開新視窗）」&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;引言&lt;/td&gt;&lt;td&gt;每行開頭 &lt;code&gt;&amp;gt; &lt;/code&gt;，最後一行寫 &lt;code&gt;&amp;gt; — 出處&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;表格&lt;/td&gt;&lt;td&gt;每列開頭與結尾放半形直線，欄位之間也用直線隔開；第二列每欄寫 ---&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;提示框&lt;/td&gt;&lt;td&gt;&lt;code&gt;[[提示框：標題]]&lt;/code&gt;，下一行起是內容，到空行為止&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;金句&lt;/td&gt;&lt;td&gt;&lt;code&gt;[[金句：一句話]]&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;目錄&lt;/td&gt;&lt;td&gt;在開頭放 &lt;code&gt;[[目錄]]&lt;/code&gt;，會列出所有大標&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;分隔線&lt;/td&gt;&lt;td&gt;單獨一行 &lt;code&gt;---&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;示意圖&lt;/td&gt;&lt;td&gt;在 HackMD 直接貼上圖片，再把方括號裡的文字改成圖說，圖說不能空白&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;參考資料&lt;/td&gt;&lt;td&gt;文末 &lt;code&gt;## 參考資料&lt;/code&gt;，下面用編號清單&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;幾個容易踩到的地方：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;一個段落就是一行。&lt;/strong&gt; 段落中間按 Enter 換行，會被拆成兩段；段落之間空一行。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;標題不能跳級。&lt;/strong&gt; 文章標題已經是最大一級，內文從 &lt;code&gt;##&lt;/code&gt; 開始，不要用 &lt;code&gt;#&lt;/code&gt;。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;清單只有一層。&lt;/strong&gt; 需要細項就拆成小標加清單，或改用表格。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;連結一律用 https。&lt;/strong&gt; 站內頁面寫 &lt;code&gt;/about.html&lt;/code&gt; 這種以 &lt;code&gt;/&lt;/code&gt; 開頭的路徑。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;示意圖可以直接貼進 HackMD。&lt;/strong&gt; 也可以把原始檔傳到工單；png、jpg 或 webp 皆可，站長會下載轉檔。不要引用別的網站上的圖。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;圖說就是替代文字。&lt;/strong&gt; 寫成完整句子，讓看不到圖的人也知道圖在說什麼。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;HackMD 的預覽不認得 &lt;code&gt;[[提示框]]&lt;/code&gt;、&lt;code&gt;[[金句]]&lt;/code&gt;、&lt;code&gt;[[目錄]]&lt;/code&gt;，會照原文顯示，這是正常的，轉成網頁後就會變成對應的元件。&lt;/p&gt;
+
+        &lt;h2 id="s5"&gt;排版與用字&lt;/h2&gt;
+
+        &lt;p&gt;全站一律使用繁體中文（台灣用語），語氣認真、正式。&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：排版與用字（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;規則&lt;/th&gt;&lt;th scope="col"&gt;正確&lt;/th&gt;&lt;th scope="col"&gt;錯誤&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;標點用全形&lt;/td&gt;&lt;td&gt;今天，我們出發。&lt;/td&gt;&lt;td&gt;今天,我們出發.&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;引號用「」，引號內再引用用『』&lt;/td&gt;&lt;td&gt;她說「我聽到『加油』了」&lt;/td&gt;&lt;td&gt;她說“我聽到‘加油’了”&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;中文與英文、數字之間加半形空格&lt;/td&gt;&lt;td&gt;第 17 屆高雄同志大遊行在 Discord 公告&lt;/td&gt;&lt;td&gt;第17屆高雄同志大遊行在Discord公告&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;全形標點前後不加空格&lt;/td&gt;&lt;td&gt;使用 Discord。&lt;/td&gt;&lt;td&gt;使用 Discord 。&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;日期寫法&lt;/td&gt;&lt;td&gt;2026 年 12 月 5 日（六）&lt;/td&gt;&lt;td&gt;2026/12/5&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;書名、片名用《》，篇名用〈〉&lt;/td&gt;&lt;td&gt;《自閉者的面具》&lt;/td&gt;&lt;td&gt;自閉者的面具&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;用詞提醒：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;講到社群時用全名「福爾摩沙自閉大公社」，第二次之後可以寫「本社群」。&lt;/li&gt;
+          &lt;li&gt;介紹歡迎對象時用「當事人優先」：健全者與異性戀者可以加入，但以當事人需求為優先；不要寫成「不歡迎」。&lt;/li&gt;
+          &lt;li&gt;提到群組規則時照原文：「本群沒有規則，有委屈自己提告去。」不要改寫成別的規則。&lt;/li&gt;
+          &lt;li&gt;外文專有名詞第一次出現時，可以在括號內註明中文譯名或簡單說明。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s6"&gt;內容守則&lt;/h2&gt;
+
+        &lt;p&gt;前四條是本站的編輯原則，不符合的稿件會退回修改；後三條是寫作建議。&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;活動只寫社群自己的參與。&lt;/strong&gt; 和其他團體一起參加的活動，只寫本社群做了什麼，不代替其他團體發言。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;不放照片、不列成員名單。&lt;/strong&gt; 包括活動現場照、合照與成員的 Discord 暱稱；作者署名的筆名除外。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;說明用的圖一律重畫成示意圖。&lt;/strong&gt; 不用站長或成員的截圖；圖中不得出現真實成員的選擇、頭像或政黨名稱，圖說要標明「示意圖」。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;不編造事實。&lt;/strong&gt; 日期、人數、地點、經歷都要有根據；不確定就不寫，或先問站長。沒有提供的資訊（例如地點）不要自己補。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;引用要標出處。&lt;/strong&gt; 重要論點與數據放在文末「參考資料」，引用他人文字以短句為限，不整段複製。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;保護隱私。&lt;/strong&gt; 不寫出可辨識個人的資訊（真名、學校、病史、聯絡方式），寫別人的經歷要先取得同意，並去除可辨識細節。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;個人觀點請署名。&lt;/strong&gt; 以社群名義（不寫作者）發表的文章代表整個社群。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s7"&gt;無障礙寫作&lt;/h2&gt;
+
+        &lt;p&gt;本站讀者可能使用螢幕報讀器、放大字級或需要易讀文字，寫稿時請注意：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;一句話講一件事。&lt;/strong&gt; 句子太長就拆開；段落以三、四句為限。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;結論先講。&lt;/strong&gt; 開頭段落說清楚這篇要讓讀者知道什麼、做什麼。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;用大小標切分段落。&lt;/strong&gt; 報讀器使用者靠標題跳讀；標題要能單獨看懂，不要只寫「其他」。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;連結文字要說明去哪裡。&lt;/strong&gt; 寫「&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;」，不要寫「點這裡」。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;圖片只是補充。&lt;/strong&gt; 圖中的資訊在正文裡要有同樣內容的文字，圖說寫成完整句子。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;不要只靠顏色、位置或表情符號表達意思。&lt;/strong&gt; 例如不要寫「請參考右邊紅色的字」。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;涉及創傷的內容放提示。&lt;/strong&gt; 在開頭用提示框說明內容提及什麼（例如自傷、暴力），讓讀者自己決定是否繼續。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;縮寫第一次出現要寫全名。&lt;/strong&gt; 例如「自閉症譜系（ASD）」。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s8"&gt;投稿流程&lt;/h2&gt;
+
+        &lt;p&gt;在 HackMD 寫好原稿、開放公開閱讀，再把連結發到 Discord 的工單。&lt;/p&gt;
+
+        &lt;h3&gt;在 HackMD 寫稿並公開連結&lt;/h3&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;到 &lt;a href="https://hackmd.io/" target="_blank" rel="noopener"&gt;HackMD（另開新視窗）&lt;/a&gt; 新增一份筆記，照「原稿格式」寫好。&lt;/li&gt;
+          &lt;li&gt;點右上角「分享」。&lt;/li&gt;
+          &lt;li&gt;「可閱讀」選「所有人」，再按「複製共享連結」。&lt;/li&gt;
+          &lt;li&gt;用瀏覽器的無痕視窗開一次連結，確認沒登入也看得到。&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;p&gt;「可編輯」若也設為「所有人」，拿到連結的人都能改你的稿，請自行權衡。&lt;/p&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/writing-guide/hackmd-share.webp" alt="示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。" loading="lazy" width="1600" height="1376"&gt;
+          &lt;figcaption&gt;示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+
+        &lt;h3&gt;把連結發到工單&lt;/h3&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;在 Discord 進入「#派出所」頻道。&lt;/li&gt;
+          &lt;li&gt;點擊 OuO BOT 客服中心的「開啟工單」。&lt;/li&gt;
+          &lt;li&gt;在私人討論串貼上標題、分類與 HackMD 連結，一篇文章開一張工單。示意圖的原始檔也可以一起傳在工單裡。&lt;/li&gt;
+          &lt;li&gt;站長轉檔、預覽後會在工單回覆；需要修改時，直接改 HackMD 上的同一份原稿。&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/writing-guide/ticket-submit.webp" alt="示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。" loading="lazy" width="1600" height="1344"&gt;
+          &lt;figcaption&gt;示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+
+        &lt;p&gt;還不是成員的話，請先看&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;。&lt;/p&gt;
+
+        &lt;h2 id="s9"&gt;交稿前檢查清單&lt;/h2&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;分類是四類之一，標籤 1～3 個&lt;/li&gt;
+          &lt;li&gt;內文從 &lt;code&gt;##&lt;/code&gt; 開始，標題沒有跳級&lt;/li&gt;
+          &lt;li&gt;每個段落只有一行，清單只有一層&lt;/li&gt;
+          &lt;li&gt;全形標點、「」引號、中英數之間有半形空格&lt;/li&gt;
+          &lt;li&gt;連結都是 https，連結文字說得出要去哪裡&lt;/li&gt;
+          &lt;li&gt;沒有照片、截圖與成員名單；示意圖的圖說標明「示意圖」&lt;/li&gt;
+          &lt;li&gt;活動只寫社群自己的參與，沒有可辨識個人的資訊&lt;/li&gt;
+          &lt;li&gt;日期、人數等事實都確認過，引用有列出處&lt;/li&gt;
+          &lt;li&gt;HackMD 連結在無痕視窗打得開&lt;/li&gt;
+        &lt;/ul&gt;</content>
     <category term="技術教學"/>
   </entry>
   <entry>
@@ -34,6 +261,50 @@
     <updated>2026-11-16T00:00:00+08:00</updated>
     <author><name>福爾摩沙自閉大公社</name></author>
     <summary type="text">福爾摩沙自閉大公社目前有 411 位成員。群組人數達到 626 人時，將在群組內抽出 1 位成員，送出《自閉者的面具，為何戴上，如何卸下》一本，平裝書或電子書由獲獎者自選。</summary>
+    <content type="html" xml:base="https://asdtw.org/articles/unmasking-autism-giveaway-626.html">&lt;p class="lead"&gt;人數達到 626 人時，在群組內抽出 1 位成員送書，最晚 12 月 25 日開抽。邀請大家幫忙宣傳社群。&lt;/p&gt;
+&lt;p&gt;福爾摩沙自閉大公社目前有 411 位成員。為了讓更多需要的人找到這裡，我們預告一項抽獎：&lt;strong&gt;群組人數達到 626 人時，將在群組內抽出 1 位成員，送出《自閉者的面具，為何戴上，如何卸下》一本；最晚在 12 月 25 日聖誕節開抽。&lt;/strong&gt;&lt;/p&gt;
+
+        &lt;h2 id="s1"&gt;獎品&lt;/h2&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;書名：《自閉者的面具，為何戴上，如何卸下》（原書名：Unmasking Autism: Discovering the New Faces of Neurodiversity）&lt;/li&gt;
+          &lt;li&gt;作者：戴文．普萊斯博士（Devon Price, PhD）&lt;/li&gt;
+          &lt;li&gt;譯者：許雅淑、李宗義&lt;/li&gt;
+          &lt;li&gt;數量：1 本，&lt;strong&gt;平裝書或電子書由獲獎者自選&lt;/strong&gt;&lt;/li&gt;
+          &lt;li&gt;本次獎品由匿名贊助者提供，在此致謝。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;這本書談的是自閉者為了融入社會而「戴上面具」的經驗，以及卸下面具、接納自己的可能。&lt;/p&gt;
+
+        &lt;h2 id="s2"&gt;抽獎方式&lt;/h2&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格 1（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;項目&lt;/th&gt;&lt;th scope="col"&gt;說明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;開抽條件&lt;/td&gt;&lt;td&gt;群組人數達到 626 人&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;保底開抽日&lt;/td&gt;&lt;td&gt;2026 年 12 月 25 日（五），屆時不論人數都會開抽&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;抽獎地點&lt;/td&gt;&lt;td&gt;在 Discord 群組內進行&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;名額&lt;/td&gt;&lt;td&gt;1 位&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;參加資格&lt;/td&gt;&lt;td&gt;限臺灣地區的群組成員&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;抽獎的詳細時間與參加方式，會在開抽前於群組內公告。&lt;/p&gt;
+
+        &lt;div class="note"&gt;
+          &lt;p class="note-title"&gt;注意事項&lt;/p&gt;
+          &lt;p&gt;本活動限臺灣地區的群組成員參加。福爾摩沙自閉大公社保有本活動的最終解釋權。&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;h2 id="s3"&gt;請幫忙宣傳社群&lt;/h2&gt;
+
+        &lt;p&gt;這次抽獎的目的，是請大家幫忙把社群介紹給可能需要的人。我們歡迎各種程度的身心障礙者，以及各種性別與性傾向的朋友，以當事人的需求為優先。加入前請先閱讀 &lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;。&lt;/p&gt;
+
+        &lt;p&gt;社群官網：&lt;a href="https://asdtw.org/"&gt;https://asdtw.org/&lt;/a&gt;&lt;/p&gt;
+
+        &lt;p class="pullquote"&gt;人數到 626 就開抽，最晚聖誕節。&lt;/p&gt;</content>
     <category term="社群公告"/>
   </entry>
   <entry>
@@ -44,6 +315,283 @@
     <updated>2026-11-16T00:00:00+08:00</updated>
     <author><name>賴奕帆</name></author>
     <summary type="text">路上遇到行為怪異的人，拍下來上傳只會傷害當事人，對公共安全也沒有幫助。本文說明為什麼不要拍、不要傳，以及對方需要幫忙、帶有敵意或有立即危險時，你可以怎麼站、怎麼說、什麼時候該離開，還有怎麼報案。</summary>
+    <content type="html" xml:base="https://asdtw.org/articles/mental-health-crisis-in-public.html">&lt;p class="lead"&gt;不要拍、不要傳。真的遇上了，先顧好自己的安全，再把事情交給 110 和 119。&lt;/p&gt;
+&lt;nav class="note toc" aria-label="本文目錄"&gt;
+          &lt;p class="note-title"&gt;本文目錄&lt;/p&gt;
+          &lt;ol&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/mental-health-crisis-in-public.html#s1"&gt;前言&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/mental-health-crisis-in-public.html#s2"&gt;你不應該上傳影片&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/mental-health-crisis-in-public.html#s3"&gt;你需要判斷什麼&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/mental-health-crisis-in-public.html#s4"&gt;如果你遇到了&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/mental-health-crisis-in-public.html#s5"&gt;如何報案&lt;/a&gt;&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/nav&gt;
+
+        &lt;h2 id="s1"&gt;前言&lt;/h2&gt;
+
+        &lt;p&gt;近期網路論壇中，一再出現來自現場的「怪異舉止現場目擊」錄影，也廣泛引起公眾輿情，大量新聞記者爭相報導。影片裡的人到底說了什麼，其實沒幾個人在意，留言區只管笑。什麼「君子固窮」，什麼「者乎」之類，引得眾人都鬨笑起來；店內外充滿了快活的空氣。&lt;/p&gt;
+
+        &lt;p&gt;魯迅寫〈孔乙己〉是 1919 年的事。咸亨酒店早就沒了，圍著一個人笑的習慣倒是留了下來，只是場地搬到留言區。今年 9 月，台北捷運上有位男子疑似恐慌症發作，旁邊的人拍下來，配上戲謔的旁白就上傳了。去年 11 月，一位先天肢體缺陷的男子坐在優先席，被人對著臉拍照貼上臉書，後來是捷運警察出面才刪文。&lt;/p&gt;
+
+        &lt;p&gt;我相信拍的人大多沒有惡意，他們覺得自己在提醒大家注意安全。可是影片一傳出去，一個陌生人最狼狽的幾分鐘就永遠掛在網路上了，而拍的人連他發生什麼事都不知道。&lt;/p&gt;
+
+        &lt;p&gt;所以這篇先講為什麼不要拍、不要傳。但我也不想只講這個。有人在車廂裡對著你大吼、一步一步靠過來，會怕是正常的，叫大家「要同理」解決不了當下的問題。後半篇會寫得很具體：對方已經帶著敵意跟你講話的時候，你可以怎麼站、怎麼說、什麼時候該走。&lt;/p&gt;
+
+        &lt;h2 id="s2"&gt;你不應該上傳影片&lt;/h2&gt;
+
+        &lt;h3&gt;1. 當事人的隱私、人格權與復元&lt;/h3&gt;
+
+        &lt;p&gt;精神危機會過去，影片不會。當事人穩定之後要回去上班、上課、跟鄰居打招呼，這時候如果有一段幾十萬人看過的影片，他隨時可能被認出來、被肉搜。復元很大一部分就是重新回到人群裡，這段影片會讓那條路難走很多。&lt;/p&gt;
+
+        &lt;h3&gt;2. 加深污名，讓人更不敢求助&lt;/h3&gt;
+
+        &lt;p&gt;身心障礙聯盟和多個障礙團體在 2021 年發過共同聲明，講得很直接：每次出事就把所有精神障礙者一起污名化，正是很多人不敢就醫、抗拒治療的原因。&lt;/p&gt;
+
+        &lt;p&gt;麻煩的地方在於，研究裡少數比較明確的暴力風險因子，其中一個就是「沒有接受治療」。大家越恐慌、越公審，就越多人躲著不看醫生，風險反而變高。&lt;/p&gt;
+
+        &lt;h3&gt;3. 家屬承受二次傷害&lt;/h3&gt;
+
+        &lt;p&gt;照顧精神疾病家人的壓力，外人很難想像。影片紅了以後，家屬要面對的是鄰居的眼神、親戚的電話、甚至記者。很多家庭的反應是從此不讓他出門，也不再對外求助。人關在家裡，離醫療和社區支持只會更遠。&lt;/p&gt;
+
+        &lt;h3&gt;4. 對公共安全其實沒有幫助&lt;/h3&gt;
+
+        &lt;p&gt;真的有危險的時候，能處理的是 110 和 119，留言區幫不上忙。你拿手機拍的那幾十秒，本來可以用來離開或報案。而且舉著手機對準一個情緒激動的人，很容易被當成挑釁。&lt;/p&gt;
+
+        &lt;p&gt;還有一個常見的狀況是根本拍錯人。被拍的可能是身障者、恐慌發作的人、低血糖的糖尿病患者，或是迷路的失智長輩。&lt;/p&gt;
+
+        &lt;p&gt;至於「精神病患很危險」這個印象，研究並不支持：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;Desmarais 等人 2014 年在《美國公共衛生期刊》分析了四千多名精神疾病成人，6 個月內有暴力行為的占 23.9%，成為暴力受害者的占 30.9%。受害的比施暴的多，而且多數暴力發生在住家，不在街頭。&lt;/li&gt;
+          &lt;li&gt;Swanson 等人 2015 年估計，就算把嚴重精神疾病帶來的額外風險完全消除，社會上的人際暴力大約只會少 4%。&lt;/li&gt;
+          &lt;li&gt;Fazel 等人 2009 年在《PLoS Medicine》的統合分析發現，風險升高主要跟合併物質濫用有關。&lt;/li&gt;
+          &lt;li&gt;台灣精神醫學會 2016 年的聲明也說，大部分病友規律治療下症狀穩定，犯罪率和暴力行為不比一般人高。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;我不會說兩者完全無關。急性期、合併酒精或藥物、沒有治療的時候，風險確實比較高。只是這些情況占少數，又多半發生在家裡和熟人之間，跟「路上每個怪怪的人都可能攻擊我」差得很遠。&lt;/p&gt;
+
+        &lt;h3&gt;5. 警告，行為違法！&lt;/h3&gt;
+
+        &lt;p&gt;上傳公審可能同時碰到好幾部法律，我整理成一張表：&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：5. 警告，行為違法！（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;法律&lt;/th&gt;&lt;th scope="col"&gt;條文&lt;/th&gt;&lt;th scope="col"&gt;內容&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;精神衛生法&lt;/td&gt;&lt;td&gt;第 37 條&lt;/td&gt;&lt;td&gt;病人的人格權及合法權益應予尊重及保障，不得歧視&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;精神衛生法&lt;/td&gt;&lt;td&gt;第 38 條第 1 項&lt;/td&gt;&lt;td&gt;網際網路等媒體的報導，不得使用與精神疾病有關的歧視性稱呼或描述&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;精神衛生法&lt;/td&gt;&lt;td&gt;第 38 條第 4 項&lt;/td&gt;&lt;td&gt;任何人不得以公開言論歧視病人，或不當影射他人罹患精神疾病&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;精神衛生法&lt;/td&gt;&lt;td&gt;第 39 條第 1 項&lt;/td&gt;&lt;td&gt;未經病人同意，不得對病人錄音、錄影或攝影，並不得報導其姓名或住（居）所&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;精神衛生法&lt;/td&gt;&lt;td&gt;第 78 條&lt;/td&gt;&lt;td&gt;違反第 38 條第 1、2 項，處 6 萬至 60 萬元罰鍰，並可令移除下架&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;精神衛生法&lt;/td&gt;&lt;td&gt;第 82 條&lt;/td&gt;&lt;td&gt;違反第 37 條或第 39 條，處 3 萬至 15 萬元罰鍰&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;民法&lt;/td&gt;&lt;td&gt;第 18、184、195 條&lt;/td&gt;&lt;td&gt;侵害名譽、隱私、肖像等人格權，可請求刪除影片、損害賠償與精神慰撫金&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;刑法&lt;/td&gt;&lt;td&gt;第 309 條&lt;/td&gt;&lt;td&gt;公然侮辱。影片配上「瘋子」「神經病」這類字眼可能構成&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;刑法&lt;/td&gt;&lt;td&gt;第 310 條&lt;/td&gt;&lt;td&gt;誹謗。以文字、圖畫散布者，最重 2 年有期徒刑&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;個人資料保護法&lt;/td&gt;&lt;td&gt;第 51 條&lt;/td&gt;&lt;td&gt;公開場所的影音原則上不適用本法，但結合姓名、住處、工作地點，或引導網友肉搜，就可能不在例外範圍內&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/mental-health-crisis-in-public/law-map.webp" alt="法律關係示意圖：從「拍下影片的人」分成「只交給警察」與「公開上傳、轉傳」兩條路，公開上傳再連到四部法律，每部法律一列，附責任性質與一句摘要" loading="lazy" width="1600" height="1432"&gt;
+          &lt;figcaption&gt;示意圖：影片只交給警察是蒐證；公開上傳或轉傳，則可能同時牽涉精神衛生法、民法、刑法與個人資料保護法，條文細節見上表。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+
+        &lt;p&gt;要說明的是，第 39 條保護的對象是「病人」，而你通常不會知道眼前的人有沒有確診。這也代表你拍下來公開的人，很可能剛好就受這一條保護。個案到底違不違法、罰多少，最後由主管機關和法院認定，但「我只是分享」在法律上不算理由。&lt;/p&gt;
+
+        &lt;p&gt;另外，蒐證跟公審要分開看。如果對方一直跟著你、威脅你，你在安全距離外錄下來交給警察，這我可以理解。前提是不要為了錄影靠近對方或拖延離開，錄完也只交給警方。捷運和店家多半有監視器，其實告訴警察時間地點，他們就能調閱。&lt;/p&gt;
+
+        &lt;p&gt;在網路上滑到這類影片的話，不轉傳、不留言嘲諷、不幫忙肉搜，順手按檢舉。&lt;/p&gt;
+
+        &lt;h2 id="s3"&gt;你需要判斷什麼&lt;/h2&gt;
+
+        &lt;p&gt;你不用判斷對方「有沒有病」，事實上也判斷不出來。在街上看起來不對勁的人，可能的原因很多：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;身體急症，像是低血糖、中風、癲癇剛發作完、高燒譫妄、頭部外傷&lt;/li&gt;
+          &lt;li&gt;失智症，會迷路、重複問同一件事、搞不清楚時間地點&lt;/li&gt;
+          &lt;li&gt;喝了酒，或是藥物的副作用、戒斷反應&lt;/li&gt;
+          &lt;li&gt;自閉症或其他神經多樣性，可能迴避眼神、有重複動作、對噪音很敏感&lt;/li&gt;
+          &lt;li&gt;聽障，或是聽不懂中文&lt;/li&gt;
+          &lt;li&gt;恐慌發作，或剛遭遇重大打擊&lt;/li&gt;
+          &lt;li&gt;也有可能真的是精神疾病的急性期&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;路人需要判斷的只有兩件事：現在有沒有危險，以及他需不需要幫忙。下一節就照這兩個問題的答案，分成四種狀況來談。&lt;/p&gt;
+
+        &lt;h2 id="s4"&gt;如果你遇到了&lt;/h2&gt;
+
+        &lt;h3&gt;行為怪異&lt;/h3&gt;
+
+        &lt;p&gt;比如在車廂裡自言自語、對著空氣說話、來回走動、突然哼歌或大笑，但沒有找任何人互動。&lt;/p&gt;
+
+        &lt;p&gt;絕大多數時候你什麼都不用做。自言自語不犯法，也沒有傷害到誰。不要盯著看，不要指指點點，當然也不要拍。被一車廂的人盯著，任何人都會更焦慮。&lt;/p&gt;
+
+        &lt;p&gt;如果你覺得不自在，換個位置或換一節車廂就好，這很正常，不需要跟誰交代。&lt;/p&gt;
+
+        &lt;p&gt;需要通報的情況是：他開始騷擾或威脅別人、看起來想傷害自己、站在月台邊緣或車道上，或者身體明顯出了狀況。人在捷運或車站的話，按車廂對講機或跟站務人員說一聲，通常比打 110 快，也比較不會驚動到他。&lt;/p&gt;
+
+        &lt;h3&gt;需要幫助&lt;/h3&gt;
+
+        &lt;p&gt;比如長輩在路口繞來繞去好像找不到路、寒流天只穿一件短袖、坐在地上起不來。&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;從他看得到的正面靠近，留一兩步距離。不要從背後拍肩膀。&lt;/li&gt;
+          &lt;li&gt;開口簡單一點：「你好，我看你好像在找路，需要幫忙嗎？」他說不用，就尊重他。&lt;/li&gt;
+          &lt;li&gt;一次問一件事，等他回答完再問下一件。&lt;/li&gt;
+          &lt;li&gt;意識不清、講話含糊、臉色發白冒冷汗、呼吸困難或有外傷，直接打 119。&lt;/li&gt;
+          &lt;li&gt;如果像是走失的失智長輩，看一下身上有沒有愛心手鍊或防走失卡片，打 110 請警察協尋家屬。&lt;/li&gt;
+          &lt;li&gt;要扶他之前先問一聲：「我扶你到旁邊坐好嗎？」&lt;/li&gt;
+          &lt;li&gt;不要自己把人帶回家或載走，交給警察或社會局。&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;p&gt;如果對方是恐慌發作，台灣精神醫學會秘書長李俊宏醫師受訪時提過，恐慌的人多半是自己在受苦，通常跟暴力無關。旁邊的人保持鎮定對他幫助最大，然後在他同意的情況下幫忙找站務人員。&lt;/p&gt;
+
+        &lt;h3&gt;帶有敵意&lt;/h3&gt;
+
+        &lt;p&gt;這是最棘手的一種：對方對著你咆哮，指控你在跟蹤他、偷拍他、是誰派來害他的，一邊講一邊靠近，甚至出言威脅。&lt;/p&gt;
+
+        &lt;p&gt;下面的做法整理自美國急診精神醫學會的 Project BETA 降溫指引和英國 NICE 的 NG10 指引。這些文件是寫給受過訓練的醫護人員看的，我改成一般人用得上的版本。先講清楚，你沒有責任把對方安撫下來。做這些事只是替自己爭取一點安全離開的時間，任何時候覺得不對，直接走就是了。&lt;/p&gt;
+
+        &lt;h4&gt;第一步：先穩住自己&lt;/h4&gt;
+
+        &lt;p&gt;深呼吸一次，慢慢吐氣。對方越激動，越會注意你的表情和姿勢，你講了什麼他反而聽不太進去。心裡提醒自己，現在要做的是安全離開，吵贏他沒有意義。&lt;/p&gt;
+
+        &lt;h4&gt;第二步：站的位置和姿勢&lt;/h4&gt;
+
+        &lt;p&gt;距離至少留兩隻手臂長，空間夠就再遠一點。不要伸手，也不要碰他，就算是出於好意拍拍肩膀也不要。&lt;/p&gt;
+
+        &lt;p&gt;留意出口在哪裡。不要擋在他和出口中間，也不要把他逼到角落，讓他想走隨時能走。你自己則盡量站在靠出口那一側。&lt;/p&gt;
+
+        &lt;p&gt;身體稍微側一點，大約 45 度，不要正面對著他。手放在他看得到的地方，掌心打開。抱胸、叉腰、手插口袋、握拳都容易被解讀成敵意。眼神自然就好，偶爾看一下他的臉，不要瞪，也不要翻白眼或冷笑。&lt;/p&gt;
+
+        &lt;p&gt;動作放慢。要拿東西之前先講一聲，例如「我拿一下包包喔」。這時候突然掏手機對著他，是最糟的動作之一。&lt;/p&gt;
+
+        &lt;h4&gt;第三步：開口說話&lt;/h4&gt;
+
+        &lt;p&gt;如果你有同伴，只讓一個人講。好幾個人同時開口，他會更混亂。同伴可以安靜地退遠一點，負責觀察、準備報案。&lt;/p&gt;
+
+        &lt;p&gt;講話的聲音壓得比他低，句子短，一次只講一件事，必要時慢慢重複。&lt;/p&gt;
+
+        &lt;p&gt;可以先回應他的情緒，像是「你看起來很生氣」「聽起來你覺得很不安全」「我沒有要傷害你」。&lt;/p&gt;
+
+        &lt;p&gt;比較難的是他講的內容明顯不是事實的時候。跟他辯（「哪有人跟蹤你，你想太多了」）通常會激怒他；順著講（「對，他們真的在監視你」）又會讓他更相信。比較穩的做法是只講你自己這邊的事實，同時承認他的感受：「我沒有在跟蹤你。我相信你現在真的很害怕。」或者「我們的看法可能不一樣，但我沒有惡意。」&lt;/p&gt;
+
+        &lt;p&gt;接著給他一點選擇和空間：「我往這邊走，讓你有空間，好嗎？」需要設界線的時候，語氣溫和但把話講清楚：「你靠這麼近我會緊張，請停在那邊。」「我可以聽你說，但請不要再往前。」&lt;/p&gt;
+
+        &lt;p&gt;有幾句話請忍住不要說：「冷靜一點！」「你有病喔？」「你有沒有吃藥？」「你再這樣我就報警！」前幾句是貼標籤，最後一句是威脅，都只會讓場面更僵。&lt;/p&gt;
+
+        &lt;h4&gt;第四步：什麼時候不要再講了&lt;/h4&gt;
+
+        &lt;p&gt;出現下面任何一種情況，就放棄溝通，準備離開：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;你已經請他停下來，他還是繼續靠近&lt;/li&gt;
+          &lt;li&gt;他說出具體的威脅，像是「我要打你」「我要殺了你」&lt;/li&gt;
+          &lt;li&gt;他手上拿著，或伸手去拿可以當武器的東西&lt;/li&gt;
+          &lt;li&gt;他握拳、揮手、推人、吐口水&lt;/li&gt;
+          &lt;li&gt;你就是覺得不對勁。這種直覺不需要證據，相信它。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h4&gt;第五步：離開&lt;/h4&gt;
+
+        &lt;p&gt;一邊說「好，我先離開，讓你有空間」，一邊慢慢往後退。除非已經有立即的危險，不要轉身就跑。&lt;/p&gt;
+
+        &lt;p&gt;往人多、明亮、有工作人員的地方走，例如站務室、超商、警衛室、附近的店家。在捷運上就下一站下車，或換到別節車廂，再按對講機通知行控中心。&lt;/p&gt;
+
+        &lt;p&gt;報案等拉開距離之後再做，不要一邊跟他對峙一邊講電話。離開之後不要回頭找他理論，也不要跟在後面看他去哪裡，那些交給警察。&lt;/p&gt;
+
+        &lt;h3&gt;立即危險&lt;/h3&gt;
+
+        &lt;p&gt;對方手上有刀或其他武器、已經動手打人、正在砸東西，或是要跳軌、自傷。&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;馬上離開現場。不要想搶下武器或把人壓制住，那是警察的工作。&lt;/li&gt;
+          &lt;li&gt;打 110。有人受傷就一併說需要救護車，或另外打 119。在捷運和車站同時按緊急對講機。&lt;/li&gt;
+          &lt;li&gt;出聲提醒旁邊的人：「前面有危險，往這邊走！」讓長輩和小孩先走。&lt;/li&gt;
+          &lt;li&gt;走不掉的話，躲進可以上鎖或有東西擋著的空間。&lt;/li&gt;
+          &lt;li&gt;在安全的前提下，記一下對方的長相、衣著和離開的方向，之後告訴警察。&lt;/li&gt;
+          &lt;li&gt;不要停下來拍。&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;p&gt;事情過後，心跳很快、手抖、一直回想、晚上睡不好，都是正常的反應。找信得過的人私下聊一聊，相關的影片和新聞少看，給自己幾天。如果過了一個月還是明顯受影響，可以打 1925，或找所在縣市的社區心理衛生中心。這段時間如果很想做點什麼，可以去做筆錄、把你看到的告訴警察、向捷運公司反映安全設施，不必把別人的臉貼到網路上。&lt;/p&gt;
+
+        &lt;h2 id="s5"&gt;如何報案&lt;/h2&gt;
+
+        &lt;h3&gt;打哪一支電話&lt;/h3&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：打哪一支電話（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;情況&lt;/th&gt;&lt;th scope="col"&gt;撥打&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;有暴力、威脅、持物，或有人可能傷人、自傷&lt;/td&gt;&lt;td&gt;110&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;有人受傷、身體急症、意識不清、需要送醫&lt;/td&gt;&lt;td&gt;119&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;擔心某人的情緒或自殺風險，但沒有立即危險&lt;/td&gt;&lt;td&gt;1925 安心專線（24 小時免付費）&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;人在捷運、車站&lt;/td&gt;&lt;td&gt;車廂對講機、站務人員&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;想了解怎麼協助家人朋友就醫&lt;/td&gt;&lt;td&gt;各縣市社區心理衛生中心、衛生局&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;h3&gt;怎麼說&lt;/h3&gt;
+
+        &lt;p&gt;講你看到的行為，還有現場需要什麼，不要替對方下診斷。&lt;/p&gt;
+
+        &lt;p&gt;「這裡有個瘋子在鬧事」這種講法，接電話的人聽完還是不知道現場的狀況。比較好的說法是：&lt;/p&gt;
+
+        &lt;blockquote&gt;
+          &lt;p&gt;○○路○○號附近有一位男性，看起來可能處在精神危機中，一直大聲吼叫、靠近路人，手上沒有看到東西。需要警察協助。&lt;/p&gt;
+        &lt;/blockquote&gt;
+
+        &lt;p&gt;盡量講到這幾項：地點、對方的外觀和行為、有沒有武器、有沒有人受傷、他有沒有可能傷害自己、你現在在哪裡、安不安全。&lt;/p&gt;
+
+        &lt;p&gt;這樣到場的警消才知道要帶什麼人、用什麼方式處理。對方也不會在無線電裡一開始就被當成「危險分子」。&lt;/p&gt;
+
+        &lt;h3&gt;報案之後會發生什麼&lt;/h3&gt;
+
+        &lt;p&gt;很多人拍影片上傳，是因為覺得不鬧大就沒人管。其實報案之後有一整套流程在走。&lt;/p&gt;
+
+        &lt;p&gt;依《精神衛生法》第 48 條，警察和消防人員發現疑似精神狀態異常、可能傷害自己或別人的人，要通知地方衛生主管機關即時查明，必要時協助護送就醫。查不出來的話，衛生機關要派人到現場，或用視訊、電話協助判斷。第 49 條則要求各縣市整合衛生、警察、消防三個單位，建立 24 小時的緊急精神醫療處置機制。相關作業辦法寫明，民眾發現這類狀況可以通知警察或消防機關，所以一般人只要記得 110 和 119。&lt;/p&gt;
+
+        &lt;p&gt;護送就醫跟強制住院是兩回事。送到醫院只是讓醫師評估。要經專科醫師診斷為「嚴重病人」、有傷害之虞、需要住院但本人拒絕，才可能緊急安置，最長 7 天，期間要完成強制鑑定。&lt;/p&gt;
+
+        &lt;p&gt;鑑定後如果仍需強制住院，要由醫院向法院聲請。這是今年 8 月 1 日才上路的新制，合議庭由 1 位法官加 2 位參審員組成，參審員一位是精神科專科醫師，一位是病人權益促進團體的代表。每次強制住院最長 60 天，只能延長一次。&lt;/p&gt;
+
+        &lt;p&gt;也就是說，你打完電話、把看到的講清楚，該做的就做完了。&lt;/p&gt;
+
+        &lt;h3&gt;其他資源&lt;/h3&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：其他資源（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;資源&lt;/th&gt;&lt;th scope="col"&gt;號碼或說明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;生命線&lt;/td&gt;&lt;td&gt;1995&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;張老師專線&lt;/td&gt;&lt;td&gt;1980&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;保護專線（家暴、兒少、老人保護）&lt;/td&gt;&lt;td&gt;113&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;中華民國康復之友聯盟、各縣市康復之友協會&lt;/td&gt;&lt;td&gt;家屬支持、社區資源&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+&lt;aside class="article-sources" aria-labelledby="sources-title"&gt;
+        &lt;h2 id="sources-title"&gt;參考資料&lt;/h2&gt;
+        &lt;ol&gt;
+          &lt;li&gt;&lt;a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=L0020030" target="_blank" rel="noopener"&gt;精神衛生法（全國法規資料庫）（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?PCODE=L0020030&amp;amp;FLNO=49&amp;amp;ty=L" target="_blank" rel="noopener"&gt;精神衛生法第 49 條及相關法規（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://www.mohw.gov.tw/cp-4250-50587-1.html" target="_blank" rel="noopener"&gt;衛生福利部：精神衛生法修正說明（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener"&gt;WHO: Mental health（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Desmarais SL, et al. (2014). Community violence perpetration and victimization among adults with mental illnesses. American Journal of Public Health. &lt;a href="https://pubmed.ncbi.nlm.nih.gov/24524530/" target="_blank" rel="noopener"&gt;PubMed（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Fazel S, Grann M. (2006). The population impact of severe mental illness on violent crime. American Journal of Psychiatry. &lt;a href="https://pubmed.ncbi.nlm.nih.gov/16877653/" target="_blank" rel="noopener"&gt;PubMed（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Fazel S, et al. (2009). Schizophrenia and violence: systematic review and meta-analysis. PLoS Medicine. &lt;a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2718581/" target="_blank" rel="noopener"&gt;全文（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Swanson JW, et al. (2015). Mental illness and reduction of gun violence and suicide. Annals of Epidemiology. &lt;a href="https://medschool.duke.edu/news/medical-sociologist-jeffrey-swanson-complex-puzzle-gun-violence" target="_blank" rel="noopener"&gt;杜克大學介紹（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Richmond JS, et al. (2012). Verbal de-escalation of the agitated patient: Project BETA. Western Journal of Emergency Medicine. &lt;a href="https://escholarship.org/uc/item/55g994m6" target="_blank" rel="noopener"&gt;全文（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://www.nice.org.uk/guidance/ng10/chapter/recommendations" target="_blank" rel="noopener"&gt;NICE guideline NG10: Violence and aggression（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://www.sop.org.tw/news/n_info.asp?%2F449.html=" target="_blank" rel="noopener"&gt;台灣精神醫學會聲明（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://www.scooptw.com/healthnews/523079/%E5%8C%97%E6%8D%B7%E7%94%B7%E7%96%91%E6%81%90%E6%85%8C%E7%99%BC%E4%BD%9C%E9%81%AD%E6%8B%8D%E7%89%87%E4%B8%8A%E5%82%B3%E7%A4%BE%E7%BE%A4%EF%BC%81%E9%86%AB%E8%AB%87%E4%BD%95%E8%AC%82%E6%81%90%E6%85%8C/" target="_blank" rel="noopener"&gt;北捷男疑恐慌發作遭拍片上傳社群，醫師說明（2026）（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://news.pchome.com.tw/society/ctinews/20251107/index-76250036611423309002.html" target="_blank" rel="noopener"&gt;北捷優先席身障男子遭拍照上傳事件（2025）（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="https://rti.org.tw/news?pid=223626&amp;amp;uid=3" target="_blank" rel="noopener"&gt;中央廣播電臺：強制住院改由法院裁定新制（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;魯迅〈孔乙己〉（1919）&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/aside&gt;</content>
     <category term="議題觀點"/>
   </entry>
   <entry>
@@ -54,6 +602,84 @@
     <updated>2026-11-14T00:00:00+08:00</updated>
     <author><name>福爾摩沙自閉大公社</name></author>
     <summary type="text">第 17 屆高雄同志大遊行將於 12 月 5 日（六）在鹽埕舉行，福爾摩沙自閉大公社已組隊參加，現在招募 1 位當天能到場的成員擔任旗手，旗子與旗杆會用超商寄給你。</summary>
+    <content type="html" xml:base="https://asdtw.org/articles/kh-pride-2026-flag-bearer.html">&lt;p class="lead"&gt;社群已組隊參加第 17 屆高雄同志大遊行，現在要找 1 位當天能到場、順手幫忙舉旗的成員。&lt;/p&gt;
+&lt;div class="note"&gt;
+          &lt;p class="note-title"&gt;招募狀態：仍未有旗手&lt;/p&gt;
+          &lt;p&gt;目前還沒有人報名。想幫忙的話，請到 Discord 的 &lt;a href="https://discord.com/channels/1532606467301965824/1569618626120523796" target="_blank" rel="noopener"&gt;#派出所 頻道（限社群成員）（另開新視窗）&lt;/a&gt;開啟工單。最後更新：2026 年 11 月 14 日。&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;今年的高雄同志大遊行，我們也會去。&lt;/p&gt;
+
+        &lt;p&gt;第 17 屆高雄同志大遊行將在 12 月 5 日（六）登場，今年的主題是「同齊・勞力」（tâng-tsê lóo-la̍t），以港都的勞動日常為出發點，關注性別少數在工作現場的處境：從工廠、軍營、運動場到辦公室，每一份付出都值得肯定，沒有人應該因為性傾向、性別認同或性別表達而被差別對待。&lt;/p&gt;
+
+        &lt;p&gt;對自閉者和其他身心障礙者來說，職場常常是另一道關卡。我們希望社群的旗子能出現在隊伍裡，讓大家看見同志社群裡也有我們。&lt;/p&gt;
+
+        &lt;h2 id="s1"&gt;我們需要旗手&lt;/h2&gt;
+
+        &lt;p&gt;福爾摩沙自閉大公社已經報名組隊參加，現在要找 &lt;strong&gt;1 位&lt;/strong&gt;當天能到場的成員擔任旗手，找到之後會更新最上方的招募狀態。&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;要做的事：&lt;/strong&gt; 在現場拿著社群的旗子就好。沒有 KPI，也不用走完全程，就是順手幫個忙。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;旗子怎麼拿到：&lt;/strong&gt; 賴奕帆會用超商寄貨把旗子和旗杆寄給你。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;旗子規格：&lt;/strong&gt; 旗杆長 2 公尺，旗面 94 × 144 公分，兩者都可以折疊，方便攜帶。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;不需要：&lt;/strong&gt; 公開出櫃、露臉、接受採訪或發言。&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;活動結束後：&lt;/strong&gt; 旗子先由你保管。如果南部短期內有其他活動要用，就繼續帶著出動；沒有的話，再用超商寄回給賴奕帆。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s2"&gt;其他要到場的成員&lt;/h2&gt;
+
+        &lt;p&gt;不擔任旗手但當天會到場的成員，請到 &lt;a href="https://discord.com/channels/1532606467301965824/1561386972310802592/1571139083332489317" target="_blank" rel="noopener"&gt;Discord 的這則訊息（限社群成員）（另開新視窗）&lt;/a&gt;領取身分組：點擊訊息下方的旗幟表情，就完成領取。&lt;/p&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/kh-pride-2026-flag-bearer/role-claim.webp" alt="領取到場身分組示意圖：一、打開文章裡的 Discord 訊息連結；二、點擊訊息下方的旗幟表情，就完成領取。" loading="lazy" width="1600" height="1120"&gt;
+          &lt;figcaption&gt;領取到場身分組示意圖：一、打開文章裡的 Discord 訊息連結；二、點擊訊息下方的旗幟表情，就完成領取。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+
+        &lt;h2 id="s3"&gt;遊行資訊&lt;/h2&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格 1（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;項目&lt;/th&gt;&lt;th scope="col"&gt;內容&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;日期&lt;/td&gt;&lt;td&gt;2026 年 12 月 5 日（六）&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;時間&lt;/td&gt;&lt;td&gt;下午，詳細時間主辦方尚未公布&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;集合地點&lt;/td&gt;&lt;td&gt;高雄市鹽埕區大勇路與河西路口&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;社群集合處&lt;/td&gt;&lt;td&gt;依現場情形而定，請準時到大勇路與河西路口的團體集合處&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;隊伍分色&lt;/td&gt;&lt;td&gt;主辦方 11 月 21 日（六）公告，確定後會更新在這裡&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;路線&lt;/td&gt;&lt;td&gt;大勇路（起點）→ 府北路 → 七賢二路（過七賢橋）→ 成功一路 → 五福三路（過五福橋）→ 回到大勇路（終點）&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;&lt;strong&gt;交通：&lt;/strong&gt; 搭高雄捷運橘線到鹽埕埔站（O2），從 2 號出口出站，沿大勇路往府北路方向走，就能抵達集合處。&lt;/p&gt;
+
+        &lt;p&gt;&lt;strong&gt;路況：&lt;/strong&gt; 沿線都是平面道路，部分路段設有人行道與無障礙設施。&lt;/p&gt;
+
+        &lt;h2 id="s4"&gt;出發前準備&lt;/h2&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;主辦方提醒當天天氣炎熱，請帶水並隨時補充水分。&lt;/li&gt;
+          &lt;li&gt;遊行現場人多、音響聲量大，對聲音敏感的成員可以帶耳塞或降噪耳機。&lt;/li&gt;
+          &lt;li&gt;需要中途離隊休息完全沒問題。當天的聯絡人就是旗手，到場後在 Discord 大群組的專門頻道互相聯絡就好。&lt;/li&gt;
+          &lt;li&gt;旗手中途要離開的話，可以把旗子交給現場會留下的人，或是自己帶回去。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s5"&gt;怎麼報名旗手&lt;/h2&gt;
+
+        &lt;p&gt;到 Discord 的 &lt;a href="https://discord.com/channels/1532606467301965824/1569618626120523796" target="_blank" rel="noopener"&gt;#派出所 頻道（限社群成員）（另開新視窗）&lt;/a&gt;，點擊「開啟工單」，在私人討論串說明你想擔任旗手。寄送用的姓名、電話與超商門市，請在工單裡提供，不要貼在公開頻道。&lt;/p&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/kh-pride-2026-flag-bearer/flag-signup.webp" alt="旗手報名方式示意圖：一、進入「#派出所」頻道；二、點擊「開啟工單」；三、在私人討論串說明想擔任旗手，寄送資料只在討論串裡提供。" loading="lazy" width="1600" height="1334"&gt;
+          &lt;figcaption&gt;旗手報名方式示意圖：一、進入「#派出所」頻道；二、點擊「開啟工單」；三、在私人討論串說明想擔任旗手，寄送資料只在討論串裡提供。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+&lt;aside class="article-sources" aria-labelledby="sources-title"&gt;
+        &lt;h2 id="sources-title"&gt;參考資料&lt;/h2&gt;
+        &lt;ol&gt;
+          &lt;li&gt;高雄同志大遊行官方網站，&lt;a href="https://khpride.org" target="_blank" rel="noopener"&gt;https://khpride.org（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;高雄同志大遊行 Facebook，&lt;a href="https://fb.com/KaohsiungPride" target="_blank" rel="noopener"&gt;https://fb.com/KaohsiungPride（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;高雄同志大遊行 Instagram，&lt;a href="https://instagram.com/khpride" target="_blank" rel="noopener"&gt;https://instagram.com/khpride（另開新視窗）&lt;/a&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/aside&gt;</content>
     <category term="社群公告"/>
   </entry>
 </feed>

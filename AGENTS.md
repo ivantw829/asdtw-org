@@ -23,7 +23,7 @@ python3 authoring/build-sitemap.py # 重建 sitemap.xml（含文章、排除 noi
 python3 authoring/md2article.py 原稿.md [--images 資料夾]  # Markdown → 文章頁，並登錄 JSON、轉 webp、產分享圖、更新列表／feed／sitemap、跑 check（格式見 authoring/article-sample.md）
 python3 authoring/build-shared.py  # 把閱讀設定、頁首、頁尾從 authoring/partials/ 寫進每一頁（改片段檔時 pre-commit 自動）；--check 只檢查
 python3 authoring/build-lists.py   # 把文章列表、上下篇（與上線後首頁「最新文章」）靜態寫進 HTML（pre-commit 自動）
-python3 authoring/build-feed.py    # 重建 Atom 訂閱源 feed.xml（pre-commit 自動）
+python3 authoring/build-feed.py    # 重建 Atom 訂閱源 feed.xml（含全文，取自 articles/*.html；pre-commit 自動）
 python3 authoring/build-members.py # 本機向 Discord 取得成員數，寫進首頁與關於頁的 <!--members:…--> 標記（pre-commit 自動；連不上只警告）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
