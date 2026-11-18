@@ -17,10 +17,10 @@ OG_INPUT_FILES = (OG_CARD, ROOT / "assets" / "img" / "brand" / "lockup-dark.svg"
 SITE_NAME = "福爾摩沙自閉大公社"
 # 分類（順序即列表頁的區塊順序）→ 列表頁的錨點 id。改分類只改這裡。
 CATEGORIES = {
-    "行動記事": "action-notes",
     "社群公告": "announcements",
     "議題觀點": "perspectives",
     "技術教學": "tutorials",
+    "行動記事": "action-notes",
 }
 SLUG_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")

@@ -20,7 +20,7 @@ e = L.esc
 
 
 def row(a: dict, with_category: bool = False) -> str:
-    """列表項：與首頁「最近的行動」同樣式（標題連結＋灰字資訊），再加一段摘要。"""
+    """首頁「最新文章」的列表項：與「最近的行動」同樣式（標題連結＋灰字資訊），再加一段摘要。"""
     info = [f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>', e(L.author_name(a)),
             f'閱讀約 {a["readingTime"]} 分鐘']
     if with_category:
@@ -28,6 +28,23 @@ def row(a: dict, with_category: bool = False) -> str:
     return (f'\n        <li><a href="/articles/{a["slug"]}.html">{e(a["title"])}</a><br>'
             f'<span class="muted">{"　".join(info)}</span>'
             f'\n          <p>{e(a["summary"])}</p></li>')
+
+
+def card(a: dict) -> str:
+    """文章列表頁的卡片：標題（h3）、灰字資訊、摘要、標籤。
+    資訊在 DOM 裡排在標題後面（報讀器先聽到標題），畫面上由 CSS 移到標題上方。"""
+    info = " · ".join(f"<span>{x}</span>" for x in [
+        f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>', e(L.author_name(a)),
+        f'閱讀約 {a["readingTime"]} 分鐘'])
+    tags = ""
+    if a.get("tags"):
+        tags = ('\n          <p class="article-card-tags"><span class="visually-hidden">標籤：</span>'
+                + "".join(f'<span class="tag tag-sub">{e(t)}</span>' for t in a["tags"]) + "</p>")
+    return (f'\n        <li>'
+            f'\n          <h3><a href="/articles/{a["slug"]}.html">{e(a["title"])}</a></h3>'
+            f'\n          <p class="article-card-meta muted">{info}</p>'
+            f'\n          <p>{e(a["summary"])}</p>{tags}'
+            f'\n        </li>')
 
 
 def category_nav(items: list[dict]) -> str:
@@ -40,7 +57,7 @@ def category_list(items: list[dict], name: str) -> str:
     rows = [a for a in items if a["category"] == name]
     if not rows:
         return '\n      <p class="muted">這個分類還沒有文章。</p>\n      '
-    return '\n      <ul class="link-rows article-list">' + "".join(row(a) for a in rows) + "\n      </ul>\n      "
+    return '\n      <ul class="cards article-cards">' + "".join(card(a) for a in rows) + "\n      </ul>\n      "
 
 
 def latest(items: list[dict]) -> str:

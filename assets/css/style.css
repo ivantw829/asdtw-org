@@ -590,6 +590,14 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 }
 .category-nav a:hover { background: var(--surface-2); text-decoration: underline; }
 .article-list p { margin-top: 0.375rem; }
+/* 列表頁卡片：沿用 .cards；資訊列在 DOM 裡排在標題後，畫面上移到標題上方，標籤貼齊卡片底部 */
+.article-cards > li { display: flex; flex-direction: column; }
+.article-cards h3 { line-height: 1.5; }
+.article-cards .article-card-meta { order: -1; margin: 0 0 0.5rem; font-size: 0.9rem; }
+.article-cards .article-card-meta span { white-space: nowrap; }
+.article-cards .article-card-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: auto; padding-top: 1rem; }
+:root[data-text="3"] .article-cards,
+:root[data-text="4"] .article-cards { grid-template-columns: 1fr; }
 
 .article { max-width: 40rem; }
 .article-head { padding-block: 3.5rem 0.5rem; }
