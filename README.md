@@ -1,26 +1,37 @@
 # 福爾摩沙自閉大公社
 
-Discord 社群「福爾摩沙自閉大公社」的官方網站：<https://asdtw.org>
+**網站：<https://asdtw.org>**
 
-純靜態 HTML／CSS／少量 JavaScript，部署在 GitHub Pages。沒有 build 步驟，也沒有套件管理。
+福爾摩沙自閉大公社是建立在 Discord 上的社群，由賴奕帆創立於 2026 年 7 月 31 日，以身心障礙者與性別、性傾向少數為主體，在線上互相支持，也一起走上街頭參與社會運動。這個 repo 是社群官方網站的原始碼，你在網站上看到的每一頁都來自這裡。
 
-## 快速開始
+## 網站內容
 
-```bash
-git clone https://github.com/ivantw829/asdtw-org.git && cd asdtw-org
-git config core.hooksPath .githooks && git config commit.template .gitmessage
-python3 -m http.server 8000     # 開啟 http://localhost:8000
-python3 authoring/check.py      # 品質與無障礙檢查（CI 也會跑）
-```
-
-## 結構
-
-| 路徑 | 說明 |
+| 頁面 | 內容 |
 |---|---|
-| `index.html` `about.html` `actions.html` `accessibility.html` | 四個頁面，共用頁首／頁尾／閱讀設定由 `authoring/partials/` 經 `build-shared.py` 寫入 |
-| `articles.html` `articles/` `data/articles.json` `feed.xml` | 文章欄位：文章頁由 `authoring/md2article.py` 從 Markdown 產生 |
-| `assets/css/style.css` | 唯一的樣式表，含色票 token、字級與高對比 |
-| `assets/js/prefs.js` | 閱讀設定（字級、對比），只用 `localStorage` |
-| `authoring/` | 檢查與工具：`check.py`、`build-shared.py`（共用區塊，片段檔在 `authoring/partials/`）、`build-sitemap.py`、`md2article.py`、`build-lists.py`、`build-feed.py`、`build-members.py`、`build-og.py`、`ship.sh`、`sync.sh`、`setup-github.sh` |
+| [首頁](https://asdtw.org/) | 社群簡介、最近的行動與最新文章 |
+| [關於與加入須知](https://asdtw.org/about.html) | 社群立場、歡迎對象、身分組說明、唯一的規則與加入方式 |
+| [行動紀錄](https://asdtw.org/actions.html) | 社群參與過的遊行、聚會與技術支援，由新到舊排列 |
+| [文章](https://asdtw.org/articles.html) | 行動記事、社群公告、議題觀點與技術教學 |
+| [無障礙與聯絡](https://asdtw.org/accessibility.html) | 閱讀設定的用法、無障礙措施、聯絡方式與隱私說明 |
 
-協作規範請見 [CONTRIBUTING.md](CONTRIBUTING.md)；所有 AI coding agent 的共用規範請見 [AGENTS.md](AGENTS.md)。Claude Code、Gemini、GitHub Copilot 與 Cursor 的入口檔案會指向同一份規範。
+想追蹤新文章，可以用 RSS 閱讀器訂閱 <https://asdtw.org/feed.xml>。
+
+## 加入社群
+
+我們歡迎任何程度的身心障礙者，以及任何性別、任何性傾向的人。健全者與異性戀者也可以加入，但本社群以當事人的需求為優先，所以加入前請先讀完[關於與加入須知](https://asdtw.org/about.html)，再透過 [Discord 邀請連結](https://discord.gg/NV6Y4vcUNt)加入。本群唯一的規則是「本群沒有規則，有委屈自己提告去。」，意思是管理員保有最終裁量權。
+
+## 無障礙與隱私
+
+網站每一頁都有閱讀設定，可以調整字級（最大到 200%）並切換預設、深色與高對比三種配色，系統開啟深色模式或提高對比時也會自動套用。所有功能都能只用鍵盤操作，文字對比以 7:1 為目標，並由自動檢查驗證，但網站尚未經過第三方的無障礙稽核，尚未做到的地方列在[無障礙與聯絡](https://asdtw.org/accessibility.html)頁。
+
+本站不使用 Cookie，不使用分析或追蹤工具，不載入外部字體與外部腳本，也不刊登照片或列出成員名單，閱讀設定只存在你瀏覽器的本機儲存空間，不會送出。網站由 GitHub Pages 代管，GitHub 可能依其政策記錄連線資料。
+
+## 聯絡我們
+
+媒體採訪、團體合作、內容更正與無障礙問題回報，請來信 <info@asdtw.org>。回報網站錯誤或無障礙問題時，也可以在本 repo 開 issue，請附上是哪一頁，以及你使用的裝置、瀏覽器與輔助科技。
+
+創辦人的個人網站：<https://me.asdtw.org/>
+
+## 參與網站維護
+
+網站是純靜態的 HTML、CSS 與少量 JavaScript，部署在 GitHub Pages，沒有 build 步驟。想投稿文章，請先讀網站上的〈[投稿指引](https://asdtw.org/articles/writing-guide.html)〉，再到 Discord 開工單。想協助修改網站，請見 [CONTRIBUTING.md](CONTRIBUTING.md)，使用 AI coding agent 時，共用規範在 [AGENTS.md](AGENTS.md)。
