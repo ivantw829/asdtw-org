@@ -64,6 +64,17 @@ bash authoring/sync.sh
 - pre-commit 會執行 `build-members.py`，在本機向 Discord 取得人數，更新首頁與關於頁的「逾 N 位」（往下取整到十位數，見第 9 節）。為了不讓人數在十位邊界晃動時污染無關的 PR，只有即時人數 ≥ N + 11 才往上、≤ N − 5 才往下，其餘維持原數字；關於頁的年月只在數字改寫時更新。連不上 Discord 只警告，不擋提交。
 - pre-commit 也會更新 sitemap 日期，這些變更會跟著進 commit。提交後用 `git show --stat` 看一下，跟這次工作無關的變更請拆到另一個 PR。
 
+### PR 與 main 衝突時
+
+文章列表、上下篇、首頁最新文章、成員數、`feed.xml`、`sitemap.xml` 都是產物（見第 9 節），兩個 PR 同時新增文章時，後合併的那個幾乎一定會在這些地方衝突。這時在 PR 分支上執行：
+
+```bash
+python3 authoring/resolve-generated.py
+git push
+```
+
+腳本會合併最新的 `main`，自動解決只牽涉產物的衝突（`data/articles.json` 與分享圖 manifest 以文章為單位合併），重建產物、跑 `check.py`，通過後 commit。真正的內容衝突（例如兩邊改了同一段文字、同一篇文章）會列出來，手動解決並 `git add` 後再執行一次即可。腳本不會 rebase、force push 或 push。
+
 ## 4. 新增一場行動紀錄
 
 1. `git switch -c content/<slug>`
