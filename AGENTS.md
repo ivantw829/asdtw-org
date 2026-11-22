@@ -12,7 +12,7 @@
 - 先讀 `CONTRIBUTING.md`；工作涉及文章、行動紀錄、無障礙或 SEO 時，讀其中對應的章節。
 - 一個變更只處理一件事。除非使用者明確要求，不要 commit、push、開 PR、merge 或修改 GitHub 設定。
 - 不加入外部 CDN、Google Fonts、追蹤碼、Cookie、分析工具或其他第三方資源。
-- 不提交成員真名、私人訊息、聯絡方式或可辨識未成年人的資訊。
+- 不提交社員真名、私人訊息、聯絡方式或可辨識未成年人的資訊。
 
 ## 常用命令
 
@@ -24,7 +24,7 @@ python3 authoring/md2article.py 原稿.md [--images 資料夾]  # Markdown → �
 python3 authoring/build-shared.py  # 把閱讀設定、頁首、頁尾從 authoring/partials/ 寫進每一頁（改片段檔時 pre-commit 自動）；--check 只檢查
 python3 authoring/build-lists.py   # 把文章列表、上下篇（與上線後首頁「最新文章」）靜態寫進 HTML（pre-commit 自動）
 python3 authoring/build-feed.py    # 重建 Atom 訂閱源 feed.xml（含全文，取自 articles/*.html；pre-commit 自動）
-python3 authoring/build-members.py # 本機向 Discord 取得成員數，寫進首頁與關於頁的 <!--members:…--> 標記（pre-commit 自動；連不上只警告）
+python3 authoring/build-members.py # 本機向 Discord 取得社員數，寫進首頁與關於頁的 <!--members:…--> 標記（pre-commit 自動；連不上只警告）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
 python3 authoring/resolve-generated.py  # PR 與 main 衝突時：在 PR 分支上合併最新 main、自動解決產物（列表、feed、sitemap、articles.json 等）的衝突、重建並 commit，之後 git push；真正的內容衝突會列出來交給人
@@ -39,7 +39,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 - **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。首頁主視覺 `.hero-art` 是設計師交付的三個 SVG（`assets/img/hero-light/dark/high.svg`，珊瑚紅＋炭灰＋琥珀黃；深色版炭灰換米白；高對比版只有白與黃），以 CSS 背景圖依配色載入，元素 `aria-hidden`；字級調到「特大」以上時隱藏。換圖須符合 `check.py` 第 6 節規格（色票、viewBox `0 0 600 800`、<50KB、無 text／漸層／濾鏡）。
 - **品牌素材**（來自品牌識別交件，放 `assets/img/brand/`）：`lockup-dark.svg`／`lockup-light.svg`（橫式組合，頁尾與 404 以背景圖載入，淺色用 dark、深色與高對比用 light）、`lockup-rainbow.svg`（彩虹馬卡龍橫式組合，淺色配色用自帶炭灰底的版本、深色與高對比用 `lockup-rainbow-clear.svg`（去背淺字，淺底看不見），**只能放在 `.badge-pride` 內**，目前僅用於行動紀錄頁）。分享圖由 `authoring/og/banner-coral.svg` 經 `card.html` 產生。以上裝飾元素一律 `aria-hidden="true"`；**頁首站名維持真文字**，不要改成圖片。`check.py` 第 7 節會驗證這些素材（不得含 text／漸層／濾鏡等、色票限制）。
 - **色票只有 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色必須兩處一起改；`check.py` 會算五組色票的 WCAG 對比，文字低於 7:1 或元件低於 3:1 即失敗。互動元件外框用 `--border`，`--line` 只用於裝飾。
-- **成員數**：首頁與關於頁的「逾 N 位」由 `build-members.py` 在本機取得後靜態寫入，**不要在訪客端用 JS 呼叫 Discord API**（違反隱私聲明，見 PR #16）。往下取整到十位數，並以首頁現有數字 N 做遲滯判斷，避免 Discord 人數在十位邊界晃動時每次提交都來回改寫：即時人數 ≥ N + 11 才往上、≤ N − 5 才往下，其餘維持原數字；關於頁的年月只在數字真的改寫時更新。
+- **社員數**：首頁與關於頁的「逾 N 位」由 `build-members.py` 在本機取得後靜態寫入，**不要在訪客端用 JS 呼叫 Discord API**（違反隱私聲明，見 PR #16）。往下取整到十位數，並以首頁現有數字 N 做遲滯判斷，避免 Discord 人數在十位邊界晃動時每次提交都來回改寫：即時人數 ≥ N + 11 才往上、≤ N − 5 才往下，其餘維持原數字；關於頁的年月只在數字真的改寫時更新。
 - 全部使用 rem；不得用 px 的 font-size。沒有 `style=`、`<style>`、行內 `<script>`，也不載入任何外部資源（字體用系統字體）。
 - **Meta／SEO**：每頁 `<head>` 有 canonical、robots、OG／Twitter（`summary_large_image`，根目錄頁的圖固定為 `/assets/img/og.jpg` 1200×630，文章頁用各自的 `/assets/img/og/<slug>.jpg`）、icon 與 JSON-LD（首頁 Organization＋WebSite，內頁 BreadcrumbList；刻意不放 Event，因為沒有街道地址）。`check.py` 全部會驗證。**改站名、標語或卡片設計（`authoring/og/card.html`）後要執行 `build-og.py`**；網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、根目錄 `favicon.ico`）來自品牌識別交件（左閉右開的無限符號，珊瑚紅底），不由腳本產生；`favicon.ico` 必須含 16／32／48 三種尺寸、另有 `icon-192.png`（Google 搜尋結果要求圖示邊長為 48 的倍數）；這兩個由品牌包的 `標誌-含底色` PNG 縮製。換圖示時這些檔案一起換。JSON-LD 不得出現所屬團體名稱或舊信箱。
 - 網域以 `CNAME` 為唯一來源；每頁的 canonical／og:url 是寫死的完整網址，`check.py` 會比對。
@@ -54,8 +54,8 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 ## 內容守則（來自站長的明確決定）
 
 - **網站上不得出現「捍衛全台學權行動」**（社群所屬團體）；活動只寫社群自己的參與。
-- **不放照片、不列成員名單**；站長也不打算放照片。
-- 說明社群設計（如身分組）時，**用重畫的示意圖，不用站長或成員的截圖**；示意圖不得出現真實成員的選擇、頭像或政黨名稱，並標明「示意圖」。目前只有 `assets/img/roles-mock.svg`（關於頁），`check.py` 第 8 節會驗證；說明性圖片必須有非空 alt、width／height 與 `<figcaption>`，圖中資訊在正文要有同樣內容的文字。
+- **不放照片、不列社員名單**；站長也不打算放照片。
+- 說明社群設計（如身分組）時，**用重畫的示意圖，不用站長或社員的截圖**；示意圖不得出現真實社員的選擇、頭像或政黨名稱，並標明「示意圖」。目前只有 `assets/img/roles-mock.svg`（關於頁），`check.py` 第 8 節會驗證；說明性圖片必須有非空 alt、width／height 與 `<figcaption>`，圖中資訊在正文要有同樣內容的文字。
 - 首頁「左翼立場」卡片裡那句關於疫苗的話是站長刻意做的嘲諷（反疫苗陰謀論），藏在原生 `<details class="aside">` 裡，點開才看到「以上是對反疫苗陰謀論的嘲諷。疫苗不會導致自閉症。」。**不要移除聲明、不要改成純文字或隱藏連結**；`<summary>` 內的 `visually-hidden`「（可展開聲明）」是給螢幕報讀器的提示，要保留。
 - 不要編造事實（日期、人數、經歷、無障礙測試結果）。沒有提供就留空或詢問。無障礙聲明不得宣稱已通過認證或實機測試，除非真的做過。
 - 本群唯一規則原文：「本群沒有規則，有委屈自己提告去。」說明為管理員保有最終裁量權，不要改寫成其他規則。
@@ -68,7 +68,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 - `main` 受保護：只能經 PR、CI（`check`、`pr-title`）通過後 squash merge。PR 標題即 `main` 的 commit 訊息，必須是約定式 commit：`type(scope): 描述`；分支前綴對應 type。
 - 本機 hooks 在 `.githooks/`，每個 clone 要自己啟用：`git config core.hooksPath .githooks`。pre-commit 拒絕在 `main` 提交、更新 sitemap、跑 `check.py`；pre-push 拒絕推 `main`。
 - **`ship.sh` 會在 CI 通過後自動 squash merge，等於直接上線**；使用者只要求 commit 或開 PR 時不要用它，改用 `git commit`／`git push`／`gh pr create`。
-- **pre-commit 會把成員數（`build-members.py` 連 Discord）與 sitemap 日期的變更一起帶進 commit**。提交後用 `git show --stat` 檢查，與本次工作無關的變更要告知使用者，必要時拆成另一個 PR。
+- **pre-commit 會把社員數（`build-members.py` 連 Discord）與 sitemap 日期的變更一起帶進 commit**。提交後用 `git show --stat` 檢查，與本次工作無關的變更要告知使用者，必要時拆成另一個 PR。
 - **`ship.sh` 會 `git add -A`，把工作區所有未提交的變更都帶進這個 PR**（包含站長直接改的文案）。發布前先 `git status`，確認內容都是要一起發布的；站長可能在另一個流程已經合併過同樣的變更，這時 `ship.sh` 會回報「沒有任何變更可以發布」，並留下一個空分支，用 `git switch main && git branch -d <分支>` 清掉即可。
 - 一個 PR 做一件事。不要 force push、不要在 `main` 上 rebase。
 - PR 與 `main` 衝突（通常是兩篇文章同時進行，產物互撞）時，在 PR 分支上執行 `python3 authoring/resolve-generated.py`，不要手改產物的衝突標記。

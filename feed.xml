@@ -48,7 +48,7 @@
 
         &lt;h2 id="s2"&gt;到場社員登記&lt;/h2&gt;
 
-        &lt;p&gt;預計會到場的社員請至 &lt;a href="https://discord.com/channels/1532606467301965824/1561386972310802592/1571139083332489317" target="_blank" rel="noopener"&gt;Discord 的這則訊息（限社群成員）（另開新視窗）&lt;/a&gt; 領取身分組：點擊訊息下方的旗幟表情，就完成領取。&lt;/p&gt;
+        &lt;p&gt;預計會到場的社員請至 &lt;a href="https://discord.com/channels/1532606467301965824/1561386972310802592/1571139083332489317" target="_blank" rel="noopener"&gt;Discord 的這則訊息（限社員）（另開新視窗）&lt;/a&gt; 領取身分組：點擊訊息下方的旗幟表情，就完成領取。&lt;/p&gt;
 
         &lt;figure class="figure"&gt;
           &lt;img src="https://asdtw.org/assets/img/articles/kh-pride-2026/role-claim.webp" alt="領取到場身分組示意圖：一、打開文章裡的 Discord 訊息連結；二、點擊訊息下方的旗幟表情，就完成領取。" loading="lazy" width="1600" height="1120"&gt;
@@ -59,7 +59,7 @@
 
         &lt;ul&gt;
           &lt;li&gt;主辦方提醒當天天氣炎熱，請帶水並隨時補充水分。&lt;/li&gt;
-          &lt;li&gt;遊行現場人多、音響聲量大，對聲音敏感的成員可以帶耳塞或降噪耳機。&lt;/li&gt;
+          &lt;li&gt;遊行現場人多、音響聲量大，對聲音敏感的社員可以帶耳塞或降噪耳機。&lt;/li&gt;
           &lt;li&gt;需要中途離隊休息完全沒問題。到場後在 Discord 大群組的專門頻道互相聯絡。&lt;/li&gt;
           &lt;li&gt;旗手中途要離開的話，可以把旗子交給現場會留下的人，或是自己帶回去。&lt;/li&gt;
         &lt;/ul&gt;
@@ -438,8 +438,8 @@ tags: 議題觀點, 標籤1, 標籤2
 
         &lt;ul&gt;
           &lt;li&gt;寫活動時只寫社群自己的參與，和其他團體一起參加的活動，只寫本社群做了什麼，不代替其他團體發言。&lt;/li&gt;
-          &lt;li&gt;不放照片，也不列成員名單，包括活動現場照、合照與成員的 Discord 暱稱，作者署名用的筆名除外。&lt;/li&gt;
-          &lt;li&gt;說明用的圖一律重畫成示意圖，不用站長或成員的截圖，圖中不得出現真實成員的選擇、頭像或政黨名稱，圖說要標明「示意圖」。&lt;/li&gt;
+          &lt;li&gt;不放照片，也不列社員名單，包括活動現場照、合照與社員的 Discord 暱稱，作者署名用的筆名除外。&lt;/li&gt;
+          &lt;li&gt;說明用的圖一律重畫成示意圖，不用站長或社員的截圖，圖中不得出現真實社員的選擇、頭像或政黨名稱，圖說要標明「示意圖」。&lt;/li&gt;
           &lt;li&gt;不編造事實，日期、人數、地點與經歷都要有根據，不確定就不寫或先問站長，沒有提供的資訊（例如地點）也不要自己補上。&lt;/li&gt;
           &lt;li&gt;引用要標出處，重要的論點與數據列在文末的「參考資料」，引用他人文字則以短句為限，不整段複製。&lt;/li&gt;
           &lt;li&gt;不寫出可以辨識個人的資訊（例如真名、學校、病史、聯絡方式），寫別人的經歷前要先取得對方同意，並刪去可以辨識身分的細節。&lt;/li&gt;
@@ -495,7 +495,7 @@ tags: 議題觀點, 標籤1, 標籤2
           &lt;figcaption&gt;示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。&lt;/figcaption&gt;
         &lt;/figure&gt;
 
-        &lt;p&gt;還不是成員的話，請先看&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;。&lt;/p&gt;
+        &lt;p&gt;還不是社員的話，請先看&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;。&lt;/p&gt;
 
         &lt;h2 id="s9"&gt;交稿前檢查清單&lt;/h2&gt;
 
@@ -505,7 +505,7 @@ tags: 議題觀點, 標籤1, 標籤2
           &lt;li&gt;每個段落只有一行，清單只有一層&lt;/li&gt;
           &lt;li&gt;使用全形標點與「」引號，中文與英文、數字之間有半形空格&lt;/li&gt;
           &lt;li&gt;連結都是 https，連結文字說得出要連到哪裡&lt;/li&gt;
-          &lt;li&gt;沒有照片、截圖與成員名單，示意圖的圖說標明「示意圖」&lt;/li&gt;
+          &lt;li&gt;沒有照片、截圖與社員名單，示意圖的圖說標明「示意圖」&lt;/li&gt;
           &lt;li&gt;活動只寫社群自己的參與，沒有可以辨識個人的資訊&lt;/li&gt;
           &lt;li&gt;日期、人數等事實都確認過，引用有列出處&lt;/li&gt;
           &lt;li&gt;HackMD 連結在無痕視窗打得開&lt;/li&gt;
@@ -806,9 +806,9 @@ tags: 議題觀點, 標籤1, 標籤2
     <published>2026-11-16T00:00:00+08:00</published>
     <updated>2026-11-16T00:00:00+08:00</updated>
     <author><name>福爾摩沙自閉大公社</name></author>
-    <summary type="text">福爾摩沙自閉大公社目前有 411 位成員。群組人數達到 626 人時，將在群組內抽出 1 位成員，送出《自閉者的面具，為何戴上，如何卸下》一本，平裝書或電子書由獲獎者自選。</summary>
-    <content type="html" xml:base="https://asdtw.org/articles/unmasking-autism-giveaway-626.html">&lt;p class="lead"&gt;人數達到 626 人時，在群組內抽出 1 位成員送書，最晚 12 月 25 日開抽。邀請大家幫忙宣傳社群。&lt;/p&gt;
-&lt;p&gt;福爾摩沙自閉大公社目前有 411 位成員。為了讓更多需要的人找到這裡，我們預告一項抽獎：&lt;strong&gt;群組人數達到 626 人時，將在群組內抽出 1 位成員，送出《自閉者的面具，為何戴上，如何卸下》一本；最晚在 12 月 25 日聖誕節開抽。&lt;/strong&gt;&lt;/p&gt;
+    <summary type="text">福爾摩沙自閉大公社目前有 411 位社員。群組人數達到 626 人時，將在群組內抽出 1 位社員，送出《自閉者的面具，為何戴上，如何卸下》一本，平裝書或電子書由獲獎者自選。</summary>
+    <content type="html" xml:base="https://asdtw.org/articles/unmasking-autism-giveaway-626.html">&lt;p class="lead"&gt;人數達到 626 人時，在群組內抽出 1 位社員送書，最晚 12 月 25 日開抽。邀請大家幫忙宣傳社群。&lt;/p&gt;
+&lt;p&gt;福爾摩沙自閉大公社目前有 411 位社員。為了讓更多需要的人找到這裡，我們預告一項抽獎：&lt;strong&gt;群組人數達到 626 人時，將在群組內抽出 1 位社員，送出《自閉者的面具，為何戴上，如何卸下》一本；最晚在 12 月 25 日聖誕節開抽。&lt;/strong&gt;&lt;/p&gt;
 
         &lt;h2 id="s1"&gt;獎品&lt;/h2&gt;
 
@@ -832,7 +832,7 @@ tags: 議題觀點, 標籤1, 標籤2
             &lt;tr&gt;&lt;td&gt;保底開抽日&lt;/td&gt;&lt;td&gt;2026 年 12 月 25 日（五），屆時不論人數都會開抽&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;抽獎地點&lt;/td&gt;&lt;td&gt;在 Discord 群組內進行&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;名額&lt;/td&gt;&lt;td&gt;1 位&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;參加資格&lt;/td&gt;&lt;td&gt;限臺灣地區的群組成員&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;參加資格&lt;/td&gt;&lt;td&gt;限臺灣地區的社員&lt;/td&gt;&lt;/tr&gt;
           &lt;/tbody&gt;
         &lt;/table&gt;
         &lt;/div&gt;
@@ -841,7 +841,7 @@ tags: 議題觀點, 標籤1, 標籤2
 
         &lt;div class="note"&gt;
           &lt;p class="note-title"&gt;注意事項&lt;/p&gt;
-          &lt;p&gt;本活動限臺灣地區的群組成員參加。福爾摩沙自閉大公社保有本活動的最終解釋權。&lt;/p&gt;
+          &lt;p&gt;本活動限臺灣地區的社員參加。福爾摩沙自閉大公社保有本活動的最終解釋權。&lt;/p&gt;
         &lt;/div&gt;
 
         &lt;h2 id="s3"&gt;請幫忙宣傳社群&lt;/h2&gt;
