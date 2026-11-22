@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""從本機向 Discord 取得成員數，靜態寫進 HTML（訪客端不連外、不需要 JS）。改寫的區塊：
+"""從本機向 Discord 取得社員數，靜態寫進 HTML（訪客端不連外、不需要 JS）。改寫的區塊：
 
   index.html、about.html   <!--members:count--> … <!--/members:count-->   如「逾 400 位」
   about.html               <!--members:date--> … <!--/members:date-->     如「2026 年 11 月」（人數有變才更新）
@@ -28,7 +28,7 @@ FILES = [ROOT / "index.html", ROOT / "about.html"]
 
 
 def warn(msg: str) -> None:
-    print(f"! 成員數未更新：{msg}", file=sys.stderr)
+    print(f"! 社員數未更新：{msg}", file=sys.stderr)
 
 
 def invite_code() -> str | None:

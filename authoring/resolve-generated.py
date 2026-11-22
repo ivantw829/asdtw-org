@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """把最新的 main 合併進目前分支，並自動解決「產物」造成的衝突。
 
-文章列表、上下篇、首頁最新文章、成員數、feed.xml、sitemap.xml 都是腳本產生的，兩個 PR 同時新增文章時
+文章列表、上下篇、首頁最新文章、社員數、feed.xml、sitemap.xml 都是腳本產生的，兩個 PR 同時新增文章時
 幾乎一定會在這些地方衝突，但真正的內容並沒有衝突。本腳本會：
 
 1. 在乾淨的工作區執行 git fetch origin main，再 git merge --no-commit FETCH_HEAD（已在合併中就沿用）。

@@ -66,7 +66,7 @@ bash authoring/sync.sh
 
 ### PR 與 main 衝突時
 
-文章列表、上下篇、首頁最新文章、成員數、`feed.xml`、`sitemap.xml` 都是產物（見第 9 節），兩個 PR 同時新增文章時，後合併的那個幾乎一定會在這些地方衝突。這時在 PR 分支上執行：
+文章列表、上下篇、首頁最新文章、社員數、`feed.xml`、`sitemap.xml` 都是產物（見第 9 節），兩個 PR 同時新增文章時，後合併的那個幾乎一定會在這些地方衝突。這時在 PR 分支上執行：
 
 ```bash
 python3 authoring/resolve-generated.py
@@ -91,8 +91,8 @@ git push
 2. `python3 authoring/md2article.py 原稿.md --images 圖片資料夾`：產生 `articles/<slug>.html`、登錄 `data/articles.json`、轉 webp、產分享圖（需 Chrome）、更新列表／上下篇／訂閱源／sitemap，最後跑 `check.py`。改稿後重跑同一份原稿即更新。
 3. 本機預覽 `/articles/<slug>.html` 與 `/articles.html`，確認後 `bash authoring/ship.sh "content(article): 新增〈標題〉"`。
 
-- 作者可用筆名，沒填就是社群名義；未經本人同意不寫成員的真名。
-- 不放現場照片與成員截圖；說明用的圖重畫成示意圖，圖說標明「示意圖」，圖中資訊在正文也要有文字。
+- 作者可用筆名，沒填就是社群名義；未經本人同意不寫社員的真名。
+- 不放現場照片與社員截圖；說明用的圖重畫成示意圖，圖說標明「示意圖」，圖中資訊在正文也要有文字。
 - 文章列表、上下篇與首頁「最新文章」都由腳本產生（見第 9 節），不要手改。`articles.html` 公開（index）時導覽必須有「文章」，反之亦然，`check.py` 會驗證。
 - 草稿（`draft: true`）不會出現在列表、sitemap 與訂閱源，但知道網址的人看得到，不要放敏感內容。
 - 刪除文章：刪掉 `articles/<slug>.html` 與 `data/articles.json` 那一筆，再跑 `python3 authoring/build-og.py --articles`、`build-lists.py`、`build-feed.py`、`build-sitemap.py`。
@@ -123,16 +123,16 @@ git push
 
 以下是站長明確做過的決定，大多數 CI 擋不到，修改文案前請先讀完。
 
-- **不放照片，不列成員名單。** 這是社群的決定，用來保護身心障礙者與性別少數成員；站長也不打算放照片。
+- **不放照片，不列社員名單。** 這是社群的決定，用來保護身心障礙者與性別少數社員；站長也不打算放照片。
 - **網站上不得出現「捍衛全台學權行動」**（社群所屬的團體），包括 JSON-LD；活動只寫社群自己的參與。
 - **首頁「左翼立場」卡片裡關於疫苗的那句話是刻意的嘲諷**（針對反疫苗陰謀論）。聲明「以上是對反疫苗陰謀論的嘲諷。疫苗不會導致自閉症。」藏在原生 `<details class="aside">` 裡，點開才看得到。不要移除聲明，不要改成純文字或隱藏連結；`<summary>` 內的 `visually-hidden`「（可展開聲明）」是給螢幕報讀器的提示，要保留。
 - **群規原文**是「本群沒有規則，有委屈自己提告去。」，說明為管理員保有最終裁量權。不要改寫成其他規則。
 - **歡迎對象的措辭是「當事人優先」**：歡迎各種程度的身心障礙者、任何性別與性傾向的人；健全者與異性戀者可以加入，但以當事人的需求為優先。不要寫成「不歡迎」。
 - 創辦人簡介只連到 https://me.asdtw.org/，不另外寫。
 - **不要編造事實**（日期、人數、經歷、無障礙測試結果）。沒有提供就留空或詢問站長。無障礙聲明不得宣稱已通過認證或實機測試，除非真的做過。
-- 說明社群設計（例如身分組）時，用**重畫的示意圖**，不用站長或成員的截圖。示意圖不得出現真實成員的選擇、頭像或政黨名稱，圖說要標明「示意圖」，圖中的資訊在正文也要有同樣內容的文字。目前只有 `assets/img/roles-mock.svg`（關於頁）。
+- 說明社群設計（例如身分組）時，用**重畫的示意圖**，不用站長或社員的截圖。示意圖不得出現真實社員的選擇、頭像或政黨名稱，圖說要標明「示意圖」，圖中的資訊在正文也要有同樣內容的文字。目前只有 `assets/img/roles-mock.svg`（關於頁）。
 - 排版：全形標點，中文與英數之間加半形空格，引號用「」；語氣認真正式，一律使用繁體中文。
-- 不提交：金鑰、私人信件、成員的全名與聯絡方式、可辨識的未成年人資訊。已提交的敏感內容即使刪除仍留在歷史裡，提交前請確認。
+- 不提交：金鑰、私人信件、社員的全名與聯絡方式、可辨識的未成年人資訊。已提交的敏感內容即使刪除仍留在歷史裡，提交前請確認。
 - 不使用 Cookie、分析或追蹤碼，不載入外部字體與腳本；若要新增，須先更新「隱私說明」。
 - 提交信箱使用 GitHub noreply 位址。
 
@@ -156,11 +156,11 @@ git push
 | 文章列表、上下篇、首頁最新文章（`<!--lists:…-->` 等） | `data/articles.json` | `build-lists.py` | pre-commit |
 | 訂閱源 `feed.xml`（含全文） | `data/articles.json`＋`articles/*.html` | `build-feed.py` | pre-commit |
 | `sitemap.xml` | 各頁的 robots 設定 | `build-sitemap.py` | pre-commit |
-| 成員數「逾 N 位」（`<!--members:…-->`） | Discord 邀請連結 | `build-members.py` | pre-commit（連不上只警告） |
+| 社員數「逾 N 位」（`<!--members:…-->`） | Discord 邀請連結 | `build-members.py` | pre-commit（連不上只警告） |
 | 分享圖 `og.jpg`、`assets/img/og/<slug>.jpg` | `authoring/og/*.html` | `build-og.py`（需要 Chrome 與 macOS） | 文章有變更時由 pre-commit 執行 |
 
 - `build-shared.py`、`build-lists.py`、`build-feed.py` 都有 `--check`，可以單獨確認某一類產物是不是最新。
-- **成員數只能在本機取得後靜態寫入，不要改成在訪客端用 JS 呼叫 Discord API**：那樣會讓訪客的瀏覽器連到 Discord，違反隱私說明（見 PR #16）。
+- **社員數只能在本機取得後靜態寫入，不要改成在訪客端用 JS 呼叫 Discord API**：那樣會讓訪客的瀏覽器連到 Discord，違反隱私說明（見 PR #16）。
 - 改站名、標語或分享卡設計（`authoring/og/card.html`）後，要手動執行 `python3 authoring/build-og.py` 並提交產物。
 
 ## 10. 新增頁面

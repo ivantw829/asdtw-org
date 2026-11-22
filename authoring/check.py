@@ -622,12 +622,12 @@ for script, what in (("build-shared.py", "共用區塊"), ("build-lists.py", "�
     if r.returncode:
         err(script, (r.stderr.strip() or f"{what}過期") + "")
 
-# ---------------------------------------------------------------- 10. 成員數（build-members.py 寫入的靜態文字）
+# ---------------------------------------------------------------- 10. 社員數（build-members.py 寫入的靜態文字）
 for name, keys in (("index.html", ("count",)), ("about.html", ("count", "date"))):
     text = (ROOT / name).read_text(encoding="utf-8")
     for k in keys:
         if not re.search(rf"<!--members:{k}-->[^<]+<!--/members:{k}-->", text):
-            err(name, f"缺少或清空了 <!--members:{k}--> 標記（成員數由 authoring/build-members.py 寫入）")
+            err(name, f"缺少或清空了 <!--members:{k}--> 標記（社員數由 authoring/build-members.py 寫入）")
 
 # ---------------------------------------------------------------- 結果
 if errors:
