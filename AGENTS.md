@@ -27,6 +27,7 @@ python3 authoring/build-feed.py    # 重建 Atom 訂閱源 feed.xml（含全文�
 python3 authoring/build-members.py # 本機向 Discord 取得成員數，寫進首頁與關於頁的 <!--members:…--> 標記（pre-commit 自動；連不上只警告）
 bash authoring/ship.sh "type(scope): 描述"  # 一鍵：分支→commit→push→PR→等 CI→squash merge→同步（CO_AUTHOR、PR_BODY 環境變數可選）
 bash authoring/sync.sh             # 本機與 GitHub 對齊
+python3 authoring/resolve-generated.py  # PR 與 main 衝突時：在 PR 分支上合併最新 main、自動解決產物（列表、feed、sitemap、articles.json 等）的衝突、重建並 commit，之後 git push；真正的內容衝突會列出來交給人
 python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分享圖（需 Chrome 與 macOS sips；CI 沒有，產物要一併提交）；--articles 只補文章圖、<slug> 只產該篇
 ```
 
@@ -70,4 +71,5 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 - **pre-commit 會把成員數（`build-members.py` 連 Discord）與 sitemap 日期的變更一起帶進 commit**。提交後用 `git show --stat` 檢查，與本次工作無關的變更要告知使用者，必要時拆成另一個 PR。
 - **`ship.sh` 會 `git add -A`，把工作區所有未提交的變更都帶進這個 PR**（包含站長直接改的文案）。發布前先 `git status`，確認內容都是要一起發布的；站長可能在另一個流程已經合併過同樣的變更，這時 `ship.sh` 會回報「沒有任何變更可以發布」，並留下一個空分支，用 `git switch main && git branch -d <分支>` 清掉即可。
 - 一個 PR 做一件事。不要 force push、不要在 `main` 上 rebase。
+- PR 與 `main` 衝突（通常是兩篇文章同時進行，產物互撞）時，在 PR 分支上執行 `python3 authoring/resolve-generated.py`，不要手改產物的衝突標記。
 - 沒有被要求就不要 commit、push 或開 PR。
