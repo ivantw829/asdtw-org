@@ -4,8 +4,245 @@
   <link rel="alternate" type="text/html" href="https://asdtw.org/articles.html"/>
   <link rel="self" type="application/atom+xml" href="https://asdtw.org/feed.xml"/>
   <id>https://asdtw.org/</id>
-  <updated>2026-11-22T00:00:00+08:00</updated>
+  <updated>2026-11-23T00:00:00+08:00</updated>
   <author><name>福爾摩沙自閉大公社</name><uri>https://asdtw.org/</uri></author>
+  <entry>
+    <title>投稿指引：怎麼寫一篇本站文章</title>
+    <link rel="alternate" type="text/html" href="https://asdtw.org/articles/writing-guide.html"/>
+    <id>https://asdtw.org/articles/writing-guide.html</id>
+    <published>2026-11-16T00:00:00+08:00</published>
+    <updated>2026-11-23T00:00:00+08:00</updated>
+    <author><name>福爾摩沙自閉大公社</name></author>
+    <summary type="text">想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。</summary>
+    <content type="html" xml:base="https://asdtw.org/articles/writing-guide.html">&lt;p class="lead"&gt;在 HackMD 寫好原稿、公開連結，再到 Discord 開工單投稿。&lt;/p&gt;
+&lt;p&gt;這篇寫給想在本站發表文章的寫手。你只要在 HackMD 用 Markdown 寫好原稿，再把連結發到 Discord 的工單，站長就會轉成網頁、產生分享圖並上線，你不需要會寫程式，也不需要碰 GitHub。&lt;/p&gt;
+
+        &lt;p&gt;照下面的格式與守則寫，可以省掉來回修改的時間，遇到不確定的地方先問站長，不要自己猜。&lt;/p&gt;
+
+        &lt;nav class="note toc" aria-label="本文目錄"&gt;
+          &lt;p class="note-title"&gt;本文目錄&lt;/p&gt;
+          &lt;ol&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s1"&gt;整體流程&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s2"&gt;分類&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s3"&gt;原稿格式&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s4"&gt;內文寫法&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s5"&gt;排版與用字&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s6"&gt;內容守則&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s7"&gt;無障礙寫作&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s8"&gt;投稿流程&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s9"&gt;交稿前檢查清單&lt;/a&gt;&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/nav&gt;
+
+        &lt;h2 id="s1"&gt;整體流程&lt;/h2&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;選定分類與主題&lt;/li&gt;
+          &lt;li&gt;在 HackMD 照「原稿格式」寫好原稿&lt;/li&gt;
+          &lt;li&gt;用文末的交稿前檢查清單自我檢查&lt;/li&gt;
+          &lt;li&gt;公開 HackMD 連結，發到 Discord「#派出所」的工單&lt;/li&gt;
+          &lt;li&gt;站長轉檔、預覽、確認後上線&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;h2 id="s2"&gt;分類&lt;/h2&gt;
+
+        &lt;p&gt;每篇文章只能選一個分類，分類固定為下表四類，不能自創，不確定該放哪一類時就問站長。&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：分類（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;分類&lt;/th&gt;&lt;th scope="col"&gt;適合寫什麼&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;行動記事&lt;/td&gt;&lt;td&gt;社群參與過的活動（遊行、線下聚會、技術支援等）的紀錄與心得&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;社群公告&lt;/td&gt;&lt;td&gt;招募、抽獎、規劃中的活動、社群異動&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;議題觀點&lt;/td&gt;&lt;td&gt;身心障礙、自閉、性別等議題的論述與應對指南&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;技術教學&lt;/td&gt;&lt;td&gt;軟體、輔具、Discord 等操作教學&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;寫「行動記事」時，如果活動已經列在&lt;a href="https://asdtw.org/actions.html"&gt;行動紀錄&lt;/a&gt;，請告訴站長，文章頁會連到那一筆紀錄。&lt;/p&gt;
+
+        &lt;h2 id="s3"&gt;原稿格式&lt;/h2&gt;
+
+        &lt;p&gt;原稿寫在 HackMD 的一份筆記裡，開頭用兩條 &lt;code&gt;---&lt;/code&gt; 夾住標題與標籤，接著寫作者，再接內文。&lt;code&gt;title&lt;/code&gt; 與 &lt;code&gt;tags&lt;/code&gt; 這兩個欄位名稱用英文，不要翻譯，後面的冒號用半形。&lt;/p&gt;
+
+        &lt;pre&gt;&lt;code&gt;---
+title: 文章標題
+tags: 議題觀點, 標籤1, 標籤2
+---
+
+&amp;gt; 作者：筆名
+
+[[目錄]]
+
+開頭段落……
+
+## 第一個大標
+
+內文……&lt;/code&gt;&lt;/pre&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：原稿格式（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;項目&lt;/th&gt;&lt;th scope="col"&gt;必填&lt;/th&gt;&lt;th scope="col"&gt;規則&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;title&lt;/td&gt;&lt;td&gt;是&lt;/td&gt;&lt;td&gt;文章標題，也會印在分享圖上，建議在 30 字以內&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;tags&lt;/td&gt;&lt;td&gt;是&lt;/td&gt;&lt;td&gt;第一個寫分類（四類之一，字要完全一樣），後面接 1～3 個標籤，用半形逗號分隔。下標籤前先看現有文章用過哪些，意思相近就沿用&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;作者&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;寫成「&amp;gt; 作者：筆名」，可以用筆名，不寫就以「福爾摩沙自閉大公社」的名義發表&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;摘要&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;50～160 字，會用在文章列表、搜尋結果與分享預覽，可以寫在工單訊息裡，沒寫就由站長撰寫&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;導言&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;一句話，30～60 字，顯示在標題下方，可以寫在工單訊息裡，沒寫就由站長撰寫&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;發布日期、網址名稱等技術欄位由站長處理，不用寫。&lt;/p&gt;
+
+        &lt;h2 id="s4"&gt;內文寫法&lt;/h2&gt;
+
+        &lt;p&gt;網站只支援下表列出的寫法，表外的語法（例如斜體、多層清單、HTML）不會正確顯示。&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：內文寫法（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;要做什麼&lt;/th&gt;&lt;th scope="col"&gt;寫法&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;大標&lt;/td&gt;&lt;td&gt;&lt;code&gt;## 標題&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;小標&lt;/td&gt;&lt;td&gt;&lt;code&gt;### 標題&lt;/code&gt;（前面必須先有大標）&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;小小標&lt;/td&gt;&lt;td&gt;&lt;code&gt;#### 標題&lt;/code&gt;（前面必須先有小標）&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;粗體重點&lt;/td&gt;&lt;td&gt;&lt;code&gt;**重點**&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;無序清單&lt;/td&gt;&lt;td&gt;每項開頭 &lt;code&gt;- &lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;有序清單&lt;/td&gt;&lt;td&gt;每項開頭 &lt;code&gt;1. &lt;/code&gt;、&lt;code&gt;2. &lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;連結&lt;/td&gt;&lt;td&gt;&lt;code&gt;[文字](https://網址)&lt;/code&gt;，外部連結會自動加上「（另開新視窗）」&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;引言&lt;/td&gt;&lt;td&gt;每行開頭 &lt;code&gt;&amp;gt; &lt;/code&gt;，最後一行寫 &lt;code&gt;&amp;gt; — 出處&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;表格&lt;/td&gt;&lt;td&gt;每列開頭與結尾放半形直線，欄位之間也用直線隔開，第二列每欄寫 ---&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;提示框&lt;/td&gt;&lt;td&gt;&lt;code&gt;[[提示框：標題]]&lt;/code&gt;，下一行起是內容，到空行為止&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;金句&lt;/td&gt;&lt;td&gt;&lt;code&gt;[[金句：一句話]]&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;目錄&lt;/td&gt;&lt;td&gt;在開頭放 &lt;code&gt;[[目錄]]&lt;/code&gt;，會列出所有大標&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;分隔線&lt;/td&gt;&lt;td&gt;單獨一行 &lt;code&gt;---&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;示意圖&lt;/td&gt;&lt;td&gt;在 HackMD 直接貼上圖片，再把方括號裡的文字改成圖說，圖說不能空白&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;參考資料&lt;/td&gt;&lt;td&gt;文末寫 &lt;code&gt;## 參考資料&lt;/code&gt;，下面用編號清單&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;寫的時候有幾個地方容易出錯：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;一個段落只能是一行，段落中間按 Enter 換行會被拆成兩段，段落之間則要空一行。&lt;/li&gt;
+          &lt;li&gt;標題不能跳級，文章標題已經是最大一級，所以內文從 &lt;code&gt;##&lt;/code&gt; 開始，不要用 &lt;code&gt;#&lt;/code&gt;。&lt;/li&gt;
+          &lt;li&gt;清單只有一層，需要細項時拆成小標加清單，或改用表格。&lt;/li&gt;
+          &lt;li&gt;連結一律用 https，站內頁面寫成 &lt;code&gt;/about.html&lt;/code&gt; 這種以 &lt;code&gt;/&lt;/code&gt; 開頭的路徑。&lt;/li&gt;
+          &lt;li&gt;示意圖可以直接貼進 HackMD，也可以把原始檔傳到工單，png、jpg 或 webp 都可以，站長會下載轉檔，但不要引用其他網站上的圖片。&lt;/li&gt;
+          &lt;li&gt;圖說同時是替代文字，要寫成完整的句子，讓看不到圖的人也知道圖在說什麼。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;HackMD 的預覽不認得 &lt;code&gt;[[提示框]]&lt;/code&gt;、&lt;code&gt;[[金句]]&lt;/code&gt; 與 &lt;code&gt;[[目錄]]&lt;/code&gt;，會照原文顯示，這是正常的，轉成網頁後就會變成對應的元件。&lt;/p&gt;
+
+        &lt;h2 id="s5"&gt;排版與用字&lt;/h2&gt;
+
+        &lt;p&gt;全站一律使用繁體中文與台灣用語，語氣認真、正式。&lt;/p&gt;
+
+        &lt;div class="table-wrap" role="region" aria-label="表格：排版與用字（可左右捲動）" tabindex="0"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;規則&lt;/th&gt;&lt;th scope="col"&gt;正確&lt;/th&gt;&lt;th scope="col"&gt;錯誤&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td&gt;標點用全形&lt;/td&gt;&lt;td&gt;今天，我們出發。&lt;/td&gt;&lt;td&gt;今天,我們出發.&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;引號用「」，引號內再引用用『』&lt;/td&gt;&lt;td&gt;她說「我聽到『加油』了」&lt;/td&gt;&lt;td&gt;她說“我聽到‘加油’了”&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;中文與英文、數字之間加半形空格&lt;/td&gt;&lt;td&gt;第 17 屆高雄同志大遊行在 Discord 公告&lt;/td&gt;&lt;td&gt;第17屆高雄同志大遊行在Discord公告&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;全形標點前後不加空格&lt;/td&gt;&lt;td&gt;使用 Discord。&lt;/td&gt;&lt;td&gt;使用 Discord 。&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;日期寫法&lt;/td&gt;&lt;td&gt;2026 年 12 月 5 日（六）&lt;/td&gt;&lt;td&gt;2026/12/5&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;書名、片名用《》，篇名用〈〉&lt;/td&gt;&lt;td&gt;《自閉者的面具》&lt;/td&gt;&lt;td&gt;自閉者的面具&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;用詞上請注意以下幾點：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;提到社群時，第一次寫全名「福爾摩沙自閉大公社」，之後可以寫「本社群」。&lt;/li&gt;
+          &lt;li&gt;介紹歡迎對象時用「當事人優先」的說法，健全者與異性戀者可以加入，但以當事人的需求為優先，不要寫成「不歡迎」。&lt;/li&gt;
+          &lt;li&gt;提到社群的秩序時，照&lt;a href="https://asdtw.org/about.html#order"&gt;關於頁「社群秩序」&lt;/a&gt;的原文引用，不要改寫成其他規則。&lt;/li&gt;
+          &lt;li&gt;外文專有名詞第一次出現時，可以在括號裡註明中文譯名或簡單說明。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s6"&gt;內容守則&lt;/h2&gt;
+
+        &lt;p&gt;下面前四條是本站的編輯原則，不符合的稿件會退回修改，後三條則是寫作建議。&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;寫活動時只寫社群自己的參與，和其他團體一起參加的活動，只寫本社群做了什麼，不代替其他團體發言。&lt;/li&gt;
+          &lt;li&gt;不放照片，也不列社員名單，包括活動現場照、合照與社員的 Discord 暱稱，作者署名用的筆名除外。&lt;/li&gt;
+          &lt;li&gt;說明用的圖一律重畫成示意圖，不用站長或社員的截圖，圖中不得出現真實社員的選擇、頭像或政黨名稱，圖說要標明「示意圖」。&lt;/li&gt;
+          &lt;li&gt;不編造事實，日期、人數、地點與經歷都要有根據，不確定就不寫或先問站長，沒有提供的資訊（例如地點）也不要自己補上。&lt;/li&gt;
+          &lt;li&gt;引用要標出處，重要的論點與數據列在文末的「參考資料」，引用他人文字則以短句為限，不整段複製。&lt;/li&gt;
+          &lt;li&gt;不寫出可以辨識個人的資訊（例如真名、學校、病史、聯絡方式），寫別人的經歷前要先取得對方同意，並刪去可以辨識身分的細節。&lt;/li&gt;
+          &lt;li&gt;以社群名義（不寫作者）發表的文章代表整個社群，所以個人觀點請署名發表。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s7"&gt;無障礙寫作&lt;/h2&gt;
+
+        &lt;p&gt;本站讀者可能使用螢幕報讀器、會放大字級，或需要易讀的文字，寫稿時請注意以下幾點：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;句子太長時拆開，一個段落以三、四句為限。&lt;/li&gt;
+          &lt;li&gt;結論先講，在開頭段落說清楚這篇要讓讀者知道什麼、做什麼。&lt;/li&gt;
+          &lt;li&gt;用大小標切分段落，報讀器使用者會靠標題跳著讀，所以標題要能單獨看懂，不要只寫「其他」。&lt;/li&gt;
+          &lt;li&gt;連結文字要說明連到哪裡，例如寫「&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;」，不要寫「點這裡」。&lt;/li&gt;
+          &lt;li&gt;圖片只是補充，圖中的資訊在正文裡要有同樣內容的文字，圖說也要寫成完整的句子。&lt;/li&gt;
+          &lt;li&gt;不要只靠顏色、位置或表情符號表達意思，例如不要寫「請參考右邊紅色的字」。&lt;/li&gt;
+          &lt;li&gt;內容涉及創傷時，在開頭用提示框說明提到了什麼（例如自傷、暴力），讓讀者自己決定要不要繼續讀。&lt;/li&gt;
+          &lt;li&gt;縮寫第一次出現時要寫全名，例如「自閉症譜系（ASD）」。&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2 id="s8"&gt;投稿流程&lt;/h2&gt;
+
+        &lt;p&gt;原稿在 HackMD 寫好並開放公開閱讀後，再把連結發到 Discord 的工單。&lt;/p&gt;
+
+        &lt;h3&gt;在 HackMD 寫稿並公開連結&lt;/h3&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;到 &lt;a href="https://hackmd.io/" target="_blank" rel="noopener"&gt;HackMD（另開新視窗）&lt;/a&gt; 新增一份筆記，照「原稿格式」寫好。&lt;/li&gt;
+          &lt;li&gt;點右上角的「分享」。&lt;/li&gt;
+          &lt;li&gt;「可閱讀」選「所有人」，再按「複製共享連結」。&lt;/li&gt;
+          &lt;li&gt;用瀏覽器的無痕視窗開一次連結，確認沒有登入也看得到。&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;p&gt;如果「可編輯」也設為「所有人」，拿到連結的人都能修改你的原稿，請自行權衡。&lt;/p&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/writing-guide/hackmd-share.webp" alt="示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。" loading="lazy" width="1600" height="1376"&gt;
+          &lt;figcaption&gt;示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+
+        &lt;h3&gt;把連結發到工單&lt;/h3&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;在 Discord 進入「#派出所」頻道。&lt;/li&gt;
+          &lt;li&gt;點擊 OuO BOT 客服中心的「開啟工單」。&lt;/li&gt;
+          &lt;li&gt;在私人討論串貼上標題、分類與 HackMD 連結，一篇文章開一張工單，示意圖的原始檔也可以一起傳到工單裡。&lt;/li&gt;
+          &lt;li&gt;站長轉檔、預覽後會在工單回覆，需要修改時，直接改 HackMD 上的同一份原稿。&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;figure class="figure"&gt;
+          &lt;img src="https://asdtw.org/assets/img/articles/writing-guide/ticket-submit.webp" alt="示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。" loading="lazy" width="1600" height="1344"&gt;
+          &lt;figcaption&gt;示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。&lt;/figcaption&gt;
+        &lt;/figure&gt;
+
+        &lt;p&gt;還不是社員的話，請先看&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;。&lt;/p&gt;
+
+        &lt;h2 id="s9"&gt;交稿前檢查清單&lt;/h2&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;分類是四類之一，標籤有 1～3 個&lt;/li&gt;
+          &lt;li&gt;內文從 &lt;code&gt;##&lt;/code&gt; 開始，標題沒有跳級&lt;/li&gt;
+          &lt;li&gt;每個段落只有一行，清單只有一層&lt;/li&gt;
+          &lt;li&gt;使用全形標點與「」引號，中文與英文、數字之間有半形空格&lt;/li&gt;
+          &lt;li&gt;連結都是 https，連結文字說得出要連到哪裡&lt;/li&gt;
+          &lt;li&gt;沒有照片、截圖與社員名單，示意圖的圖說標明「示意圖」&lt;/li&gt;
+          &lt;li&gt;活動只寫社群自己的參與，沒有可以辨識個人的資訊&lt;/li&gt;
+          &lt;li&gt;日期、人數等事實都確認過，引用有列出處&lt;/li&gt;
+          &lt;li&gt;HackMD 連結在無痕視窗打得開&lt;/li&gt;
+        &lt;/ul&gt;</content>
+    <category term="技術教學"/>
+  </entry>
   <entry>
     <title>福爾摩沙自閉大公社確定參與 2026 高雄同志大遊行</title>
     <link rel="alternate" type="text/html" href="https://asdtw.org/articles/kh-pride-2026.html"/>
@@ -274,243 +511,6 @@
         &lt;/ol&gt;
       &lt;/aside&gt;</content>
     <category term="社群公告"/>
-  </entry>
-  <entry>
-    <title>投稿指引：怎麼寫一篇本站文章</title>
-    <link rel="alternate" type="text/html" href="https://asdtw.org/articles/writing-guide.html"/>
-    <id>https://asdtw.org/articles/writing-guide.html</id>
-    <published>2026-11-16T00:00:00+08:00</published>
-    <updated>2026-11-18T00:00:00+08:00</updated>
-    <author><name>福爾摩沙自閉大公社</name></author>
-    <summary type="text">想在福爾摩沙自閉大公社網站發表文章嗎？本文說明四個分類、原稿格式與 Markdown 寫法、排版用字、內容守則與無障礙寫作，以及怎麼在 HackMD 寫稿、公開連結，再到 Discord 開工單投稿。</summary>
-    <content type="html" xml:base="https://asdtw.org/articles/writing-guide.html">&lt;p class="lead"&gt;在 HackMD 寫好原稿、公開連結，再到 Discord 開工單投稿。&lt;/p&gt;
-&lt;p&gt;這篇寫給想在本站發表文章的寫手。你只要在 HackMD 用 Markdown 寫好原稿，再把連結發到 Discord 的工單，站長就會轉成網頁、產生分享圖並上線，你不需要會寫程式，也不需要碰 GitHub。&lt;/p&gt;
-
-        &lt;p&gt;照下面的格式與守則寫，可以省掉來回修改的時間，遇到不確定的地方先問站長，不要自己猜。&lt;/p&gt;
-
-        &lt;nav class="note toc" aria-label="本文目錄"&gt;
-          &lt;p class="note-title"&gt;本文目錄&lt;/p&gt;
-          &lt;ol&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s1"&gt;整體流程&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s2"&gt;分類&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s3"&gt;原稿格式&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s4"&gt;內文寫法&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s5"&gt;排版與用字&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s6"&gt;內容守則&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s7"&gt;無障礙寫作&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s8"&gt;投稿流程&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="https://asdtw.org/articles/writing-guide.html#s9"&gt;交稿前檢查清單&lt;/a&gt;&lt;/li&gt;
-          &lt;/ol&gt;
-        &lt;/nav&gt;
-
-        &lt;h2 id="s1"&gt;整體流程&lt;/h2&gt;
-
-        &lt;ol&gt;
-          &lt;li&gt;選定分類與主題&lt;/li&gt;
-          &lt;li&gt;在 HackMD 照「原稿格式」寫好原稿&lt;/li&gt;
-          &lt;li&gt;用文末的交稿前檢查清單自我檢查&lt;/li&gt;
-          &lt;li&gt;公開 HackMD 連結，發到 Discord「#派出所」的工單&lt;/li&gt;
-          &lt;li&gt;站長轉檔、預覽、確認後上線&lt;/li&gt;
-        &lt;/ol&gt;
-
-        &lt;h2 id="s2"&gt;分類&lt;/h2&gt;
-
-        &lt;p&gt;每篇文章只能選一個分類，分類固定為下表四類，不能自創，不確定該放哪一類時就問站長。&lt;/p&gt;
-
-        &lt;div class="table-wrap" role="region" aria-label="表格：分類（可左右捲動）" tabindex="0"&gt;
-        &lt;table&gt;
-          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;分類&lt;/th&gt;&lt;th scope="col"&gt;適合寫什麼&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;&lt;td&gt;行動記事&lt;/td&gt;&lt;td&gt;社群參與過的活動（遊行、線下聚會、技術支援等）的紀錄與心得&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;社群公告&lt;/td&gt;&lt;td&gt;招募、抽獎、規劃中的活動、社群異動&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;議題觀點&lt;/td&gt;&lt;td&gt;身心障礙、自閉、性別等議題的論述與應對指南&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;技術教學&lt;/td&gt;&lt;td&gt;軟體、輔具、Discord 等操作教學&lt;/td&gt;&lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;寫「行動記事」時，如果活動已經列在&lt;a href="https://asdtw.org/actions.html"&gt;行動紀錄&lt;/a&gt;，請告訴站長，文章頁會連到那一筆紀錄。&lt;/p&gt;
-
-        &lt;h2 id="s3"&gt;原稿格式&lt;/h2&gt;
-
-        &lt;p&gt;原稿寫在 HackMD 的一份筆記裡，開頭用兩條 &lt;code&gt;---&lt;/code&gt; 夾住標題與標籤，接著寫作者，再接內文。&lt;code&gt;title&lt;/code&gt; 與 &lt;code&gt;tags&lt;/code&gt; 這兩個欄位名稱用英文，不要翻譯，後面的冒號用半形。&lt;/p&gt;
-
-        &lt;pre&gt;&lt;code&gt;---
-title: 文章標題
-tags: 議題觀點, 標籤1, 標籤2
----
-
-&amp;gt; 作者：筆名
-
-[[目錄]]
-
-開頭段落……
-
-## 第一個大標
-
-內文……&lt;/code&gt;&lt;/pre&gt;
-
-        &lt;div class="table-wrap" role="region" aria-label="表格：原稿格式（可左右捲動）" tabindex="0"&gt;
-        &lt;table&gt;
-          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;項目&lt;/th&gt;&lt;th scope="col"&gt;必填&lt;/th&gt;&lt;th scope="col"&gt;規則&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;&lt;td&gt;title&lt;/td&gt;&lt;td&gt;是&lt;/td&gt;&lt;td&gt;文章標題，也會印在分享圖上，建議在 30 字以內&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;tags&lt;/td&gt;&lt;td&gt;是&lt;/td&gt;&lt;td&gt;第一個寫分類（四類之一，字要完全一樣），後面接 1～3 個標籤，用半形逗號分隔。下標籤前先看現有文章用過哪些，意思相近就沿用&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;作者&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;寫成「&amp;gt; 作者：筆名」，可以用筆名，不寫就以「福爾摩沙自閉大公社」的名義發表&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;摘要&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;50～160 字，會用在文章列表、搜尋結果與分享預覽，可以寫在工單訊息裡，沒寫就由站長撰寫&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;導言&lt;/td&gt;&lt;td&gt;否&lt;/td&gt;&lt;td&gt;一句話，30～60 字，顯示在標題下方，可以寫在工單訊息裡，沒寫就由站長撰寫&lt;/td&gt;&lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;發布日期、網址名稱等技術欄位由站長處理，不用寫。&lt;/p&gt;
-
-        &lt;h2 id="s4"&gt;內文寫法&lt;/h2&gt;
-
-        &lt;p&gt;網站只支援下表列出的寫法，表外的語法（例如斜體、多層清單、HTML）不會正確顯示。&lt;/p&gt;
-
-        &lt;div class="table-wrap" role="region" aria-label="表格：內文寫法（可左右捲動）" tabindex="0"&gt;
-        &lt;table&gt;
-          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;要做什麼&lt;/th&gt;&lt;th scope="col"&gt;寫法&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;&lt;td&gt;大標&lt;/td&gt;&lt;td&gt;&lt;code&gt;## 標題&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;小標&lt;/td&gt;&lt;td&gt;&lt;code&gt;### 標題&lt;/code&gt;（前面必須先有大標）&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;小小標&lt;/td&gt;&lt;td&gt;&lt;code&gt;#### 標題&lt;/code&gt;（前面必須先有小標）&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;粗體重點&lt;/td&gt;&lt;td&gt;&lt;code&gt;**重點**&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;無序清單&lt;/td&gt;&lt;td&gt;每項開頭 &lt;code&gt;- &lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;有序清單&lt;/td&gt;&lt;td&gt;每項開頭 &lt;code&gt;1. &lt;/code&gt;、&lt;code&gt;2. &lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;連結&lt;/td&gt;&lt;td&gt;&lt;code&gt;[文字](https://網址)&lt;/code&gt;，外部連結會自動加上「（另開新視窗）」&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;引言&lt;/td&gt;&lt;td&gt;每行開頭 &lt;code&gt;&amp;gt; &lt;/code&gt;，最後一行寫 &lt;code&gt;&amp;gt; — 出處&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;表格&lt;/td&gt;&lt;td&gt;每列開頭與結尾放半形直線，欄位之間也用直線隔開，第二列每欄寫 ---&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;提示框&lt;/td&gt;&lt;td&gt;&lt;code&gt;[[提示框：標題]]&lt;/code&gt;，下一行起是內容，到空行為止&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;金句&lt;/td&gt;&lt;td&gt;&lt;code&gt;[[金句：一句話]]&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;目錄&lt;/td&gt;&lt;td&gt;在開頭放 &lt;code&gt;[[目錄]]&lt;/code&gt;，會列出所有大標&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;分隔線&lt;/td&gt;&lt;td&gt;單獨一行 &lt;code&gt;---&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;示意圖&lt;/td&gt;&lt;td&gt;在 HackMD 直接貼上圖片，再把方括號裡的文字改成圖說，圖說不能空白&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;參考資料&lt;/td&gt;&lt;td&gt;文末寫 &lt;code&gt;## 參考資料&lt;/code&gt;，下面用編號清單&lt;/td&gt;&lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;寫的時候有幾個地方容易出錯：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;一個段落只能是一行，段落中間按 Enter 換行會被拆成兩段，段落之間則要空一行。&lt;/li&gt;
-          &lt;li&gt;標題不能跳級，文章標題已經是最大一級，所以內文從 &lt;code&gt;##&lt;/code&gt; 開始，不要用 &lt;code&gt;#&lt;/code&gt;。&lt;/li&gt;
-          &lt;li&gt;清單只有一層，需要細項時拆成小標加清單，或改用表格。&lt;/li&gt;
-          &lt;li&gt;連結一律用 https，站內頁面寫成 &lt;code&gt;/about.html&lt;/code&gt; 這種以 &lt;code&gt;/&lt;/code&gt; 開頭的路徑。&lt;/li&gt;
-          &lt;li&gt;示意圖可以直接貼進 HackMD，也可以把原始檔傳到工單，png、jpg 或 webp 都可以，站長會下載轉檔，但不要引用其他網站上的圖片。&lt;/li&gt;
-          &lt;li&gt;圖說同時是替代文字，要寫成完整的句子，讓看不到圖的人也知道圖在說什麼。&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;HackMD 的預覽不認得 &lt;code&gt;[[提示框]]&lt;/code&gt;、&lt;code&gt;[[金句]]&lt;/code&gt; 與 &lt;code&gt;[[目錄]]&lt;/code&gt;，會照原文顯示，這是正常的，轉成網頁後就會變成對應的元件。&lt;/p&gt;
-
-        &lt;h2 id="s5"&gt;排版與用字&lt;/h2&gt;
-
-        &lt;p&gt;全站一律使用繁體中文與台灣用語，語氣認真、正式。&lt;/p&gt;
-
-        &lt;div class="table-wrap" role="region" aria-label="表格：排版與用字（可左右捲動）" tabindex="0"&gt;
-        &lt;table&gt;
-          &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;規則&lt;/th&gt;&lt;th scope="col"&gt;正確&lt;/th&gt;&lt;th scope="col"&gt;錯誤&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;&lt;td&gt;標點用全形&lt;/td&gt;&lt;td&gt;今天，我們出發。&lt;/td&gt;&lt;td&gt;今天,我們出發.&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;引號用「」，引號內再引用用『』&lt;/td&gt;&lt;td&gt;她說「我聽到『加油』了」&lt;/td&gt;&lt;td&gt;她說“我聽到‘加油’了”&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;中文與英文、數字之間加半形空格&lt;/td&gt;&lt;td&gt;第 17 屆高雄同志大遊行在 Discord 公告&lt;/td&gt;&lt;td&gt;第17屆高雄同志大遊行在Discord公告&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;全形標點前後不加空格&lt;/td&gt;&lt;td&gt;使用 Discord。&lt;/td&gt;&lt;td&gt;使用 Discord 。&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;日期寫法&lt;/td&gt;&lt;td&gt;2026 年 12 月 5 日（六）&lt;/td&gt;&lt;td&gt;2026/12/5&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;書名、片名用《》，篇名用〈〉&lt;/td&gt;&lt;td&gt;《自閉者的面具》&lt;/td&gt;&lt;td&gt;自閉者的面具&lt;/td&gt;&lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;用詞上請注意以下幾點：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;提到社群時，第一次寫全名「福爾摩沙自閉大公社」，之後可以寫「本社群」。&lt;/li&gt;
-          &lt;li&gt;介紹歡迎對象時用「當事人優先」的說法，健全者與異性戀者可以加入，但以當事人的需求為優先，不要寫成「不歡迎」。&lt;/li&gt;
-          &lt;li&gt;提到群組規則時照原文引用：「本群沒有規則，有委屈自己提告去。」不要改寫成其他規則。&lt;/li&gt;
-          &lt;li&gt;外文專有名詞第一次出現時，可以在括號裡註明中文譯名或簡單說明。&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;h2 id="s6"&gt;內容守則&lt;/h2&gt;
-
-        &lt;p&gt;下面前四條是本站的編輯原則，不符合的稿件會退回修改，後三條則是寫作建議。&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;寫活動時只寫社群自己的參與，和其他團體一起參加的活動，只寫本社群做了什麼，不代替其他團體發言。&lt;/li&gt;
-          &lt;li&gt;不放照片，也不列社員名單，包括活動現場照、合照與社員的 Discord 暱稱，作者署名用的筆名除外。&lt;/li&gt;
-          &lt;li&gt;說明用的圖一律重畫成示意圖，不用站長或社員的截圖，圖中不得出現真實社員的選擇、頭像或政黨名稱，圖說要標明「示意圖」。&lt;/li&gt;
-          &lt;li&gt;不編造事實，日期、人數、地點與經歷都要有根據，不確定就不寫或先問站長，沒有提供的資訊（例如地點）也不要自己補上。&lt;/li&gt;
-          &lt;li&gt;引用要標出處，重要的論點與數據列在文末的「參考資料」，引用他人文字則以短句為限，不整段複製。&lt;/li&gt;
-          &lt;li&gt;不寫出可以辨識個人的資訊（例如真名、學校、病史、聯絡方式），寫別人的經歷前要先取得對方同意，並刪去可以辨識身分的細節。&lt;/li&gt;
-          &lt;li&gt;以社群名義（不寫作者）發表的文章代表整個社群，所以個人觀點請署名發表。&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;h2 id="s7"&gt;無障礙寫作&lt;/h2&gt;
-
-        &lt;p&gt;本站讀者可能使用螢幕報讀器、會放大字級，或需要易讀的文字，寫稿時請注意以下幾點：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;句子太長時拆開，一個段落以三、四句為限。&lt;/li&gt;
-          &lt;li&gt;結論先講，在開頭段落說清楚這篇要讓讀者知道什麼、做什麼。&lt;/li&gt;
-          &lt;li&gt;用大小標切分段落，報讀器使用者會靠標題跳著讀，所以標題要能單獨看懂，不要只寫「其他」。&lt;/li&gt;
-          &lt;li&gt;連結文字要說明連到哪裡，例如寫「&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;」，不要寫「點這裡」。&lt;/li&gt;
-          &lt;li&gt;圖片只是補充，圖中的資訊在正文裡要有同樣內容的文字，圖說也要寫成完整的句子。&lt;/li&gt;
-          &lt;li&gt;不要只靠顏色、位置或表情符號表達意思，例如不要寫「請參考右邊紅色的字」。&lt;/li&gt;
-          &lt;li&gt;內容涉及創傷時，在開頭用提示框說明提到了什麼（例如自傷、暴力），讓讀者自己決定要不要繼續讀。&lt;/li&gt;
-          &lt;li&gt;縮寫第一次出現時要寫全名，例如「自閉症譜系（ASD）」。&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;h2 id="s8"&gt;投稿流程&lt;/h2&gt;
-
-        &lt;p&gt;原稿在 HackMD 寫好並開放公開閱讀後，再把連結發到 Discord 的工單。&lt;/p&gt;
-
-        &lt;h3&gt;在 HackMD 寫稿並公開連結&lt;/h3&gt;
-
-        &lt;ol&gt;
-          &lt;li&gt;到 &lt;a href="https://hackmd.io/" target="_blank" rel="noopener"&gt;HackMD（另開新視窗）&lt;/a&gt; 新增一份筆記，照「原稿格式」寫好。&lt;/li&gt;
-          &lt;li&gt;點右上角的「分享」。&lt;/li&gt;
-          &lt;li&gt;「可閱讀」選「所有人」，再按「複製共享連結」。&lt;/li&gt;
-          &lt;li&gt;用瀏覽器的無痕視窗開一次連結，確認沒有登入也看得到。&lt;/li&gt;
-        &lt;/ol&gt;
-
-        &lt;p&gt;如果「可編輯」也設為「所有人」，拿到連結的人都能修改你的原稿，請自行權衡。&lt;/p&gt;
-
-        &lt;figure class="figure"&gt;
-          &lt;img src="https://asdtw.org/assets/img/articles/writing-guide/hackmd-share.webp" alt="示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。" loading="lazy" width="1600" height="1376"&gt;
-          &lt;figcaption&gt;示意圖：在 HackMD 新增筆記寫好原稿，點右上「分享」，把「可閱讀」選成「所有人」後按「複製共享連結」。&lt;/figcaption&gt;
-        &lt;/figure&gt;
-
-        &lt;h3&gt;把連結發到工單&lt;/h3&gt;
-
-        &lt;ol&gt;
-          &lt;li&gt;在 Discord 進入「#派出所」頻道。&lt;/li&gt;
-          &lt;li&gt;點擊 OuO BOT 客服中心的「開啟工單」。&lt;/li&gt;
-          &lt;li&gt;在私人討論串貼上標題、分類與 HackMD 連結，一篇文章開一張工單，示意圖的原始檔也可以一起傳到工單裡。&lt;/li&gt;
-          &lt;li&gt;站長轉檔、預覽後會在工單回覆，需要修改時，直接改 HackMD 上的同一份原稿。&lt;/li&gt;
-        &lt;/ol&gt;
-
-        &lt;figure class="figure"&gt;
-          &lt;img src="https://asdtw.org/assets/img/articles/writing-guide/ticket-submit.webp" alt="示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。" loading="lazy" width="1600" height="1344"&gt;
-          &lt;figcaption&gt;示意圖：在 Discord 進入「#派出所」，點 OuO BOT 客服中心的「開啟工單」，在私人討論串貼上標題、分類與 HackMD 連結。&lt;/figcaption&gt;
-        &lt;/figure&gt;
-
-        &lt;p&gt;還不是社員的話，請先看&lt;a href="https://asdtw.org/about.html"&gt;加入須知&lt;/a&gt;。&lt;/p&gt;
-
-        &lt;h2 id="s9"&gt;交稿前檢查清單&lt;/h2&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;分類是四類之一，標籤有 1～3 個&lt;/li&gt;
-          &lt;li&gt;內文從 &lt;code&gt;##&lt;/code&gt; 開始，標題沒有跳級&lt;/li&gt;
-          &lt;li&gt;每個段落只有一行，清單只有一層&lt;/li&gt;
-          &lt;li&gt;使用全形標點與「」引號，中文與英文、數字之間有半形空格&lt;/li&gt;
-          &lt;li&gt;連結都是 https，連結文字說得出要連到哪裡&lt;/li&gt;
-          &lt;li&gt;沒有照片、截圖與社員名單，示意圖的圖說標明「示意圖」&lt;/li&gt;
-          &lt;li&gt;活動只寫社群自己的參與，沒有可以辨識個人的資訊&lt;/li&gt;
-          &lt;li&gt;日期、人數等事實都確認過，引用有列出處&lt;/li&gt;
-          &lt;li&gt;HackMD 連結在無痕視窗打得開&lt;/li&gt;
-        &lt;/ul&gt;</content>
-    <category term="技術教學"/>
   </entry>
   <entry>
     <title>在外遇到疑似精神疾病患者應對指南</title>
