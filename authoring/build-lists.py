@@ -33,7 +33,7 @@ def row(a: dict, with_category: bool = False) -> str:
 def card(a: dict) -> str:
     """文章列表頁的卡片：標題（h3）、灰字資訊、摘要、標籤。
     資訊在 DOM 裡排在標題後面（報讀器先聽到標題），畫面上由 CSS 移到標題上方。"""
-    info = " · ".join(f"<span>{x}</span>" for x in [
+    info = '<span aria-hidden="true"> · </span>'.join(f"<span>{x}</span>" for x in [
         f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>', e(L.author_name(a)),
         f'閱讀約 {a["readingTime"]} 分鐘'])
     tags = ""
