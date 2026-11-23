@@ -12,3 +12,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `.claude/`（含預覽用的 `launch.json`）已被 `.gitignore` 排除，不會進 repo。
 - 在 `.claude/worktrees/` 的 worktree 工作時，分支名是 `claude/…`；用 `ship.sh` 發布前先 `git branch -m <type>/<名稱>`，讓分支前綴對應約定式 commit 的 type。`ship.sh` 最後的 `sync.sh` 會因 `main` 已被主資料夾佔用而出現 `fatal: 'main' is already used by worktree`：此時 PR 已合併，可以忽略，之後到主資料夾執行 `bash authoring/sync.sh` 即可。
 - 8765 埠被其他 worktree 的預覽佔用時，改用 `launch.json` 的 `site-alt`（8766）。
+- 工作區有站長未提交的修改、只想提交自己這次的變更時，不能用互動式的 `git add -p`：以 `git show HEAD:<檔案>` 為底套上自己的修改，經 `git hash-object -w --stdin` 寫成 blob，再用 `git update-index --cacheinfo 100644,<blob>,<檔案>` 放進暫存區；提交前用 `git diff --cached` 確認只有自己的變更。
+- 在預覽瀏覽器檢查 SVG 等圖片的修改時，重新整理頁面仍會顯示快取的舊圖；要在圖片網址加查詢參數（例如 `?v=<時間戳>`）才會載入新版。
