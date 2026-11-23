@@ -74,7 +74,9 @@
   }
 }
 
-/* ---------- 高對比：使用者按鈕 ---------- */
+/* ---------- 高對比：使用者按鈕 ----------
+ * 高對比的元件規則（:root[data-theme="high"] …）也有兩份：檔尾「高對比：系統設定的元件規則」
+ * 要逐條對應（主視覺與標誌圖片已在各自區塊處理），check.py 會比對。 */
 :root[data-theme="high"] {
   --bg: #000000;
   --surface: #000000;
@@ -171,8 +173,9 @@ strong {
 :focus-visible {
   outline: 0.1875rem solid var(--focus);
   outline-offset: 0.1875rem;
-  border-radius: 0.25rem;
 }
+/* 只有一般連結補圓角；按鈕與膠囊連結聚焦時保留自己的形狀 */
+a:focus-visible { border-radius: 0.25rem; }
 main:focus { outline: none; }
 
 /* ---------- 跳到主要內容 ---------- */
@@ -316,6 +319,8 @@ button[aria-pressed="true"]:hover { background: var(--accent); filter: brightnes
 }
 :root[data-theme="high"] .nav-list a { color: var(--text); text-decoration: underline; }
 :root[data-theme="high"] .nav-list a[aria-current="page"] { color: var(--on-accent); text-decoration: none; outline: 0.125rem solid var(--text); outline-offset: -0.125rem; }
+/* 上一條的白色內框權重高於 :focus-visible，聚焦時要明確換回焦點框，否則看不出焦點 */
+:root[data-theme="high"] .nav-list a[aria-current="page"]:focus-visible { outline: 0.1875rem solid var(--focus); outline-offset: 0.1875rem; }
 @media (forced-colors: active) { .nav-list a[aria-current="page"] { border: 0.125rem solid ButtonText; } }
 
 @media (max-width: 35rem) {
@@ -575,6 +580,8 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 .article-cards h3 { line-height: 1.5; }
 .article-cards .article-card-meta { order: -1; margin: 0 0 0.5rem; font-size: 0.9rem; }
 .article-cards .article-card-meta span { white-space: nowrap; }
+:root[data-text="3"] .article-cards .article-card-meta span,
+:root[data-text="4"] .article-cards .article-card-meta span { white-space: normal; }
 .article-cards .article-card-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: auto; padding-top: 1rem; }
 :root[data-text="3"] .article-cards,
 :root[data-text="4"] .article-cards { grid-template-columns: 1fr; }
@@ -672,13 +679,31 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 :root[data-text="3"] .article-nav-next,
 :root[data-text="4"] .article-nav-next { grid-column: auto; text-align: left; }
 
-/* ---------- 減少動態：本站沒有動畫，這裡確保之後新增也會遵守 ---------- */
+/* ---------- 減少動態：頁首標誌光圈、導覽過渡與切頁轉場在這裡全部關閉，之後新增的動畫也會遵守 ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---------- 高對比：系統設定的元件規則（與上方各處 :root[data-theme="high"] 的元件規則逐條對應） ---------- */
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) .btn-primary,
+  :root:not([data-theme]) button[aria-pressed="true"] { border-color: var(--text); }
+  :root:not([data-theme]) .nav-list a { color: var(--text); text-decoration: underline; }
+  :root:not([data-theme]) .nav-list a[aria-current="page"] { color: var(--on-accent); text-decoration: none; outline: 0.125rem solid var(--text); outline-offset: -0.125rem; }
+  :root:not([data-theme]) .nav-list a[aria-current="page"]:focus-visible { outline: 0.1875rem solid var(--focus); outline-offset: 0.1875rem; }
+  :root:not([data-theme]) .name-tag { border: 0.125rem solid var(--text); }
+  :root:not([data-theme]) .note { border: 0.125rem solid var(--text); }
+  :root:not([data-theme]) .cards > li { border: 0.125rem solid var(--text); }
+  :root:not([data-theme]) .link-rows > li { border: 0.125rem solid var(--text); }
+  :root:not([data-theme]) .tag { border-color: var(--text); }
+  :root:not([data-theme]) .timeline { border-left-color: var(--text); }
+  :root:not([data-theme]) .timeline > li::before { outline: 0.125rem solid var(--text); }
+  :root:not([data-theme]) .prose blockquote { border-left-color: var(--text); }
+  :root:not([data-theme]) .pullquote { border-color: var(--text); }
 }
 
 /* ---------- 系統強制色彩（Windows 高對比等） ---------- */
