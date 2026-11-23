@@ -102,7 +102,7 @@ git push
 `authoring/check.py` 會擋下以下任一項：
 
 - 頁面缺少 `lang="zh-Hant-TW"`、`<main>`、`<nav aria-label>`、跳到主要內容連結；`<h1>` 不是恰好一個；標題跳級。
-- 色票文字對比低於 7:1（AAA），或介面元件低於 3:1；兩份高對比色票不一致。
+- 色票文字對比低於 7:1（AAA），或介面元件低於 3:1；兩份深色或高對比色票不一致；高對比的元件規則（`:root[data-theme="high"] …`）沒有對應的系統版（`prefers-contrast: more`）。
 - `font-size` 使用 px；`style=`、`<style>`、行內事件、行內 `<script>`、外部 CSS／JS。
 - `<img>` 沒有 `alt`；`<button>` 沒有 `type`；連結文字空白或只有「點此」「更多」。
 - 另開新視窗的連結沒有 `rel="noopener"`，或文字沒註明「另開新視窗」。

@@ -416,6 +416,17 @@ for label, t in sets.items():
         if r < 3:
             err("style.css", f"{label}：介面元件 --{fg} 對 --{bg} 對比 {r:.2f}:1，未達 3:1")
 
+# 高對比的元件規則：按鈕版（:root[data-theme="high"] X）每一條都要有系統版（prefers-contrast: more 內的 :root:not([data-theme]) X）
+css_nc = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+hc_button = set(re.findall(r':root\[data-theme="high"\] ([^,{]+?)\s*[,{]', css_nc))
+hc_system = set()
+for m in re.finditer(r"@media \(prefers-contrast: more\)\s*\{(.*?)\n\}", css_nc, re.S):
+    hc_system |= set(re.findall(r":root:not\(\[data-theme\]\) ([^,{]+?)\s*[,{]", m.group(1)))
+for sel in sorted(hc_button - hc_system):
+    err("style.css", f"高對比元件規則只有按鈕版、缺少系統版（prefers-contrast: more）：{sel}")
+if '.nav-list a[aria-current="page"]:focus-visible' not in hc_button:
+    err("style.css", "高對比的導覽目前頁有白色內框，必須另有 :focus-visible 規則換回焦點框")
+
 for needle, why in (("@view-transition { navigation: auto; }", "切頁轉場"), ("nav-pill", "導覽膠囊滑動"),
                     ("@media (prefers-reduced-motion: reduce) {\n  @view-transition { navigation: none; }", "減少動態時關閉轉場")):
     if needle not in css:
