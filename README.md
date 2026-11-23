@@ -36,3 +36,7 @@
 ## 參與網站維護
 
 網站是純靜態的 HTML、CSS 與少量 JavaScript，部署在 GitHub Pages，沒有 build 步驟。想投稿文章，請先讀網站上的〈[投稿指引](https://asdtw.org/articles/writing-guide.html)〉，再到 Discord 開工單。想協助修改網站，請見 [CONTRIBUTING.md](CONTRIBUTING.md)，使用 AI coding agent 時，共用規範在 [AGENTS.md](AGENTS.md)。
+
+## 授權
+
+本 repo 採用 MIT 授權，全文見 [LICENSE](LICENSE)。
