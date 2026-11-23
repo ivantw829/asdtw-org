@@ -7,7 +7,7 @@
 <rect x="772" y="26" width="148" height="46" rx="23" fill="#F2C230"/>
 <text x="846" y="58" font-size="22" font-weight="700" fill="#3A3A3C" text-anchor="middle">示意圖</text>
 <rect x="0" y="92" width="960" height="2" fill="#3A3A3C"/>
-<text x="40" y="146" font-size="28" font-weight="700" fill="#FFF6EC">神經多樣性（有正式診斷才可領取）</text>
+<text x="40" y="146" font-size="28" font-weight="700" fill="#FFF6EC">神經多樣性（依自我認同領取）</text>
 <rect x="40" y="168" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>
 <text x="64" y="203" font-size="24" font-weight="500" fill="#FFF6EC">自閉症</text>
 <rect x="490" y="168" width="430" height="52" rx="14" fill="#3A3A3C" stroke="#4A4A4D" stroke-width="2"/>

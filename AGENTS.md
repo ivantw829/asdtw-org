@@ -33,7 +33,7 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 
 ## 架構
 
-- 四個頁面：`index.html`、`about.html`（關於與加入須知）、`actions.html`（行動紀錄）、`accessibility.html`（無障礙與聯絡、隱私）；外加 `404.html`（noindex，不進 sitemap），以及文章欄位 `articles.html`＋`articles/`（見下方「文章」）。
+- 五個頁面：`index.html`、`about.html`（關於與加入須知）、`positions.html`（我們的立場）、`actions.html`（行動紀錄）、`accessibility.html`（無障礙與聯絡、隱私）；外加 `404.html`（noindex，不進 sitemap），以及文章欄位 `articles.html`＋`articles/`（見下方「文章」）。
 - **頁首、頁尾、閱讀設定面板的唯一來源是 `authoring/partials/`（`header.html`、`footer.html`、`prefs.html`）**，由 `build-shared.py` 靜態寫進每一頁的 `<!--shared:…-->` 標記之間，輸出仍是完整 HTML，不依賴 JS 就能被螢幕報讀器完整讀取。頁首的 `aria-current="page"` 由腳本依頁面加上（根目錄公開頁才有），片段檔裡不寫。**改共用區塊只改片段檔，不要改頁面裡標記之間的內容**（會被覆寫）；pre-commit 只在片段檔有變更時自動同步，否則 `check.py` 會報出不一致的頁面。
 - 閱讀設定（字級 1–4、配色 default／dark／high）：`assets/js/prefs.js` 在 `<head>` 同步載入，把偏好寫到 `<html data-text data-theme>`，存 `localStorage`；面板（`<details>` 預設收合）預設 `hidden`，有 JS 才顯示。使用者沒手動選時，系統 `prefers-contrast: more` → 高對比、`prefers-color-scheme: dark` → 深色。
 - **視覺風格沿用 me.asdtw.org**（奶白紙張、琥珀黃、青綠、墨黑名字標籤、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。首頁主視覺 `.hero-art` 是設計師交付的三個 SVG（`assets/img/hero-light/dark/high.svg`，珊瑚紅＋炭灰＋琥珀黃；深色版炭灰換米白；高對比版只有白與黃），以 CSS 背景圖依配色載入，元素 `aria-hidden`；字級調到「特大」以上時隱藏。換圖須符合 `check.py` 第 6 節規格（色票、viewBox `0 0 600 800`、<50KB、無 text／漸層／濾鏡）。
@@ -56,9 +56,9 @@ python3 authoring/build-og.py      # 重產分享圖 og.jpg＋過期的文章分
 - **網站上不得出現「捍衛全台學權行動」**（社群所屬團體）；活動只寫社群自己的參與。
 - **不放照片、不列社員名單**；站長也不打算放照片。
 - 說明社群設計（如身分組）時，**用重畫的示意圖，不用站長或社員的截圖**；示意圖不得出現真實社員的選擇、頭像或政黨名稱，並標明「示意圖」。目前只有 `assets/img/roles-mock.svg`（關於頁），`check.py` 第 8 節會驗證；說明性圖片必須有非空 alt、width／height 與 `<figcaption>`，圖中資訊在正文要有同樣內容的文字。
-- 首頁「左翼立場」卡片裡那句關於疫苗的話是站長刻意做的嘲諷（反疫苗陰謀論），藏在原生 `<details class="aside">` 裡，點開才看到「以上是對反疫苗陰謀論的嘲諷。疫苗不會導致自閉症。」。**不要移除聲明、不要改成純文字或隱藏連結**；`<summary>` 內的 `visually-hidden`「（可展開聲明）」是給螢幕報讀器的提示，要保留。
+- **綱領文字**（首頁定位句與四點主張、`positions.html`「我們的立場」全文）由站長定稿，**一字不改照登**，包括標點；只能為版面斷行，不要改寫、刪減或新增句子。首頁第二點「沒有我們的參與，不要替我們做決定」與 Nothing About Us Without Us 以 `.motto` 元件強調。
 - 不要編造事實（日期、人數、經歷、無障礙測試結果）。沒有提供就留空或詢問。無障礙聲明不得宣稱已通過認證或實機測試，除非真的做過。
-- 本群唯一規則原文：「本群沒有規則，有委屈自己提告去。」說明為管理員保有最終裁量權，不要改寫成其他規則。
+- 關於頁「社群秩序」（`about.html#order`）原文：「管理員依本社群的綱領維持秩序。當社員的言行讓其他社員，特別是障礙者與性少數，無法安心參與時，管理員會介入處理，必要時可將其移出社群。」不要改寫成其他規則。
 - 歡迎對象措辭為「當事人優先」：歡迎各程度身心障礙者、任何性別與性傾向；健全者與異性戀者可加入但以當事人需求為優先。不要寫成「不歡迎」。
 - 創辦人簡介只連到 https://me.asdtw.org/，不另寫。
 - 排版：全形標點，中文與英數之間加半形空格，引號用「」；外部連結 `target="_blank" rel="noopener"` 且文字註明「（另開新視窗）」。
