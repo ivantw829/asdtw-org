@@ -36,3 +36,15 @@
 ## 參與網站維護
 
 網站是純靜態的 HTML、CSS 與少量 JavaScript，部署在 GitHub Pages，沒有 build 步驟。想投稿文章，請先讀網站上的〈[投稿指引](https://asdtw.org/articles/writing-guide.html)〉，再到 Discord 開工單。想協助修改網站，請見 [CONTRIBUTING.md](CONTRIBUTING.md)，使用 AI coding agent 時，共用規範在 [AGENTS.md](AGENTS.md)。
+
+## 授權
+
+本 repo 的內容分成三種授權：
+
+| 範圍 | 授權 |
+|---|---|
+| 網站原始碼（HTML 結構、CSS、JavaScript 與 `authoring/` 的腳本） | [MIT 授權](LICENSE) |
+| 文章（`articles/` 與 `data/articles.json`） | [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hant)，著作權屬各篇作者，以社群名義發表的文章屬福爾摩沙自閉大公社 |
+| 綱領、標誌與其他品牌素材、各頁文案 | 福爾摩沙自閉大公社保留所有權利 |
+
+依 CC BY-NC-ND 4.0，你可以在非商業用途下完整轉載文章，但要標明作者、原文連結與授權方式，不得改寫或節錄後改作。商業使用或其他用途，請來信 <info@asdtw.org>。
