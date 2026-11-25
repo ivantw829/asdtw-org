@@ -520,7 +520,6 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
   margin: 0 0 1rem;
   background: url("/assets/img/brand/lockup-dark.svg") left center / contain no-repeat;
 }
-.brand-lockup-lg { width: min(100%, 26rem); margin-bottom: 1.5rem; }
 :root[data-theme="dark"] .brand-lockup,
 :root[data-theme="high"] .brand-lockup { background-image: url("/assets/img/brand/lockup-light.svg"); }
 @media (prefers-color-scheme: dark) {
@@ -550,6 +549,60 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 }
 :root[data-text="3"] .badge-pride,
 :root[data-text="4"] .badge-pride { display: none; }
+
+/* ---------- 404 品牌橫幅（沿用 me.asdtw.org 的 404；純裝飾，aria-hidden） ----------
+ * 淺色用珊瑚紅橫幅，深色與高對比用炭灰橫幅；滑鼠滑過時淡入彩虹馬卡龍版（自帶炭灰底）。
+ * 「404」大字以容器寬度（cqw）縮放，跟著橫幅一起變大變小。 */
+.err-hero { padding-block: 3.5rem 0.5rem; display: grid; gap: 2rem; align-items: center; }
+.err-banner {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: #e8695a url("/assets/img/brand/banner-coral.svg") center / cover no-repeat;
+}
+.err-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #3a3a3c url("/assets/img/brand/banner-rainbow.svg") center / cover no-repeat;
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+.err-banner:hover::after { opacity: 1; }
+.err-code {
+  position: absolute;
+  z-index: 1;
+  left: 7.5%;
+  top: 9%;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: 15cqw;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  user-select: none;
+  color: transparent;
+  -webkit-text-stroke: 0.125rem #fff6ec;
+  text-shadow: 0.04em 0.04em 0 var(--accent);
+}
+:root[data-theme="dark"] .err-banner,
+:root[data-theme="high"] .err-banner { background-color: #3a3a3c; background-image: url("/assets/img/brand/banner-dark.svg"); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .err-banner { background-color: #3a3a3c; background-image: url("/assets/img/brand/banner-dark.svg"); }
+}
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) .err-banner { background-color: #3a3a3c; background-image: url("/assets/img/brand/banner-dark.svg"); }
+}
+:root[data-theme="high"] .err-banner { outline: 0.125rem solid var(--text); }
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) .err-banner { outline: 0.125rem solid var(--text); }
+}
+@media (prefers-reduced-motion: reduce) { .err-banner::after { transition: none; } }
+@media (min-width: 50rem) { .err-hero { grid-template-columns: 1.3fr 1fr; gap: 3rem; } }
+:root[data-text="3"] .err-hero,
+:root[data-text="4"] .err-hero { grid-template-columns: 1fr; }
 
 /* ---------- 說明性圖片（figure） ---------- */
 .figure { margin: 1.5rem 0 0; }

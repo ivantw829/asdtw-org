@@ -142,7 +142,7 @@ git push
 - 視覺沿用 [me.asdtw.org](https://me.asdtw.org/)（奶白紙張、琥珀黃、青綠、襯線標題、膠囊導覽），但灰字與琥珀褐文字色已加深到 AAA 對比，**不要換回個人站的原色票**。字體只用系統字體，不載入 Google Fonts（隱私）。
 - **色票只在 `assets/css/style.css` 頂端的 token**。深色與高對比各有兩份（`[data-theme=…]` 按鈕版與 media query 系統版），改色時兩處要一起改。互動元件的外框用 `--border`，`--line` 只用於裝飾。
 - 首頁主視覺是設計師交付的三個 SVG（`assets/img/hero-light/dark/high.svg`），依配色以 CSS 背景圖載入，字級調到「特大」以上時隱藏。換圖須符合規格：只用指定色票、viewBox `0 0 600 800`、小於 50KB、不得有 text、漸層或濾鏡（`check.py` 會驗證）。
-- 品牌素材在 `assets/img/brand/`：`lockup-dark.svg`／`lockup-light.svg` 用於頁尾與 404（淺色配色用 dark，深色與高對比用 light）。彩虹版 `lockup-rainbow.svg`（淺色用）與 `lockup-rainbow-clear.svg`（深色、高對比用）**只能放在 `.badge-pride` 內**，目前僅用於行動紀錄頁。
+- 品牌素材在 `assets/img/brand/`：`lockup-dark.svg`／`lockup-light.svg` 用於頁尾（淺色配色用 dark，深色與高對比用 light）。彩虹版 `lockup-rainbow.svg`（淺色用）與 `lockup-rainbow-clear.svg`（深色、高對比用）**只能放在 `.badge-pride` 內**，目前僅用於行動紀錄頁。404 的品牌橫幅 `.err-banner` 用 `banner-coral.svg`（淺色）、`banner-dark.svg`（深色與高對比），滑鼠滑過時淡入 `banner-rainbow.svg`。
 - 裝飾性元素一律 `aria-hidden="true"`；**頁首站名維持真文字**，不要改成圖片。
 - 網站圖示（`assets/img/favicon.svg`、`apple-touch-icon.png`、`icon-192.png`、根目錄 `favicon.ico`）來自品牌識別交件，不由腳本產生。`favicon.ico` 必須含 16／32／48 三種尺寸；換圖示時這些檔案一起換。
 - 品牌原始檔（含設計規格書）在 repo 之外，色票與使用規範以規格書為準；需要時向站長索取。
