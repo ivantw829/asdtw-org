@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """把文章列表靜態寫進 HTML（本站內容不依賴 JS）。改寫的區塊：
 
-  articles.html   <!--lists:category-nav--> … <!--/lists:category-nav-->   分類跳轉（含篇數）
-                  <!--lists:<分類 id>--> … <!--/lists:<分類 id>-->           各分類的文章，新到舊
-  index.html      <!--lists:latest--> … <!--/lists:latest-->               最新三篇（首頁有這組標記才寫；上線前首頁沒有）
-  articles/*.html <!--articlenav:start--> … <!--articlenav:end-->          上一篇／下一篇（草稿只有「回到文章列表」）
+  [en/|ja/]articles.html  <!--lists:category-nav--> … <!--/lists:category-nav-->   分類跳轉（含篇數）
+                          <!--lists:<分類 id>--> … <!--/lists:<分類 id>-->           各分類的文章，新到舊
+  [en/|ja/]index.html     <!--lists:latest--> … <!--/lists:latest-->               最新三篇
+  articles/*.html         <!--articlenav:start--> … <!--articlenav:end-->          上一篇／下一篇（草稿只有「回到文章列表」）
 
-草稿（draft）不會出現在任何列表。md2article.py 與 pre-commit 會自動執行；會印出被改寫的檔案。
+草稿（draft）不會出現在任何列表。英／日文頁面的文章標題、摘要、標籤維持原語言並加上 lang="zh-Hant-TW"。
+md2article.py 與 pre-commit 會自動執行；會印出被改寫的檔案。
 用法：python3 authoring/build-lists.py [--check]   （--check 只檢查是否最新，過期回傳 1）
 """
 import sys
@@ -14,56 +15,82 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import articles_lib as L  # noqa: E402
+import i18n as I  # noqa: E402
 
 ROOT = L.ROOT
 e = L.esc
 
 
-def row(a: dict, with_category: bool = False) -> str:
+def author_html(a: dict, locale: str) -> str:
+    if a.get("author"):
+        name = e(a["author"])
+        return name if locale == "zh" else f'<span lang="zh-Hant-TW">{name}</span>'
+    return e(I.LOCALES[locale]["site_name"])
+
+
+def row(a: dict, locale: str = "zh", with_category: bool = False) -> str:
     """首頁「最新文章」的列表項：與「最近的行動」同樣式（標題連結＋灰字資訊），再加一段摘要。"""
-    info = [f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>', e(L.author_name(a)),
-            f'閱讀約 {a["readingTime"]} 分鐘']
+    info = [
+        f'<time datetime="{a["date"]}">{I.fmt_date(a["date"], locale)}</time>',
+        author_html(a, locale),
+        I.fmt_reading_time(a["readingTime"], locale),
+    ]
     if with_category:
-        info.append(e(a["category"]))
-    return (f'\n        <li><a href="/articles/{a["slug"]}.html">{e(a["title"])}</a><br>'
-            f'<span class="muted">{"　".join(info)}</span>'
-            f'\n          <p>{e(a["summary"])}</p></li>')
+        info.append(e(I.LOCALES[locale]["categories"][a["category"]]))
+    sep = " · " if locale == "en" else "　"
+    lang_attr = "" if locale == "zh" else ' lang="zh-Hant-TW"'
+    return (
+        f'\n        <li><a href="/articles/{a["slug"]}.html"{lang_attr}>{e(a["title"])}</a><br>'
+        f'<span class="muted">{sep.join(info)}</span>'
+        f'\n          <p{lang_attr}>{e(a["summary"])}</p></li>'
+    )
 
 
-def card(a: dict) -> str:
+def card(a: dict, locale: str = "zh") -> str:
     """文章列表頁的卡片：標題（h3）、灰字資訊、摘要、標籤。
     資訊在 DOM 裡排在標題後面（報讀器先聽到標題），畫面上由 CSS 移到標題上方。"""
     info = '<span aria-hidden="true"> · </span>'.join(f"<span>{x}</span>" for x in [
-        f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>', e(L.author_name(a)),
-        f'閱讀約 {a["readingTime"]} 分鐘'])
+        f'<time datetime="{a["date"]}">{I.fmt_date(a["date"], locale)}</time>',
+        author_html(a, locale),
+        I.fmt_reading_time(a["readingTime"], locale),
+    ])
+    lang_attr = "" if locale == "zh" else ' lang="zh-Hant-TW"'
     tags = ""
     if a.get("tags"):
-        tags = ('\n          <p class="article-card-tags"><span class="visually-hidden">標籤：</span>'
-                + "".join(f'<span class="tag tag-sub">{e(t)}</span>' for t in a["tags"]) + "</p>")
-    return (f'\n        <li>'
-            f'\n          <h3><a href="/articles/{a["slug"]}.html">{e(a["title"])}</a></h3>'
-            f'\n          <p class="article-card-meta muted">{info}</p>'
-            f'\n          <p>{e(a["summary"])}</p>{tags}'
-            f'\n        </li>')
+        tags_label = I.LOCALES[locale]["tags_label"]
+        tags = (
+            f'\n          <p class="article-card-tags"><span class="visually-hidden">{tags_label}</span>'
+            + "".join(f'<span class="tag tag-sub"{lang_attr}>{e(t)}</span>' for t in a["tags"])
+            + "</p>"
+        )
+    return (
+        f'\n        <li>'
+        f'\n          <h3><a href="/articles/{a["slug"]}.html"{lang_attr}>{e(a["title"])}</a></h3>'
+        f'\n          <p class="article-card-meta muted">{info}</p>'
+        f'\n          <p{lang_attr}>{e(a["summary"])}</p>{tags}'
+        f'\n        </li>'
+    )
 
 
-def category_nav(items: list[dict]) -> str:
-    lis = "".join(f'\n        <li><a href="#{cid}">{e(name)}（{sum(a["category"] == name for a in items)} 篇）</a></li>'
-                  for name, cid in L.CATEGORIES.items())
+def category_nav(items: list[dict], locale: str = "zh") -> str:
+    lis = "".join(
+        f'\n        <li><a href="#{cid}">{e(I.fmt_cat_count(name, sum(a["category"] == name for a in items), locale))}</a></li>'
+        for name, cid in L.CATEGORIES.items()
+    )
     return f'\n      <ul>{lis}\n      </ul>\n      '
 
 
-def category_list(items: list[dict], name: str) -> str:
+def category_list(items: list[dict], name: str, locale: str = "zh") -> str:
     rows = [a for a in items if a["category"] == name]
     if not rows:
-        return '\n      <p class="muted">這個分類還沒有文章。</p>\n      '
-    return '\n      <ul class="cards article-cards">' + "".join(card(a) for a in rows) + "\n      </ul>\n      "
+        return f'\n      <p class="muted">{e(I.LOCALES[locale]["empty_category"])}</p>\n      '
+    return '\n      <ul class="cards article-cards">' + "".join(card(a, locale) for a in rows) + "\n      </ul>\n      "
 
 
-def latest(items: list[dict]) -> str:
+def latest(items: list[dict], locale: str = "zh") -> str:
     if not items:
-        return '\n      <p class="muted">還沒有文章，敬請期待。</p>\n      '
-    return '\n      <ul class="link-rows article-list">' + "".join(row(a, True) for a in items[:3]) + "\n      </ul>\n      "
+        return f'\n      <p class="muted">{e(I.LOCALES[locale]["empty_latest"])}</p>\n      '
+    return '\n      <ul class="link-rows article-list">' + "".join(row(a, locale, True) for a in items[:3]) + "\n      </ul>\n      "
 
 
 def article_nav(a: dict, items: list[dict]) -> str:
@@ -91,18 +118,25 @@ def render() -> dict[Path, str]:
     items = L.published(data)
     out: dict[Path, str] = {}
 
-    p = ROOT / "articles.html"
-    if p.exists():
-        t = p.read_text(encoding="utf-8")
-        t = replace(t, "<!--lists:category-nav-->", "<!--/lists:category-nav-->", category_nav(items), p.name)
-        for name, cid in L.CATEGORIES.items():
-            t = replace(t, f"<!--lists:{cid}-->", f"<!--/lists:{cid}-->", category_list(items, name), p.name)
-        out[p] = t
+    for locale in I.LOCALE_ORDER:
+        prefix = I.LOCALES[locale]["prefix"].lstrip("/")
+        base_dir = ROOT / prefix if prefix else ROOT
 
-    p = ROOT / "index.html"
-    t = p.read_text(encoding="utf-8")
-    if "<!--lists:latest-->" in t:
-        out[p] = replace(t, "<!--lists:latest-->", "<!--/lists:latest-->", latest(items), p.name)
+        p = base_dir / "articles.html"
+        if p.exists():
+            rel = p.relative_to(ROOT).as_posix()
+            t = p.read_text(encoding="utf-8")
+            t = replace(t, "<!--lists:category-nav-->", "<!--/lists:category-nav-->", category_nav(items, locale), rel)
+            for name, cid in L.CATEGORIES.items():
+                t = replace(t, f"<!--lists:{cid}-->", f"<!--/lists:{cid}-->", category_list(items, name, locale), rel)
+            out[p] = t
+
+        p = base_dir / "index.html"
+        if p.exists():
+            rel = p.relative_to(ROOT).as_posix()
+            t = p.read_text(encoding="utf-8")
+            if "<!--lists:latest-->" in t:
+                out[p] = replace(t, "<!--lists:latest-->", "<!--/lists:latest-->", latest(items, locale), rel)
 
     for a in data:
         p = L.ARTICLES_DIR / f"{a['slug']}.html"

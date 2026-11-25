@@ -150,6 +150,17 @@ body {
   overflow-wrap: anywhere;
 }
 
+html[lang="en"] body {
+  --font-serif: "Georgia", "Iowan Old Style", "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.65;
+  letter-spacing: 0;
+}
+html[lang="ja"] body {
+  --font-serif: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", "Source Han Serif JP", serif;
+  --font-sans: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Meiryo", system-ui, -apple-system, sans-serif;
+}
+
 main { flex: 1 0 auto; }
 
 .wrap {
@@ -237,9 +248,17 @@ button[aria-pressed="true"]:hover { background: var(--accent); filter: brightnes
 :root[data-theme="high"] .btn-primary,
 :root[data-theme="high"] button[aria-pressed="true"] { border-color: var(--text); }
 
-/* ---------- 閱讀設定（預設收合） ---------- */
+/* ---------- 閱讀設定（預設收合）與語言切換 ---------- */
 .prefs { background: var(--surface-2); border-bottom: 0.0625rem solid var(--line); font-size: 1rem; line-height: 1.6; }
-.prefs[hidden] { display: none; }
+.prefs-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+.prefs-details { flex: 1 1 auto; }
+.prefs-details[hidden] { display: none; }
 .prefs summary {
   display: inline-flex;
   align-items: center;
@@ -253,6 +272,30 @@ button[aria-pressed="true"]:hover { background: var(--accent); filter: brightnes
 .prefs-group { border: 0; margin: 0; padding: 0; min-width: 0; }
 .prefs legend { padding: 0; font-weight: 700; }
 .prefs-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+
+.lang-switch { margin-left: auto; }
+.lang-switch ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.lang-switch li { margin: 0; }
+.lang-switch a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 62.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+.lang-switch a:hover { background: var(--bg); color: var(--text); text-decoration: underline; }
+.lang-switch a[aria-current="true"] {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 0.125rem;
+}
+:root[data-theme="high"] .lang-switch a { color: var(--text); text-decoration: underline; }
+:root[data-theme="high"] .lang-switch a[aria-current="true"] { background: var(--accent); color: var(--on-accent); text-decoration: none; outline: 0.125rem solid var(--text); outline-offset: -0.125rem; }
+:root[data-theme="high"] .lang-switch a[aria-current="true"]:focus-visible { outline: 0.1875rem solid var(--focus); outline-offset: 0.1875rem; }
 
 /* ---------- 頁首 ---------- */
 .site-header { border-bottom: 0.0625rem solid var(--line); background: var(--bg); }
@@ -745,6 +788,9 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 @media (prefers-contrast: more) {
   :root:not([data-theme]) .btn-primary,
   :root:not([data-theme]) button[aria-pressed="true"] { border-color: var(--text); }
+  :root:not([data-theme]) .lang-switch a { color: var(--text); text-decoration: underline; }
+  :root:not([data-theme]) .lang-switch a[aria-current="true"] { background: var(--accent); color: var(--on-accent); text-decoration: none; outline: 0.125rem solid var(--text); outline-offset: -0.125rem; }
+  :root:not([data-theme]) .lang-switch a[aria-current="true"]:focus-visible { outline: 0.1875rem solid var(--focus); outline-offset: 0.1875rem; }
   :root:not([data-theme]) .nav-list a { color: var(--text); text-decoration: underline; }
   :root:not([data-theme]) .nav-list a[aria-current="page"] { color: var(--on-accent); text-decoration: none; outline: 0.125rem solid var(--text); outline-offset: -0.125rem; }
   :root:not([data-theme]) .nav-list a[aria-current="page"]:focus-visible { outline: 0.1875rem solid var(--focus); outline-offset: 0.1875rem; }

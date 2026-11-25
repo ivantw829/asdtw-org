@@ -358,7 +358,7 @@ def build(a: dict, lead: str, body_html: str, sources) -> str:
     e = L.esc
     t = TEMPLATE.read_text(encoding="utf-8")
     t = re.sub(r"<!--\n.*?-->\n", "", t, count=1, flags=re.S)  # 移除範本說明
-    shared = L.shared_blocks()
+    shared = L.shared_blocks(f"articles/{a['slug']}.html")
     sep = '<span aria-hidden="true"> · </span>'
     meta = (f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>{sep}'
             f'作者：{e(L.author_name(a))}{sep}閱讀約 {a["readingTime"]} 分鐘')
