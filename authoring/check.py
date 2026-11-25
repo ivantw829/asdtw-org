@@ -487,6 +487,9 @@ BRAND_ASSETS = {
     "assets/img/brand/lockup-light.svg": {"#FFF6EC"},
     "assets/img/brand/lockup-rainbow.svg": None,   # 彩虹馬卡龍多色，不限制顏色，但不得有其他禁用元素
     "assets/img/brand/lockup-rainbow-clear.svg": None,
+    "assets/img/brand/banner-coral.svg": {"#E8695A", "#EE8576", "#FFF6EC"},
+    "assets/img/brand/banner-dark.svg": {"#3A3A3C", "#4A4A4D", "#FFF6EC"},
+    "assets/img/brand/banner-rainbow.svg": None,   # 404 橫幅滑過時淡入的彩虹馬卡龍版
     "authoring/og/banner-coral.svg": {"#E8695A", "#EE8576", "#FFF6EC"},
 }
 for rel, allowed in BRAND_ASSETS.items():
@@ -503,17 +506,21 @@ for rel, allowed in BRAND_ASSETS.items():
         used = {c.upper() for c in re.findall(r"#[0-9A-Fa-f]{6}\b", svg)}
         if not used <= allowed:
             err(rel, f"使用了色票以外的顏色：{sorted(used - allowed)}")
-for needle in ("lockup-dark.svg", "lockup-light.svg", "lockup-rainbow.svg", "lockup-rainbow-clear.svg"):
+for needle in ("lockup-dark.svg", "lockup-light.svg", "lockup-rainbow.svg", "lockup-rainbow-clear.svg",
+               "banner-coral.svg", "banner-dark.svg", "banner-rainbow.svg"):
     if needle not in css:
         err("style.css", f"必須引用品牌素材 {needle}")
 # 彩虹馬卡龍只能出現在炭灰底的徽章內
 if "lockup-rainbow.svg" in css and not re.search(r"\.badge-pride\s*\{[^}]*#3a3a3c[^}]*lockup-rainbow\.svg", css, re.I):
     err("style.css", "lockup-rainbow.svg 只能用在炭灰底（#3a3a3c）的 .badge-pride 內")
+if "banner-rainbow.svg" in css and not re.search(r"\.err-banner::after\s*\{[^}]*#3a3a3c[^}]*banner-rainbow\.svg", css, re.I):
+    err("style.css", "banner-rainbow.svg 只能用在 404 橫幅（.err-banner::after，炭灰底）")
 for name, pg in pages.items():
     for x, a in pg.tags:
         cls = a.get("class", "").split()
-        if ("brand-lockup" in cls or "badge-pride" in cls) and a.get("aria-hidden") != "true":
-            err(name, f'裝飾元素 .{ "brand-lockup" if "brand-lockup" in cls else "badge-pride" } 必須有 aria-hidden="true"')
+        deco = next((c for c in ("brand-lockup", "badge-pride", "err-banner") if c in cls), None)
+        if deco and a.get("aria-hidden") != "true":
+            err(name, f'裝飾元素 .{deco} 必須有 aria-hidden="true"')
 
 # ---------------------------------------------------------------- 8. 說明性圖片（身分組示意圖）
 mock = ROOT / "assets/img/roles-mock.svg"
