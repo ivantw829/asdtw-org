@@ -50,8 +50,8 @@ LOCALES = {
         "categories": {
             "社群公告": "Announcements",
             "議題觀點": "Perspectives",
-            "技術教學": "Guides",
-            "行動記事": "Action Notes",
+            "技術教學": "Tutorials",
+            "行動記事": "Action Reports",
         },
         "empty_category": "No articles in this category yet.",
         "empty_latest": "No articles yet. Stay tuned.",
@@ -69,11 +69,11 @@ LOCALES = {
         "categories": {
             "社群公告": "お知らせ",
             "議題觀點": "視点・論考",
-            "技術教學": "ガイド",
-            "行動記事": "行動記録ノート",
+            "技術教學": "技術ガイド",
+            "行動記事": "活動レポート",
         },
         "empty_category": "このカテゴリにはまだ記事がありません。",
-        "empty_latest": "記事はまだありません。公開までお待ちください。",
+        "empty_latest": "記事はまだありません。今後の公開をお待ちください。",
         "tags_label": "タグ：",
     },
 }
@@ -158,6 +158,8 @@ def fmt_date(iso: str, locale: str = DEFAULT_LOCALE) -> str:
     mi, di = int(m), int(d)
     if locale == "en":
         return f"{MONTHS_EN[mi]} {di}, {y}"
+    if locale == "ja":  # 日文排版慣例：數字與漢字之間不加空格
+        return f"{y}年{mi}月{di}日"
     return f"{y} 年 {mi} 月 {di} 日"
 
 
@@ -165,7 +167,7 @@ def fmt_reading_time(minutes: int, locale: str = DEFAULT_LOCALE) -> str:
     if locale == "en":
         return f"~{minutes} min read"
     if locale == "ja":
-        return f"読了目安 約 {minutes} 分"
+        return f"約{minutes}分で読めます"
     return f"閱讀約 {minutes} 分鐘"
 
 
@@ -174,7 +176,7 @@ def fmt_cat_count(name: str, count: int, locale: str = DEFAULT_LOCALE) -> str:
     if locale == "en":
         return f"{display} ({count})"
     if locale == "ja":
-        return f"{display}（{count} 件）"
+        return f"{display}（{count}件）"
     return f"{display}（{count} 篇）"
 
 
@@ -182,11 +184,13 @@ def fmt_member_count(n: int, locale: str = DEFAULT_LOCALE) -> str:
     if locale == "en":
         return f"over {n}"
     if locale == "ja":
-        return f"{n} 名以上"
+        return f"{n}名以上"
     return f"逾 {n} 位"
 
 
 def fmt_member_date(year: int, month: int, locale: str = DEFAULT_LOCALE) -> str:
     if locale == "en":
         return f"{MONTHS_EN[month]} {year}"
+    if locale == "ja":
+        return f"{year}年{month}月"
     return f"{year} 年 {month} 月"
