@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "authoring"))
 import articles_lib as AL  # noqa: E402
+import i18n as I  # noqa: E402
 errors: list[str] = []
 
 
@@ -31,6 +32,7 @@ class Page(HTMLParser):
         self.links: list[dict] = []
         self.metas: dict[str, str] = {}
         self.canonical = ""
+        self.alternates: dict[str, str] = {}
         self.title = ""
         self._in_title = False
         self._cur_a: dict | None = None
@@ -59,6 +61,8 @@ class Page(HTMLParser):
                 self.metas[key] = a.get("content", "")
         if tag == "link" and a.get("rel") == "canonical":
             self.canonical = a.get("href", "")
+        if tag == "link" and a.get("rel") == "alternate" and a.get("hreflang"):
+            self.alternates[a["hreflang"]] = a.get("href", "")
         if tag == "a":
             self._cur_a = {"attrs": a, "text": ""}
             if self.first_focusable is None:
@@ -92,11 +96,15 @@ def load(p: Path) -> Page:
 
 
 domain = (ROOT / "CNAME").read_text().strip()
-html_files = sorted(ROOT.glob("*.html")) + sorted(ROOT.glob("articles/*.html"))
+html_files = sorted(ROOT.glob("*.html"))
+for _code in ("en", "ja"):
+    if (ROOT / _code).exists():
+        html_files += sorted((ROOT / _code).glob("*.html"))
+html_files += sorted(ROOT.glob("articles/*.html"))
 pages = {p.relative_to(ROOT).as_posix(): load(p) for p in html_files}
 # 公開頁：404 以外、沒有 noindex 的頁面（未公開的文章列表與草稿文章是 noindex）
 public = [n for n in pages if n != "404.html" and "noindex" not in pages[n].metas.get("robots", "")]
-root_public = [n for n in public if "/" not in n]
+nav_public = [n for n in public if not n.startswith("articles/")]
 
 
 def jpeg_size(path: Path) -> tuple[int, int] | None:
@@ -167,9 +175,14 @@ def seo_checks(name: str, pg: Page) -> None:
             continue
         nodes = data.get("@graph", [data])
         types = {n.get("@type") for n in nodes}
-        if name == "index.html":
+        if I.base_page(name) == "index.html" and not name.startswith("articles/"):
             if not {"Organization", "WebSite"} <= types:
                 err(name, "首頁 JSON-LD 需要 Organization 與 WebSite")
+            else:
+                ws = next(n for n in nodes if n.get("@type") == "WebSite")
+                want_lang = I.LOCALES[I.locale_of(name)]["html_lang"]
+                if ws.get("inLanguage") != want_lang:
+                    err(name, f"首頁 WebSite.inLanguage 應為 {want_lang!r}（目前 {ws.get('inLanguage')!r}）")
         elif "BreadcrumbList" not in types:
             err(name, "內頁 JSON-LD 需要 BreadcrumbList")
         else:
@@ -194,8 +207,12 @@ for name, pg in pages.items():
     def count(t):
         return sum(1 for x, _ in tags if x == t)
 
-    if pg.lang != "zh-Hant-TW":
-        err(name, f'<html lang> 必須是 "zh-Hant-TW"（目前：{pg.lang!r}）')
+    loc = I.locale_of(name)
+    linfo = I.LOCALES[loc]
+    if pg.lang != linfo["html_lang"]:
+        err(name, f'<html lang> 必須是 {linfo["html_lang"]!r}（目前：{pg.lang!r}）')
+    if pg.metas.get("og:locale") != linfo["og_locale"]:
+        err(name, f'og:locale 必須是 {linfo["og_locale"]!r}（目前：{pg.metas.get("og:locale")!r}）')
     if not pg.title.strip():
         err(name, "缺少 <title>")
     if not pg.metas.get("description"):
@@ -264,9 +281,16 @@ for name, pg in pages.items():
     if name != "404.html":
         if pg.canonical != pg.metas.get("og:url"):
             err(name, "canonical 與 og:url 不一致")
-        expect = f"https://{domain}/" if name == "index.html" else f"https://{domain}/{name}"
+        expect = I.canonical_url(f"https://{domain}", name)
         if pg.canonical != expect:
             err(name, f"canonical 應為 {expect}（目前 {pg.canonical}）")
+        if I.is_localized_public(name):
+            bp = I.base_page(name)
+            want_alt = {I.LOCALES[c]["html_lang"]: I.page_url(f"https://{domain}", c, bp) for c in I.LOCALE_ORDER}
+            want_alt["x-default"] = I.page_url(f"https://{domain}", I.DEFAULT_LOCALE, bp)
+            for hl, href in want_alt.items():
+                if pg.alternates.get(hl) != href:
+                    err(name, f'缺少或不正確的 <link rel="alternate" hreflang="{hl}" href="{href}">')
     if pg.metas.get("og:title") != pg.title.strip() or pg.metas.get("twitter:title") != pg.title.strip():
         err(name, "title、og:title、twitter:title 必須逐字一致")
     d = pg.metas.get("description")
@@ -299,19 +323,28 @@ for name, pg in pages.items():
             if a.get("target") == "_blank":
                 if "noopener" not in a.get("rel", ""):
                     err(name, f"target=_blank 必須加 rel=noopener：{href}")
-                if "另開新視窗" not in text:
-                    err(name, f"另開新視窗的連結文字須註明「另開新視窗」：{text}")
+                marker = linfo["external_marker"]
+                if marker not in text:
+                    err(name, f"另開新視窗的連結文字須註明「{marker}」：{text}")
             elif f"//{domain}" not in href:
                 err(name, f"外部連結必須 target=_blank rel=noopener：{href}")
         elif href.startswith("mailto:"):
             pass
         else:
-            if "另開新視窗" in text:
-                err(name, f"站內連結不應標示「另開新視窗」：{href}")
+            for _info in I.LOCALES.values():
+                if _info["external_marker"] in text:
+                    err(name, f"站內連結不應標示「{_info['external_marker']}」：{href}")
             if a.get("target") == "_blank":
                 err(name, f"站內連結不應另開新視窗：{href}")
             path, _, frag = href.partition("#")
-            target_name = name if path == "" else ("index.html" if path == "/" else path.lstrip("/"))
+            if path == "":
+                target_name = name
+            elif path == "/":
+                target_name = "index.html"
+            elif path.endswith("/"):
+                target_name = path.lstrip("/") + "index.html"
+            else:
+                target_name = path.lstrip("/")
             if not path.startswith("/") and path != "":
                 err(name, f"站內連結請用 / 開頭的絕對路徑：{href}")
             elif target_name not in pages and not (not frag and (ROOT / target_name).is_file()):
@@ -322,20 +355,31 @@ for name, pg in pages.items():
 # ---------------------------------------------------------------- 2. 共用區塊一致
 # 內容是否與 authoring/partials/ 一致由 build-shared.py --check 驗證（見第 9 節末尾）；這裡只驗 aria-current
 
-# 導覽：根目錄的公開頁恰好一個 aria-current，且指向自己；文章頁與未公開頁沒有
+# 導覽：各語系的公開頁恰好一個 aria-current="page"，且指向自己；文章頁與未公開頁沒有
+# 語言切換器：每頁恰好一個 aria-current="true"，且 lang 符合該頁語系
 for name in pages:
-    if name in root_public:
-        continue
-    if any(lk["attrs"].get("aria-current") for lk in pages[name].links):
-        err(name, "這一頁不在導覽中，不應有 aria-current")
-nav_hrefs = {lk["attrs"].get("href") for lk in pages["index.html"].links if lk["attrs"].get("href", "").startswith("/")}
-if "articles.html" in pages and ("articles.html" in public) != ("/articles.html" in nav_hrefs):
-    err("articles.html", "上線狀態不一致：articles.html 公開（index）時導覽必須有「文章」，未公開（noindex）時導覽不能有")
-for name in root_public:
-    cur = [lk for lk in pages[name].links if lk["attrs"].get("aria-current") == "page"]
-    expect = "/" if name == "index.html" else "/" + name
-    if len(cur) != 1 or cur[0]["attrs"].get("href") != expect:
-        err(name, f'導覽必須恰好有一個 aria-current="page"，且指向 {expect}')
+    loc = I.locale_of(name)
+    cur_lang = [lk for lk in pages[name].links if lk["attrs"].get("aria-current") == "true"]
+    if len(cur_lang) != 1 or cur_lang[0]["attrs"].get("lang") != I.LOCALES[loc]["html_lang"]:
+        err(name, f'語言切換器必須恰好有一個 aria-current="true"，且 lang 為 {I.LOCALES[loc]["html_lang"]}')
+    if name in nav_public:
+        cur = [lk for lk in pages[name].links if lk["attrs"].get("aria-current") == "page"]
+        expect = I.page_href(loc, I.base_page(name))
+        if len(cur) != 1 or cur[0]["attrs"].get("href") != expect:
+            err(name, f'導覽必須恰好有一個 aria-current="page"，且指向 {expect}')
+    else:
+        if any(lk["attrs"].get("aria-current") == "page" for lk in pages[name].links):
+            err(name, "這一頁不在導覽中，不應有 aria-current=\"page\"")
+
+for loc in I.LOCALE_ORDER:
+    prefix = I.LOCALES[loc]["prefix"].lstrip("/")
+    idx_name = f"{prefix}/index.html" if prefix else "index.html"
+    art_name = f"{prefix}/articles.html" if prefix else "articles.html"
+    if idx_name in pages and art_name in pages:
+        nav_hrefs = {lk["attrs"].get("href") for lk in pages[idx_name].links if lk["attrs"].get("href", "").startswith("/")}
+        art_href = I.page_href(loc, "articles.html")
+        if (art_name in public) != (art_href in nav_hrefs):
+            err(art_name, f"上線狀態不一致：{art_name} 公開（index）時導覽必須有 {art_href}，未公開（noindex）時導覽不能有")
 
 # ---------------------------------------------------------------- 3. sitemap／robots
 sm = ROOT / "sitemap.xml"
@@ -346,7 +390,7 @@ else:
     for name in pages:
         if name == "404.html":
             continue
-        u = f"https://{domain}/" if name == "index.html" else f"https://{domain}/{name}"
+        u = I.canonical_url(f"https://{domain}", name)
         if name in public and u not in locs:
             err("sitemap.xml", f"缺少 {u}（請執行 python3 authoring/build-sitemap.py）")
         if name not in public and u in locs:
@@ -641,11 +685,17 @@ for script, what in (("build-shared.py", "共用區塊"), ("build-lists.py", "�
         err(script, (r.stderr.strip() or f"{what}過期") + "")
 
 # ---------------------------------------------------------------- 10. 社員數（build-members.py 寫入的靜態文字）
-for name, keys in (("index.html", ("count",)), ("about.html", ("count", "date"))):
-    text = (ROOT / name).read_text(encoding="utf-8")
-    for k in keys:
-        if not re.search(rf"<!--members:{k}-->[^<]+<!--/members:{k}-->", text):
-            err(name, f"缺少或清空了 <!--members:{k}--> 標記（社員數由 authoring/build-members.py 寫入）")
+for loc in I.LOCALE_ORDER:
+    prefix = I.LOCALES[loc]["prefix"].lstrip("/")
+    for base_name, keys in (("index.html", ("count",)), ("about.html", ("count", "date"))):
+        name = f"{prefix}/{base_name}" if prefix else base_name
+        p = ROOT / name
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        for k in keys:
+            if not re.search(rf"<!--members:{k}-->[^<]+<!--/members:{k}-->", text):
+                err(name, f"缺少或清空了 <!--members:{k}--> 標記（社員數由 authoring/build-members.py 寫入）")
 
 # ---------------------------------------------------------------- 結果
 if errors:

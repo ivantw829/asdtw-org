@@ -76,12 +76,12 @@ def og_alt(title: str) -> str:
 
 
 PARTIALS_DIR = ROOT / "authoring" / "partials"
-SHARED_KEYS = ("prefs", "header", "footer")  # 閱讀設定、頁首、頁尾；唯一來源是 authoring/partials/<key>.html
+SHARED_KEYS = ("prefs", "header", "footer")  # 閱讀設定、頁首、頁尾；唯一來源是 authoring/partials/<lang>/<key>.html
 
 
-def partial(key: str) -> str:
+def partial(key: str, locale: str = "zh") -> str:
     """片段檔內容（不含標記、不含 aria-current）。"""
-    p = PARTIALS_DIR / f"{key}.html"
+    p = PARTIALS_DIR / locale / f"{key}.html"
     if not p.exists():
         raise SystemExit(f"找不到共用區塊的片段檔：{p.relative_to(ROOT)}")
     return p.read_text(encoding="utf-8").strip("\n")
@@ -91,10 +91,18 @@ def wrap_shared(key: str, inner: str) -> str:
     return f"<!--shared:{key}-->\n{inner}\n<!--/shared:{key}-->"
 
 
-def shared_blocks() -> dict[str, str]:
+def shared_blocks(rel: str = "articles/placeholder.html") -> dict[str, str]:
     """閱讀設定、頁首、頁尾（連同 <!--shared:…--> 標記、沒有 aria-current）。文章頁產生時用這份，
     之後由 build-shared.py 跟其他頁面一起維護。"""
-    return {k: wrap_shared(k, partial(k)) for k in SHARED_KEYS}
+    import i18n
+    loc = i18n.locale_of(rel)
+    blocks = {}
+    for k in SHARED_KEYS:
+        inner = partial(k, loc)
+        if k == "prefs":
+            inner = inner.replace("<!--lang-links-->", i18n.render_lang_switch(rel))
+        blocks[k] = wrap_shared(k, inner)
+    return blocks
 
 
 def replace_marked(text: str, start: str, end: str, inner: str, where: str) -> str:

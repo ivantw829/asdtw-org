@@ -78,9 +78,9 @@ git push
 ## 4. 新增一場行動紀錄
 
 1. `git switch -c content/<slug>`
-2. 在 `actions.html` 的時間軸 `<ol class="timeline">` **最上方**（新到舊）複製一個 `<li>`，改 `id`（如 `tywd-2026`）、標籤（線下聚會、技術支援等）、標題、`<time datetime>` 與說明。**地點等沒有提供的資訊不要寫，也不要自己推測。**
-3. 標題上方的「共 N 場」要同步 +1。
-4. 首頁 `index.html`「最近的行動」固定列最新 3 場，每筆連到 `actions.html#<id>`；新的放最上面，最舊的那筆移出首頁。
+2. 在 `actions.html`、`en/actions.html`、`ja/actions.html` 的時間軸 `<ol class="timeline">` **最上方**（新到舊）複製一個 `<li>`，三語使用相同 `id`（如 `tywd-2026`），改標籤（線下聚會、技術支援等）、標題、`<time datetime>` 與說明。**地點等沒有提供的資訊不要寫，也不要自己推測。**
+3. 標題上方的「共 N 場」（`N Actions`／`全 N 件`）要同步 +1。
+4. 三語首頁（`index.html`、`en/index.html`、`ja/index.html`）「最近的行動」固定列最新 3 場，每筆連到對應語系的 `actions.html#<id>`；新的放最上面，最舊的那筆移出首頁。
 5. `bash authoring/ship.sh "content(actions): 新增〈行動名稱〉紀錄"`
 
 ## 4.1 發表文章
@@ -101,12 +101,12 @@ git push
 
 `authoring/check.py` 會擋下以下任一項：
 
-- 頁面缺少 `lang="zh-Hant-TW"`、`<main>`、`<nav aria-label>`、跳到主要內容連結；`<h1>` 不是恰好一個；標題跳級。
+- 頁面缺少對應語系的 `<html lang>`（`zh-Hant-TW`／`en`／`ja`）、`<main>`、`<nav aria-label>`、跳到主要內容連結；`<h1>` 不是恰好一個；標題跳級。
 - 色票文字對比低於 7:1（AAA），或介面元件低於 3:1；兩份深色或高對比色票不一致；高對比的元件規則（`:root[data-theme="high"] …`）沒有對應的系統版（`prefers-contrast: more`）。
 - `font-size` 使用 px；`style=`、`<style>`、行內事件、行內 `<script>`、外部 CSS／JS。
 - `<img>` 沒有 `alt`；`<button>` 沒有 `type`；連結文字空白或只有「點此」「更多」。
-- 另開新視窗的連結沒有 `rel="noopener"`，或文字沒註明「另開新視窗」。
-- 頁首／頁尾／閱讀設定與 `authoring/partials/` 不一致（只改片段檔，再執行 `python3 authoring/build-shared.py`）；導覽沒有恰好一個 `aria-current="page"`。
+- 另開新視窗的連結沒有 `rel="noopener"`，或文字沒註明該語系的另開提示（「另開新視窗」／`opens in a new tab`／「新しいタブで開きます」）。
+- 頁首／頁尾／閱讀設定（含頂部右側語言切換器）與 `authoring/partials/{zh,en,ja}/` 不一致（只改片段檔，再執行 `python3 authoring/build-shared.py`）；各語系公開頁導覽沒有恰好一個 `aria-current="page"`，或語言切換器沒有恰好一個 `aria-current="true"`。
 - 站內連結或錨點指向不存在的目標；sitemap 缺頁。
 - 加入 `<video>` `<audio>` `<iframe>` 等多媒體：必須先補上字幕／文字稿規範與更新 `check.py`。
 
@@ -164,11 +164,13 @@ git push
 - **社員數只能在本機取得後靜態寫入，不要改成在訪客端用 JS 呼叫 Discord API**：那樣會讓訪客的瀏覽器連到 Discord，違反隱私說明（見 PR #16）。
 - 改站名、標語或分享卡設計（`authoring/og/card.html`）後，要手動執行 `python3 authoring/build-og.py` 並提交產物。
 
-## 10. 新增頁面
+## 10. 新增頁面（與多語系）
 
-1. 複製既有頁面，保留 `<head>`（canonical、og:url 寫完整網址，網域以 `CNAME` 為準）與三組 `<!--shared:…-->` 標記。
+本站採純靜態子目錄多語系：繁體中文為預設（根目錄 `/`）、英文在 `/en/`、日文在 `/ja/`；文章頁（`/articles/*.html`）維持原語言，英／日文文章列表頁（`/en/articles.html`、`/ja/articles.html`）提供翻譯後的介面並連向原語言文章頁。多語系共用設定在 `authoring/i18n.py`。
+
+1. 在根目錄、`en/`、`ja/` 各複製既有頁面，保留 `<head>`（canonical、og:url、四條 `hreflang` 寫完整網址，網域以 `CNAME` 為準）與三組 `<!--shared:…-->` 標記。
 2. 保留切頁轉場需要的 `<link rel="expect" href="#page-end" blocking="render">` 和 `</footer>` 後的 `<span id="page-end" hidden></span>`，少了切頁會閃白。
-3. 在 `authoring/partials/header.html` 的導覽加一項。
+3. 在 `authoring/partials/{zh,en,ja}/header.html` 的導覽各加一項，並在 `authoring/i18n.py` 的 `PUBLIC_PAGES` 登錄。
 4. 執行 `python3 authoring/build-shared.py` 和 `python3 authoring/build-sitemap.py`，再跑 `check.py`。
 
 ## 11. 初次設定（只需做一次）

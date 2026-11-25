@@ -1,28 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://asdtw.org/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/"/>
   </url>
   <url>
     <loc>https://asdtw.org/about.html</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/about.html"/>
   </url>
   <url>
     <loc>https://asdtw.org/accessibility.html</loc>
     <lastmod>2026-11-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/accessibility.html"/>
   </url>
   <url>
     <loc>https://asdtw.org/actions.html</loc>
     <lastmod>2026-11-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/actions.html"/>
   </url>
   <url>
     <loc>https://asdtw.org/articles.html</loc>
     <lastmod>2026-11-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/articles.html"/>
   </url>
   <url>
     <loc>https://asdtw.org/positions.html</loc>
     <lastmod>2026-11-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/positions.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/en/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/en/about.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/about.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/en/accessibility.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/accessibility.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/en/actions.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/actions.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/en/articles.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/articles.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/en/positions.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/positions.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/ja/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/ja/about.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/about.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/ja/accessibility.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/accessibility.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/accessibility.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/ja/actions.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/actions.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/actions.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/ja/articles.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/articles.html"/>
+  </url>
+  <url>
+    <loc>https://asdtw.org/ja/positions.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://asdtw.org/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://asdtw.org/en/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://asdtw.org/ja/positions.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://asdtw.org/positions.html"/>
   </url>
   <url>
     <loc>https://asdtw.org/articles/election-2026-legal-reminders.html</loc>

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """從本機向 Discord 取得社員數，靜態寫進 HTML（訪客端不連外、不需要 JS）。改寫的區塊：
 
-  index.html、about.html   <!--members:count--> … <!--/members:count-->   如「逾 400 位」
-  about.html               <!--members:date--> … <!--/members:date-->     如「2026 年 11 月」（人數有變才更新）
+  [en/|ja/]index.html、[en/|ja/]about.html   <!--members:count--> … <!--/members:count-->   如「逾 440 位」/「over 440」/「440 名以上」
+  [en/|ja/]about.html                        <!--members:date--> … <!--/members:date-->     如「2026 年 11 月」/「November 2026」（人數有變才更新）
 
 人數取自首頁「加入 Discord 社群」按鈕的邀請碼，往下取整到十位數（409 → 逾 400）。
 Discord 的 approximate_member_count 會在十位邊界上下晃（409／411／408），為了不讓每次提交
-都把「逾 400」與「逾 410」來回改寫，以首頁標記裡現有的數字 N 為準做遲滯判斷：
+都把「逾 400」與「逾 410」來回改寫，以根目錄首頁標記裡現有的數字 N 為準做遲滯判斷：
 
   往上：即時人數跨過下一個十（> N + 10，例如 N = 400 時要 411 以上）才更新。
   往下：即時人數明顯低於 N（≤ N − 5，例如 N = 410 時要 405 以下）才更新。
-  其餘情況維持原數字（關於頁若與首頁不同，對齊首頁）。更新時一律改成即時人數往下取整的值。
+  其餘情況維持原數字（其他語系或關於頁若與首頁不同，對齊首頁）。更新時一律改成即時人數往下取整的值。
 
 關於頁的年月只在數字真的改寫時更新。
 連不上 Discord 時只印警告、不改檔案，不會擋下提交。pre-commit 會自動執行；會印出被改寫的檔案。
@@ -23,8 +23,22 @@ import sys
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import i18n as I  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
-FILES = [ROOT / "index.html", ROOT / "about.html"]
+
+
+def target_files() -> list[tuple[Path, str]]:
+    out = []
+    for loc in I.LOCALE_ORDER:
+        prefix = I.LOCALES[loc]["prefix"].lstrip("/")
+        base_dir = ROOT / prefix if prefix else ROOT
+        for name in ("index.html", "about.html"):
+            p = base_dir / name
+            if p.exists():
+                out.append((p, loc))
+    return out
 
 
 def warn(msg: str) -> None:
@@ -81,21 +95,23 @@ def main() -> None:
         return warn(f"無法取得 Discord 人數（{exc}）")
     shown = current((ROOT / "index.html").read_text(encoding="utf-8"))
     value = decide(n, shown)
-    if value is None:  # 維持首頁的數字；關於頁若不一致仍會對齊首頁
+    if value is None:  # 維持首頁的數字；其他頁若不一致仍會對齊首頁
         value = shown
-    count = f"逾 {value} 位"
+    if value is None:
+        return warn("無法解析目前社員數")
     today = datetime.date.today()
-    date = f"{today.year} 年 {today.month} 月"
-    for f in FILES:
+    for f, loc in target_files():
         old = f.read_text(encoding="utf-8")
         m = re.search(r"<!--members:count-->(.*?)<!--/members:count-->", old, re.S)
         if not m:
-            warn(f"{f.name} 找不到 <!--members:count--> 標記")
+            warn(f"{f.relative_to(ROOT)} 找不到 <!--members:count--> 標記")
             continue
+        count = I.fmt_member_count(value, loc)
         if m.group(1) == count:
             continue
+        date_str = I.fmt_member_date(today.year, today.month, loc)
         new, _ = sub(old, "count", count)
-        new, _ = sub(new, "date", date)
+        new, _ = sub(new, "date", date_str)
         f.write_text(new, encoding="utf-8")
         print(f.relative_to(ROOT))
 
