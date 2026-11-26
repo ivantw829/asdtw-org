@@ -45,9 +45,19 @@ def save_articles(data: list[dict]) -> None:
     DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def is_external(a: dict) -> bool:
+    """是否為指向其他網站的跨站文章連結（本站不存全文頁）。"""
+    return bool(a.get("externalUrl"))
+
+
 def published(data: list[dict]) -> list[dict]:
     """排除草稿，依日期新到舊（同日依 slug 排序，結果可重現）。"""
     return sorted((a for a in data if not a.get("draft")), key=lambda a: (a["date"], a["slug"]), reverse=True)
+
+
+def local_published(data: list[dict]) -> list[dict]:
+    """排除草稿與跨站連結，僅保留本站有全文的文章。"""
+    return [a for a in published(data) if not is_external(a)]
 
 
 def fmt_date(iso: str) -> str:

@@ -11,7 +11,7 @@
 - 先看 `git status`，保留使用者已有的修改，不覆蓋或回退無關的變更。
 - 先讀 `CONTRIBUTING.md`；工作涉及文章、行動紀錄、無障礙或 SEO 時，讀其中對應的章節。
 - 一個變更只處理一件事。除非使用者明確要求，不要 commit、push、開 PR、merge 或修改 GitHub 設定。
-- 不加入外部 CDN、Google Fonts、追蹤碼、Cookie、分析工具或其他第三方資源。
+- 不加入外部 CDN、Google Fonts、追蹤碼、Cookie、分析工具或其他第三方資源。唯一例外是頁尾的電子報訂閱表單（`authoring/partials/{zh,en,ja}/footer.html`）：純 HTML 表單 POST 到 Buttondown（帳號 `asdtw`，與 me.asdtw.org 共用），不載入它的腳本；隱私說明（`accessibility.html#privacy` 三語）有對應一條，改服務時一起改。
 - 不提交社員真名、私人訊息、聯絡方式或可辨識未成年人的資訊。
 
 ## 常用命令

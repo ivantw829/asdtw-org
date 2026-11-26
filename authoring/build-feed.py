@@ -44,7 +44,7 @@ def full_html(a: dict) -> str:
 
 def render() -> str:
     b = L.base()
-    items = sorted(L.published(L.load_articles()),
+    items = sorted(L.local_published(L.load_articles()),
                    key=lambda a: (a.get("updated") or a["date"], a["date"], a["slug"]), reverse=True)
     feed_updated = (items[0].get("updated") or items[0]["date"]) if items else "2026-07-31"  # 沒有文章時用社群建立日
     out = ['<?xml version="1.0" encoding="utf-8"?>',
