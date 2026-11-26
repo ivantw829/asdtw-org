@@ -793,21 +793,6 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 .site-footer li { margin: 0; }
 .site-footer .license { margin: 0.75rem 0 0; }
 .site-footer a { display: inline-block; padding: 0.5rem 0; }
-.footer-newsletter { margin: 1rem 0 0; padding-bottom: 1rem; border-bottom: 0.0625rem dashed var(--line); }
-.footer-newsletter label { display: block; font-weight: 700; color: var(--text); }
-.footer-newsletter p { margin: 0.25rem 0 0.5rem; }
-.footer-newsletter-row { display: flex; flex-wrap: wrap; gap: 0.5rem; max-width: 34rem; }
-.footer-newsletter input[type="email"] {
-  flex: 1 1 14rem;
-  min-width: 0;
-  min-height: 2.75rem;
-  padding: 0.5rem 1rem;
-  font: inherit;
-  color: var(--text);
-  background: var(--surface);
-  border: 0.09375rem solid var(--border);
-  border-radius: 62.5rem;
-}
 
 /* ---------- 小螢幕與超大字級 ---------- */
 @media (max-width: 30rem) {
