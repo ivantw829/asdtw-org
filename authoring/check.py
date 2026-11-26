@@ -269,8 +269,8 @@ for name, pg in pages.items():
                 err(name, "<img> 必須指定 width 與 height（避免版面位移）")
         if x in ("iframe", "video", "audio", "embed", "object"):
             err(name, f"<{x}> 尚未有無障礙規範，請先更新 check.py 與無障礙聲明再加入")
-        if x == "button" and a.get("type") not in ("button", "submit"):
-            err(name, '<button> 必須明確指定 type="button"（或表單送出鈕的 type="submit"）')
+        if x == "button" and a.get("type") != "button":
+            err(name, '<button> 必須指定 type="button"')
         if x == "meta" and a.get("name") == "viewport":
             pass
     # id 不重複
