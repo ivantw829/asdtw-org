@@ -28,6 +28,18 @@ def author_html(a: dict, locale: str) -> str:
     return e(I.LOCALES[locale]["site_name"])
 
 
+def title_link(a: dict, locale: str) -> str:
+    """文章標題連結：站內文章連到 /articles/<slug>.html；跨站文章另開新視窗並附標示。"""
+    lang_attr = "" if locale == "zh" else ' lang="zh-Hant-TW"'
+    if a.get("externalUrl"):
+        href = e(a["externalUrl"])
+        suffix = e(I.fmt_external_suffix(locale))
+        if locale == "zh":
+            return f'<a href="{href}" target="_blank" rel="noopener">{e(a["title"])}{suffix}</a>'
+        return f'<a href="{href}" target="_blank" rel="noopener"><span lang="zh-Hant-TW">{e(a["title"])}</span>{suffix}</a>'
+    return f'<a href="/articles/{a["slug"]}.html"{lang_attr}>{e(a["title"])}</a>'
+
+
 def row(a: dict, locale: str = "zh", with_category: bool = False) -> str:
     """首頁「最新文章」的列表項：與「最近的行動」同樣式（標題連結＋灰字資訊），再加一段摘要。"""
     info = [
@@ -37,10 +49,12 @@ def row(a: dict, locale: str = "zh", with_category: bool = False) -> str:
     ]
     if with_category:
         info.append(e(I.LOCALES[locale]["categories"][a["category"]]))
+    if a.get("externalSite"):
+        info.append(e(a["externalSite"]))
     sep = " · " if locale == "en" else "　"
     lang_attr = "" if locale == "zh" else ' lang="zh-Hant-TW"'
     return (
-        f'\n        <li><a href="/articles/{a["slug"]}.html"{lang_attr}>{e(a["title"])}</a><br>'
+        f'\n        <li>{title_link(a, locale)}<br>'
         f'<span class="muted">{sep.join(info)}</span>'
         f'\n          <p{lang_attr}>{e(a["summary"])}</p></li>'
     )
@@ -49,11 +63,14 @@ def row(a: dict, locale: str = "zh", with_category: bool = False) -> str:
 def card(a: dict, locale: str = "zh") -> str:
     """文章列表頁的卡片：標題（h3）、灰字資訊、摘要、標籤。
     資訊在 DOM 裡排在標題後面（報讀器先聽到標題），畫面上由 CSS 移到標題上方。"""
-    info = '<span aria-hidden="true"> · </span>'.join(f"<span>{x}</span>" for x in [
+    meta_parts = [
         f'<time datetime="{a["date"]}">{I.fmt_date(a["date"], locale)}</time>',
         author_html(a, locale),
         I.fmt_reading_time(a["readingTime"], locale),
-    ])
+    ]
+    if a.get("externalSite"):
+        meta_parts.append(e(a["externalSite"]))
+    info = '<span aria-hidden="true"> · </span>'.join(f"<span>{x}</span>" for x in meta_parts)
     lang_attr = "" if locale == "zh" else ' lang="zh-Hant-TW"'
     tags = ""
     if a.get("tags"):
@@ -65,7 +82,7 @@ def card(a: dict, locale: str = "zh") -> str:
         )
     return (
         f'\n        <li>'
-        f'\n          <h3><a href="/articles/{a["slug"]}.html"{lang_attr}>{e(a["title"])}</a></h3>'
+        f'\n          <h3>{title_link(a, locale)}</h3>'
         f'\n          <p class="article-card-meta muted">{info}</p>'
         f'\n          <p{lang_attr}>{e(a["summary"])}</p>{tags}'
         f'\n        </li>'
@@ -138,11 +155,14 @@ def render() -> dict[Path, str]:
             if "<!--lists:latest-->" in t:
                 out[p] = replace(t, "<!--lists:latest-->", "<!--/lists:latest-->", latest(items, locale), rel)
 
+    local_items = L.local_published(data)
     for a in data:
+        if L.is_external(a):
+            continue
         p = L.ARTICLES_DIR / f"{a['slug']}.html"
         if p.exists():
             out[p] = replace(p.read_text(encoding="utf-8"), "<!--articlenav:start-->", "<!--articlenav:end-->",
-                             article_nav(a, items), str(p.relative_to(ROOT)))
+                             article_nav(a, local_items), str(p.relative_to(ROOT)))
     return out
 
 

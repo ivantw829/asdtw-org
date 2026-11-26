@@ -171,6 +171,13 @@ def fmt_reading_time(minutes: int, locale: str = DEFAULT_LOCALE) -> str:
     return f"閱讀約 {minutes} 分鐘"
 
 
+def fmt_external_suffix(locale: str = DEFAULT_LOCALE) -> str:
+    marker = LOCALES[locale]["external_marker"]
+    if locale == "en":
+        return f" ({marker})"
+    return f"（{marker}）"
+
+
 def fmt_cat_count(name: str, count: int, locale: str = DEFAULT_LOCALE) -> str:
     display = LOCALES[locale]["categories"][name]
     if locale == "en":

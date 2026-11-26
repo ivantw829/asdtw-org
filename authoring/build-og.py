@@ -61,7 +61,7 @@ def article_card(a: dict) -> None:
 
 
 def articles(only: list[str] | None, force: bool) -> None:
-    data = {a["slug"]: a for a in L.load_articles()}
+    data = {a["slug"]: a for a in L.load_articles() if not L.is_external(a)}
     manifest = L.load_manifest()
     for slug in only or []:
         if slug not in data:

@@ -163,6 +163,7 @@
       <li>写真およびメンバー一覧は掲載しません。</li>
       <li>本サイトは GitHub Pages でホスティングされており、GitHub のポリシーに基づき接続情報が記録される場合があります。</li>
       <li>Discord の招待リンクを開いた後は、Discord のプライバシーポリシーが適用されます。</li>
+      <li>ニュースレターを購読すると、入力したメールアドレスは配信のために Buttondown に送信・保管され、Buttondown のプライバシーポリシーが適用されます。各メールから配信を停止できます。</li>
     </ul>
     </div>
   </div>
@@ -172,6 +173,15 @@
   <div class="wrap">
     <div class="brand-lockup" aria-hidden="true"></div>
     <p>フォルモサ自閉大公社　2026年7月31日設立</p>
+    <form class="footer-newsletter" action="https://buttondown.com/api/emails/embed-subscribe/asdtw" method="post" target="_blank">
+      <label for="newsletter-email">ニュースレターを購読</label>
+      <p id="newsletter-note">新しい記事をメールでお届けします。配信はいつでも停止できます。</p>
+      <div class="footer-newsletter-row">
+        <input type="email" name="email" id="newsletter-email" required autocomplete="email" aria-describedby="newsletter-note">
+        <input type="hidden" name="embed" value="1">
+        <button type="submit">購読する（新しいタブで開きます）</button>
+      </div>
+    </form>
     <ul>
       <li><a href="https://discord.gg/NV6Y4vcUNt" target="_blank" rel="noopener">Discord に参加（新しいタブで開きます）</a></li>
       <li><a href="https://bsky.app/profile/asdtw.org" target="_blank" rel="noopener">Bluesky（新しいタブで開きます）</a></li>

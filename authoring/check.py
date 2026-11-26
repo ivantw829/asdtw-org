@@ -269,8 +269,8 @@ for name, pg in pages.items():
                 err(name, "<img> 必須指定 width 與 height（避免版面位移）")
         if x in ("iframe", "video", "audio", "embed", "object"):
             err(name, f"<{x}> 尚未有無障礙規範，請先更新 check.py 與無障礙聲明再加入")
-        if x == "button" and a.get("type") != "button":
-            err(name, '<button> 必須指定 type="button"')
+        if x == "button" and a.get("type") not in ("button", "submit"):
+            err(name, '<button> 必須明確指定 type="button"（或表單送出鈕的 type="submit"）')
         if x == "meta" and a.get("name") == "viewport":
             pass
     # id 不重複
@@ -592,10 +592,15 @@ articles = AL.load_articles()
 by_slug = {a.get("slug"): a for a in articles}
 if len(by_slug) != len(articles):
     err("data/articles.json", "slug 重複")
+local_slugs = {slug for slug, a in by_slug.items() if not AL.is_external(a)}
+external_slugs = {slug for slug, a in by_slug.items() if AL.is_external(a)}
 files = {Path(n).stem for n in pages if n.startswith("articles/")}
-for slug in sorted(files - set(by_slug)):
-    err(f"articles/{slug}.html", "沒有登錄在 data/articles.json（請用 authoring/md2article.py 產生）")
-for slug in sorted(set(by_slug) - files):
+for slug in sorted(files - local_slugs):
+    if slug in external_slugs:
+        err(f"articles/{slug}.html", "跨站文章（externalUrl）不應有站內文章頁")
+    else:
+        err(f"articles/{slug}.html", "沒有登錄在 data/articles.json（請用 authoring/md2article.py 產生）")
+for slug in sorted(local_slugs - files):
     err("data/articles.json", f"{slug} 找不到 articles/{slug}.html")
 known_actions = set(pages["actions.html"].ids) if "actions.html" in pages else set()
 manifest = AL.load_manifest()
@@ -621,9 +626,13 @@ for slug, a in by_slug.items():
         err(where, f"summary 應為 50～160 字（目前 {len(a['summary'])} 字）")
     if a.get("action") and a["action"] not in known_actions:
         err(where, f"action「{a['action']}」不是 actions.html 的錨點")
-    extra = set(a) - {"slug", "title", "date", "category", "tags", "summary", "readingTime", "author", "updated", "draft", "action"}
+    if a.get("externalUrl") and not str(a["externalUrl"]).startswith("https://"):
+        err(where, "externalUrl 必須以 https:// 開頭")
+    extra = set(a) - {"slug", "title", "date", "category", "tags", "summary", "readingTime", "author", "updated", "draft", "action", "externalUrl", "externalSite"}
     if extra:
         err(where, f"未知欄位：{sorted(extra)}")
+    if AL.is_external(a):
+        continue
     name = f"articles/{slug}.html"
     if name not in pages:
         continue
@@ -677,7 +686,7 @@ for slug, a in by_slug.items():
         if manifest.get(slug) != AL.og_hash(a):
             err(str(og_file.relative_to(ROOT)), f"分享圖過期（標題、分類或卡片範本改過；請執行 python3 authoring/build-og.py {slug}）")
 for f in sorted(AL.OG_DIR.glob("*")) if AL.OG_DIR.exists() else []:
-    if f.suffix != ".jpg" or f.stem not in by_slug:
+    if f.suffix != ".jpg" or f.stem not in local_slugs:
         err(str(f.relative_to(ROOT)), "沒有對應的文章（請執行 python3 authoring/build-og.py --articles 清除）")
 for script, what in (("build-shared.py", "共用區塊"), ("build-lists.py", "文章列表"), ("build-feed.py", "訂閱源")):
     r = subprocess.run([sys.executable, str(ROOT / "authoring" / script), "--check"], capture_output=True, text=True)
