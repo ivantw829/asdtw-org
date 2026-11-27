@@ -63,7 +63,29 @@
     ],
     "summary": "2026 年九合一選舉在 11 月 28 日投票。11 月 18 日起不能發布、轉貼或評論選舉民調，投票日當天不能替候選人拉票，在 Discord、LINE、Threads 發文或轉貼都算。本文整理一般人最容易觸法的選罷法規定與罰則。",
     "readingTime": 3,
-    "updated": "2026-11-18"
+    "updated": "2026-11-18",
+    "translations": {
+      "en": {
+        "title": "Legal Reminders Before and After the Nine-in-One Vote: Poll Blackout and No Election-Day Campaigning",
+        "summary": "Voting is on November 28. From November 18 you may not publish, share or comment on election polls, and on election day you may not campaign for anyone.",
+        "tags": [
+          "Elections",
+          "Law"
+        ],
+        "readingTime": 4,
+        "updated": "2026-11-18"
+      },
+      "ja": {
+        "title": "統一地方選挙の投票前後の法律に関する注意点：世論調査の公表禁止と投票日の選挙運動禁止",
+        "summary": "2026年の統一地方選挙（九合一選挙）の投票日は11月28日です。11月18日からは選挙の世論調査を公表、転載、論評してはならず、投票日当日は候補者のための投票依頼もできません。Discord、LINE、Threadsでの投稿や転載も対象です。一般の人が最も違反しやすい選挙罷免法の規定と罰則をまとめます。",
+        "tags": [
+          "選挙",
+          "法律"
+        ],
+        "readingTime": 4,
+        "updated": "2026-11-18"
+      }
+    }
   },
   {
     "slug": "military-hairstyle-lawsuit",
