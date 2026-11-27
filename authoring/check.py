@@ -101,10 +101,12 @@ for _code in ("en", "ja"):
     if (ROOT / _code).exists():
         html_files += sorted((ROOT / _code).glob("*.html"))
 html_files += sorted(ROOT.glob("articles/*.html"))
+for _code in AL.TRANSLATION_LOCALES:
+    html_files += sorted(ROOT.glob(f"{_code}/articles/*.html"))
 pages = {p.relative_to(ROOT).as_posix(): load(p) for p in html_files}
 # 公開頁：404 以外、沒有 noindex 的頁面（未公開的文章列表與草稿文章是 noindex）
 public = [n for n in pages if n != "404.html" and "noindex" not in pages[n].metas.get("robots", "")]
-nav_public = [n for n in public if not n.startswith("articles/")]
+nav_public = [n for n in public if not I.base_page(n).startswith("articles/")]
 
 
 def jpeg_size(path: Path) -> tuple[int, int] | None:
@@ -133,7 +135,7 @@ def seo_checks(name: str, pg: Page) -> None:
         if "noindex" not in robots:
             err(name, '404 必須有 <meta name="robots" content="noindex">')
     elif robots.startswith("noindex"):
-        if not (name == "articles.html" or name.startswith("articles/")):
+        if not (name == "articles.html" or I.base_page(name).startswith("articles/")):
             err(name, "只有文章列表（上線前）與草稿文章可以是 noindex")
     elif not robots.startswith("index,follow"):
         err(name, '缺少 <meta name="robots" content="index,follow,…">')
@@ -142,8 +144,8 @@ def seo_checks(name: str, pg: Page) -> None:
         err(name, f"description 長度應為 50～160 字（目前 {len(desc)} 字）")
     # 社群分享
     img = f"{base}/assets/img/og.jpg"
-    if name.startswith("articles/"):
-        img = AL.og_url(Path(name).stem)  # 文章各自的分享圖，第 9 節檢查檔案
+    if I.base_page(name).startswith("articles/"):
+        img = AL.og_url(Path(name).stem, I.locale_of(name))  # 文章（原文或譯文）各自的分享圖，第 9 節檢查檔案
     for key in ("og:image", "twitter:image"):
         if m.get(key) != img:
             err(name, f"{key} 必須是 {img}")
@@ -600,10 +602,88 @@ for slug in sorted(files - local_slugs):
         err(f"articles/{slug}.html", "跨站文章（externalUrl）不應有站內文章頁")
     else:
         err(f"articles/{slug}.html", "沒有登錄在 data/articles.json（請用 authoring/md2article.py 產生）")
+for _code in AL.TRANSLATION_LOCALES:
+    for n in sorted(n for n in pages if n.startswith(f"{_code}/articles/")):
+        s = Path(n).stem
+        if s not in local_slugs or _code not in AL.translations(by_slug[s]):
+            err(n, f"沒有登錄在 data/articles.json 的 translations.{_code}（請用 authoring/md2article.py 產生）")
 for slug in sorted(local_slugs - files):
     err("data/articles.json", f"{slug} 找不到 articles/{slug}.html")
 known_actions = set(pages["actions.html"].ids) if "actions.html" in pages else set()
 manifest = AL.load_manifest()
+
+
+def check_article_page(slug: str, a: dict, loc: str, orig: dict) -> None:
+    """文章頁（原文或譯文）與 data/articles.json 一致、分享圖存在且最新。a 是 localized() 之後的欄位。"""
+    name = AL.article_rel(slug, loc)
+    if name not in pages:
+        return
+    pg = pages[name]
+    raw = (ROOT / name).read_text(encoding="utf-8")
+    full = AL.page_title(a["title"], loc)
+    cat_name = I.LOCALES[loc]["categories"].get(a.get("category"), "")
+    if pg.title.strip() != full:
+        err(name, f"<title> 必須是「{full}」（與 data/articles.json 一致）")
+    if pg.metas.get("description") != a["summary"]:
+        err(name, "description 必須與 data/articles.json 的 summary 逐字一致")
+    if pg.metas.get("og:type") != "article":
+        err(name, 'og:type 必須是 "article"')
+    if pg.metas.get("article:published_time") != a["date"]:
+        err(name, "article:published_time 必須與 date 一致")
+    if pg.metas.get("og:image:alt") != AL.og_alt(a["title"], loc):
+        err(name, f"og:image:alt 必須是「{AL.og_alt(a['title'], loc)}」")
+    if f'data-slug="{slug}"' not in raw:
+        err(name, f'缺少 <article data-slug="{slug}">')
+    is_noindex = "noindex" in pg.metas.get("robots", "")
+    if bool(a.get("draft")) != is_noindex:
+        err(name, "draft 與 robots 不一致：草稿必須 noindex，正式文章必須 index")
+    cat_href = f'{I.page_href(loc, "articles.html")}#{AL.CATEGORIES.get(a.get("category"), "")}'
+    if f'href="{cat_href}"' not in raw:
+        err(name, f"分類標籤必須連到 {cat_href}")
+    if "<!--articlenav:start-->" not in raw:
+        err(name, "缺少上一篇／下一篇的 articlenav 標記")
+    if "<!--alternates:start-->" not in raw:
+        err(name, "缺少 hreflang 的 alternates 標記（<!--alternates:start--><!--alternates:end-->，接在 canonical 後）")
+    locs = [c for c in I.LOCALE_ORDER if c == AL.DEFAULT_LOCALE or c in AL.translations(orig)]
+    if len(locs) > 1 and not a.get("draft"):
+        want_alt = {I.LOCALES[c]["html_lang"]: AL.article_url(slug, c) for c in locs}
+        want_alt["x-default"] = AL.article_url(slug)
+        if pg.alternates != want_alt:
+            err(name, f"hreflang 應為 {want_alt}（請執行 python3 authoring/build-lists.py）")
+    elif pg.alternates:
+        err(name, "只有一種語系的文章不應有 hreflang")
+    if loc != AL.DEFAULT_LOCALE and f'href="/{AL.article_rel(slug)}"' not in raw:
+        err(name, "譯文必須連回中文原文")
+    try:
+        graph = json.loads(pg.ldjson[0]).get("@graph", []) if pg.ldjson else []
+        art = next(n for n in graph if n.get("@type") == "Article")
+    except (ValueError, StopIteration):
+        err(name, "JSON-LD 需要 @graph 內的 Article")
+    else:
+        want = {"headline": a["title"], "datePublished": a["date"], "dateModified": a.get("updated") or a["date"],
+                "articleSection": cat_name, "inLanguage": I.LOCALES[loc]["html_lang"]}
+        for k, v in want.items():
+            if art.get(k) != v:
+                err(name, f"JSON-LD Article.{k} 應為 {v!r}（目前 {art.get(k)!r}）")
+        au = art.get("author", {})
+        if au.get("name") != AL.author_name(a, loc) or au.get("@type") != ("Person" if a.get("author") else "Organization"):
+            err(name, f"JSON-LD Article.author 應為 {AL.author_name(a, loc)}")
+    if AL.esc(AL.author_name(a, loc)) not in raw:
+        err(name, "頁面沒有顯示作者")
+    # 分享圖
+    og_file = AL.og_file(slug, loc)
+    key = AL.og_key(slug, loc)
+    if not og_file.exists():
+        err(name, f"缺少分享圖 {og_file.relative_to(ROOT)}（請執行 python3 authoring/build-og.py {key}）")
+    else:
+        if jpeg_size(og_file) != (1200, 630):
+            err(str(og_file.relative_to(ROOT)), "尺寸必須是 1200×630")
+        if og_file.stat().st_size > 300 * 1024:
+            err(str(og_file.relative_to(ROOT)), "檔案超過 300KB")
+        if manifest.get(key) != AL.og_hash(a, loc):
+            err(str(og_file.relative_to(ROOT)), f"分享圖過期（標題、分類或卡片範本改過；請執行 python3 authoring/build-og.py {key}）")
+
+
 for slug, a in by_slug.items():
     where = f"data/articles.json（{slug}）"
     for k in ("title", "date", "category", "tags", "summary", "readingTime"):
@@ -628,65 +708,39 @@ for slug, a in by_slug.items():
         err(where, f"action「{a['action']}」不是 actions.html 的錨點")
     if a.get("externalUrl") and not str(a["externalUrl"]).startswith("https://"):
         err(where, "externalUrl 必須以 https:// 開頭")
-    extra = set(a) - {"slug", "title", "date", "category", "tags", "summary", "readingTime", "author", "updated", "draft", "action", "externalUrl", "externalSite"}
+    extra = set(a) - {"slug", "title", "date", "category", "tags", "summary", "readingTime", "author", "updated", "draft", "action", "externalUrl", "externalSite", "translations"}
     if extra:
         err(where, f"未知欄位：{sorted(extra)}")
     if AL.is_external(a):
+        if a.get("translations"):
+            err(where, "跨站文章不能有 translations")
         continue
-    name = f"articles/{slug}.html"
-    if name not in pages:
-        continue
-    pg = pages[name]
-    raw = (ROOT / name).read_text(encoding="utf-8")
-    full = f"{a['title']}｜{AL.SITE_NAME}"
-    if pg.title.strip() != full:
-        err(name, f"<title> 必須是「{full}」（與 data/articles.json 一致）")
-    if pg.metas.get("description") != a["summary"]:
-        err(name, "description 必須與 data/articles.json 的 summary 逐字一致")
-    if pg.metas.get("og:type") != "article":
-        err(name, 'og:type 必須是 "article"')
-    if pg.metas.get("article:published_time") != a["date"]:
-        err(name, "article:published_time 必須與 date 一致")
-    if pg.metas.get("og:image:alt") != AL.og_alt(a["title"]):
-        err(name, f"og:image:alt 必須是「{AL.og_alt(a['title'])}」")
-    if f'data-slug="{slug}"' not in raw:
-        err(name, f'缺少 <article data-slug="{slug}">')
-    is_noindex = "noindex" in pg.metas.get("robots", "")
-    if bool(a.get("draft")) != is_noindex:
-        err(name, "draft 與 robots 不一致：草稿必須 noindex，正式文章必須 index")
-    if f'href="/articles.html#{AL.CATEGORIES.get(a.get("category"), "")}"' not in raw:
-        err(name, "分類標籤必須連到 /articles.html 的對應分類")
-    if "<!--articlenav:start-->" not in raw:
-        err(name, "缺少上一篇／下一篇的 articlenav 標記")
-    try:
-        graph = json.loads(pg.ldjson[0]).get("@graph", []) if pg.ldjson else []
-        art = next(n for n in graph if n.get("@type") == "Article")
-    except (ValueError, StopIteration):
-        err(name, "JSON-LD 需要 @graph 內的 Article")
-    else:
-        want = {"headline": a["title"], "datePublished": a["date"], "dateModified": a.get("updated") or a["date"],
-                "articleSection": a["category"]}
-        for k, v in want.items():
-            if art.get(k) != v:
-                err(name, f"JSON-LD Article.{k} 應為 {v!r}（目前 {art.get(k)!r}）")
-        au = art.get("author", {})
-        if au.get("name") != AL.author_name(a) or au.get("@type") != ("Person" if a.get("author") else "Organization"):
-            err(name, f"JSON-LD Article.author 應為 {AL.author_name(a)}")
-    if AL.author_name(a) not in raw:
-        err(name, "頁面沒有顯示作者")
-    # 分享圖
-    og_file = AL.OG_DIR / f"{slug}.jpg"
-    if not og_file.exists():
-        err(name, f"缺少分享圖 {og_file.relative_to(ROOT)}（請執行 python3 authoring/build-og.py {slug}）")
-    else:
-        if jpeg_size(og_file) != (1200, 630):
-            err(str(og_file.relative_to(ROOT)), "尺寸必須是 1200×630")
-        if og_file.stat().st_size > 300 * 1024:
-            err(str(og_file.relative_to(ROOT)), "檔案超過 300KB")
-        if manifest.get(slug) != AL.og_hash(a):
-            err(str(og_file.relative_to(ROOT)), f"分享圖過期（標題、分類或卡片範本改過；請執行 python3 authoring/build-og.py {slug}）")
-for f in sorted(AL.OG_DIR.glob("*")) if AL.OG_DIR.exists() else []:
-    if f.suffix != ".jpg" or f.stem not in local_slugs:
+    trs = a.get("translations") or {}
+    if not isinstance(trs, dict) or set(trs) - set(AL.TRANSLATION_LOCALES):
+        err(where, f"translations 只能有 {'、'.join(AL.TRANSLATION_LOCALES)}")
+        trs = {}
+    for loc, tr in trs.items():
+        w = f"{where}.translations.{loc}"
+        for k in ("title", "summary", "tags", "readingTime"):
+            if not tr.get(k):
+                err(w, f"缺少 {k}")
+        if set(tr) - set(AL.TRANSLATION_KEYS):
+            err(w, f"未知欄位：{sorted(set(tr) - set(AL.TRANSLATION_KEYS))}（日期、分類、作者、行動沿用原文）")
+        if len(tr.get("tags", [])) != len(a.get("tags", [])):
+            err(w, "標籤數量要與原文相同")
+        if tr.get("summary") and not 50 <= len(tr["summary"]) <= 160:
+            err(w, f"summary 應為 50～160 字元（目前 {len(tr['summary'])}）")
+        if tr.get("updated") and (not AL.DATE_RE.fullmatch(tr["updated"]) or tr["updated"] < a["date"]):
+            err(w, "updated 必須是 YYYY-MM-DD，且不早於原文的 date")
+        if AL.article_rel(slug, loc) not in pages:
+            err(w, f"找不到 {AL.article_rel(slug, loc)}")
+    for loc in (AL.DEFAULT_LOCALE, *trs):
+        if loc != AL.DEFAULT_LOCALE and not all(trs[loc].get(k) for k in ("title", "summary", "tags", "readingTime")):
+            continue
+        check_article_page(slug, AL.localized(a, loc), loc, a)
+og_keys = {AL.og_key(s, c) for s in local_slugs for c in (AL.DEFAULT_LOCALE, *AL.translations(by_slug[s]))}
+for f in sorted(x for x in AL.OG_DIR.rglob("*") if x.is_file()) if AL.OG_DIR.exists() else []:
+    if f.suffix != ".jpg" or f.relative_to(AL.OG_DIR).with_suffix("").as_posix() not in og_keys:
         err(str(f.relative_to(ROOT)), "沒有對應的文章（請執行 python3 authoring/build-og.py --articles 清除）")
 for script, what in (("build-shared.py", "共用區塊"), ("build-lists.py", "文章列表"), ("build-feed.py", "訂閱源")):
     r = subprocess.run([sys.executable, str(ROOT / "authoring" / script), "--check"], capture_output=True, text=True)

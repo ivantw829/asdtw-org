@@ -118,6 +118,26 @@
       "法律"
     ],
     "summary": "11 月 28 日九合一投票日從凌晨零點起，任何人都不能替候選人、政黨或罷免案拉票，臉書、IG、Threads、LINE 群組和 Discord 都算。本文整理選罷法第 56 條第 2 款的條文、2023 年修法後的罰則、中選會認定的範圍與實際被罰的案例。",
-    "readingTime": 4
+    "readingTime": 4,
+    "translations": {
+      "en": {
+        "title": "No Campaigning All Election Day: A Guide to Article 56(2) of the Election and Recall Act",
+        "summary": "From midnight on November 28, no one may campaign for a candidate, party or recall, online or in group chats. Here are the law, the fines and past cases.",
+        "tags": [
+          "Elections",
+          "Law"
+        ],
+        "readingTime": 6
+      },
+      "ja": {
+        "title": "投票日は一日中、選挙運動禁止：選挙罷免法第56条第2号のまとめ",
+        "summary": "11月28日の統一地方選挙（九合一選挙）の投票日は、午前0時から誰であっても候補者、政党、リコール案への支持を呼びかけてはいけません。FacebookやLINEグループ、Discordも対象です。選挙罷免法第56条第2号の条文、2023年改正後の罰則、対象となる範囲と、実際に処罰された事例をまとめます。",
+        "tags": [
+          "選挙",
+          "法律"
+        ],
+        "readingTime": 6
+      }
+    }
   }
 ]

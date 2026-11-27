@@ -13,6 +13,12 @@ OG_DIR = ROOT / "assets" / "img" / "og"
 OG_MANIFEST = ROOT / "authoring" / "og" / "manifest.json"  # 每張文章分享圖「上次產生時的輸入」雜湊
 OG_CARD = ROOT / "authoring" / "og" / "article-card.html"
 OG_INPUT_FILES = (OG_CARD, ROOT / "assets" / "img" / "brand" / "lockup-dark.svg")
+# 譯文分享圖另用一份範本（含「文章」字樣與字體的語系切換），改它不會讓中文原文的分享圖過期
+OG_CARD_I18N = ROOT / "authoring" / "og" / "article-card-i18n.html"
+OG_INPUT_FILES_I18N = (OG_CARD_I18N, ROOT / "assets" / "img" / "brand" / "lockup-dark.svg")
+DEFAULT_LOCALE = "zh"
+TRANSLATION_LOCALES = ("en", "ja")  # 文章譯文：en/articles/<slug>.html、ja/articles/<slug>.html
+TRANSLATION_KEYS = ("title", "summary", "tags", "readingTime", "updated")  # translations.<語系> 可有的欄位
 
 SITE_NAME = "福爾摩沙自閉大公社"
 # 分類（順序即列表頁的區塊順序）→ 列表頁的錨點 id。改分類只改這裡。
@@ -69,20 +75,71 @@ def esc(s) -> str:
     return html.escape(str(s), quote=True)
 
 
-def author_name(a: dict) -> str:
-    return a.get("author") or SITE_NAME
+def site_name(locale: str = DEFAULT_LOCALE) -> str:
+    import i18n
+    return i18n.LOCALES[locale]["site_name"]
 
 
-def article_url(slug: str) -> str:
-    return f"{base()}/articles/{slug}.html"
+def author_name(a: dict, locale: str = DEFAULT_LOCALE) -> str:
+    return a.get("author") or site_name(locale)
 
 
-def og_url(slug: str) -> str:
-    return f"{base()}/assets/img/og/{slug}.jpg"
+def translations(a: dict) -> dict[str, dict]:
+    """文章已有的譯文 {語系: 欄位}（不含中文原文）。"""
+    return {k: v for k, v in (a.get("translations") or {}).items() if k in TRANSLATION_LOCALES}
 
 
-def og_alt(title: str) -> str:
+def localized(a: dict, locale: str = DEFAULT_LOCALE) -> dict | None:
+    """某語系版本的文章欄位：中文回傳原資料；譯文以 translations.<語系> 覆蓋標題、摘要、標籤、閱讀時間、更新日，
+    日期、分類、作者、行動沿用原文。沒有該語系譯文回傳 None。"""
+    if locale == DEFAULT_LOCALE:
+        return a
+    tr = translations(a).get(locale)
+    if not tr:
+        return None
+    out = {k: v for k, v in a.items() if k not in ("translations", "updated")}
+    out.update(tr)
+    return out
+
+
+def article_rel(slug: str, locale: str = DEFAULT_LOCALE) -> str:
+    """文章頁的相對路徑：articles/<slug>.html、en/articles/<slug>.html…"""
+    return f"articles/{slug}.html" if locale == DEFAULT_LOCALE else f"{locale}/articles/{slug}.html"
+
+
+def article_path(slug: str, locale: str = DEFAULT_LOCALE) -> Path:
+    return ROOT / article_rel(slug, locale)
+
+
+def article_url(slug: str, locale: str = DEFAULT_LOCALE) -> str:
+    return f"{base()}/{article_rel(slug, locale)}"
+
+
+def og_key(slug: str, locale: str = DEFAULT_LOCALE) -> str:
+    """分享圖在 manifest 的鍵，也是 assets/img/og/ 之下不含副檔名的路徑。"""
+    return slug if locale == DEFAULT_LOCALE else f"{locale}/{slug}"
+
+
+def og_file(slug: str, locale: str = DEFAULT_LOCALE) -> Path:
+    return OG_DIR / f"{og_key(slug, locale)}.jpg"
+
+
+def og_url(slug: str, locale: str = DEFAULT_LOCALE) -> str:
+    return f"{base()}/assets/img/og/{og_key(slug, locale)}.jpg"
+
+
+def og_alt(title: str, locale: str = DEFAULT_LOCALE) -> str:
+    if locale == "en":
+        return f"{title} | Article share card from {site_name(locale)}"
+    if locale == "ja":
+        return f"{title}｜{site_name(locale)}の記事シェアカード"
     return f"{title}｜{SITE_NAME}的文章分享卡"
+
+
+def page_title(title: str, locale: str = DEFAULT_LOCALE) -> str:
+    """<title>：文章標題＋站名（英文用半形直線，與英文版其他頁面一致）。"""
+    sep = " | " if locale == "en" else "｜"
+    return f"{title}{sep}{site_name(locale)}"
 
 
 PARTIALS_DIR = ROOT / "authoring" / "partials"
@@ -123,17 +180,22 @@ def replace_marked(text: str, start: str, end: str, inner: str, where: str) -> s
     return pat.sub(lambda _: start + inner + end, text, count=1)
 
 
-def action_title(anchor: str) -> str | None:
-    """actions.html 中某筆行動的標題（<li id> 內的 <h3>）。"""
-    src = (ROOT / "actions.html").read_text(encoding="utf-8")
+def action_title(anchor: str, locale: str = DEFAULT_LOCALE) -> str | None:
+    """[en/|ja/]actions.html 中某筆行動的標題（<li id> 內的 <h3>；三語的 id 相同）。"""
+    src = (ROOT / ("actions.html" if locale == DEFAULT_LOCALE else f"{locale}/actions.html")).read_text(encoding="utf-8")
     m = re.search(rf'<li id="{re.escape(anchor)}">.*?<h3>(.*?)</h3>', src, re.S)
     return html.unescape(re.sub(r"<[^>]+>", "", m.group(1))).strip() if m else None
 
 
-def og_hash(a: dict) -> str:
-    h = hashlib.sha256(json.dumps({"title": a["title"], "category": a["category"]}, ensure_ascii=False,
-                                  sort_keys=True).encode())
-    for f in OG_INPUT_FILES:
+def og_hash(a: dict, locale: str = DEFAULT_LOCALE) -> str:
+    """分享圖的輸入雜湊。a 是 localized() 之後的欄位。中文原文的算法維持不變（不讓既有分享圖過期）。"""
+    key = {"title": a["title"], "category": a["category"]}
+    files = OG_INPUT_FILES
+    if locale != DEFAULT_LOCALE:
+        key["locale"] = locale
+        files = OG_INPUT_FILES_I18N
+    h = hashlib.sha256(json.dumps(key, ensure_ascii=False, sort_keys=True).encode())
+    for f in files:
         h.update(f.read_bytes())
     return h.hexdigest()[:16]
 

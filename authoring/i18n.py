@@ -37,6 +37,15 @@ LOCALES = {
         "empty_category": "這個分類還沒有文章。",
         "empty_latest": "還沒有文章，敬請期待。",
         "tags_label": "標籤：",
+        "skip_link": "跳到主要內容",
+        "article": {
+            "label": "文章", "toc": "本文目錄", "sources": "參考資料", "by": "作者：", "updated": "更新於 ",
+            "category": "分類：", "tags": "；標籤：", "action": "相關行動：", "nav": "上一篇與下一篇",
+            "prev": "上一篇", "next": "下一篇", "all": "回到文章列表", "home": "首頁",
+            "table": "表格", "scroll": "（可左右捲動）", "feed": "福爾摩沙自閉大公社｜文章",
+            "draft": "這是草稿，尚未公開：不會出現在文章列表、網站地圖與訂閱源，也不會被搜尋引擎收錄。",
+            "translation_note": "",
+        },
     },
     "en": {
         "html_lang": "en",
@@ -56,6 +65,15 @@ LOCALES = {
         "empty_category": "No articles in this category yet.",
         "empty_latest": "No articles yet. Stay tuned.",
         "tags_label": "Tags: ",
+        "skip_link": "Skip to main content",
+        "article": {
+            "label": "Article", "toc": "Contents", "sources": "References", "by": "By ", "updated": "Updated ",
+            "category": "Category: ", "tags": "; tags: ", "action": "Related action: ", "nav": "Previous and next articles",
+            "prev": "Previous", "next": "Next", "all": "Back to all articles", "home": "Home",
+            "table": "Table", "scroll": " (scrolls horizontally)", "feed": "Formosa Autistic Commune | Articles",
+            "draft": "This is an unpublished draft: it is not listed, not in the sitemap or feed, and not indexed by search engines.",
+            "translation_note": 'This is a translation of an article originally written in Traditional Chinese. If the two differ, the <a href="{href}" lang="zh-Hant-TW" hreflang="zh-Hant-TW">中文原文</a> (Chinese original) prevails.',
+        },
     },
     "ja": {
         "html_lang": "ja",
@@ -75,6 +93,15 @@ LOCALES = {
         "empty_category": "このカテゴリにはまだ記事がありません。",
         "empty_latest": "記事はまだありません。今後の公開をお待ちください。",
         "tags_label": "タグ：",
+        "skip_link": "メインコンテンツへ移動",
+        "article": {
+            "label": "記事", "toc": "目次", "sources": "参考資料", "by": "著者：", "updated": "更新：",
+            "category": "カテゴリ：", "tags": "；タグ：", "action": "関連する活動：", "nav": "前後の記事",
+            "prev": "前の記事", "next": "次の記事", "all": "記事一覧に戻る", "home": "ホーム",
+            "table": "表", "scroll": "（横にスクロールできます）", "feed": "フォルモサ自閉大公社｜記事",
+            "draft": "これは未公開の下書きです。記事一覧、サイトマップ、フィードには載らず、検索エンジンにも登録されません。",
+            "translation_note": 'この記事は繁体字中国語の原文を翻訳したものです。内容に相違がある場合は<a href="{href}" lang="zh-Hant-TW" hreflang="zh-Hant-TW">中文原文</a>（原文）が優先されます。',
+        },
     },
 }
 
@@ -93,6 +120,16 @@ def base_page(rel: str) -> str:
         if rel.startswith(f"{code}/"):
             return rel[len(code) + 1:]
     return rel
+
+
+def article_locales(slug: str) -> tuple[str, ...]:
+    """這篇文章有哪些語系版本（依 data/articles.json：原文＋translations；依 LOCALE_ORDER 排序）。"""
+    import articles_lib as L  # 延後匯入，避免與 articles_lib 互相匯入
+    a = next((x for x in L.load_articles() if x.get("slug") == slug), None)
+    if a is None or L.is_external(a):
+        return ()
+    have = {DEFAULT_LOCALE, *L.translations(a)}
+    return tuple(c for c in LOCALE_ORDER if c in have)
 
 
 def is_localized_public(rel: str) -> bool:
@@ -125,9 +162,12 @@ def lang_switch_target(rel: str, target_locale: str) -> str:
     """計算從 rel 切換到 target_locale 時的目標連結。"""
     if rel == "404.html":
         return page_href(target_locale, "index.html")
-    if rel.startswith("articles/"):
-        if target_locale == DEFAULT_LOCALE:
-            return f"/{rel}"
+    bp = base_page(rel)
+    if bp.startswith("articles/"):
+        # 文章頁：目標語系有這篇（原文或譯文）就連過去，否則到該語系的文章列表
+        slug = bp[len("articles/"):-len(".html")]
+        if target_locale in article_locales(slug):
+            return page_href(target_locale, bp)
         return page_href(target_locale, "articles.html")
     return page_href(target_locale, base_page(rel))
 

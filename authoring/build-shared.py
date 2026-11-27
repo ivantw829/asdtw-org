@@ -5,7 +5,7 @@
   authoring/partials/<lang>/header.html   →  <!--shared:header--> … <!--/shared:header-->
   authoring/partials/<lang>/footer.html   →  <!--shared:footer--> … <!--/shared:footer-->
 
-對象：根目錄所有 *.html、en/*.html、ja/*.html 與 articles/*.html。頁首的 aria-current="page" 由這支腳本加上：
+對象：根目錄所有 *.html、en/*.html、ja/*.html、articles/*.html 與譯文 en/articles/*.html、ja/articles/*.html。頁首的 aria-current="page" 由這支腳本加上：
 只加在各語系的公開頁（404 與 noindex 頁除外）指向自己的導覽連結；片段檔本身不寫 aria-current。
 改頁首／頁尾請改片段檔，不要改頁面裡標記之間的內容（會被覆寫，check.py 也會報錯）。
 pre-commit 只在片段檔有變更時自動執行；會印出被改寫的檔案。
@@ -29,12 +29,14 @@ def pages() -> list[Path]:
             out += sorted(d.glob("*.html"))
     if L.ARTICLES_DIR.exists():
         out += sorted(L.ARTICLES_DIR.glob("*.html"))
+    for code in L.TRANSLATION_LOCALES:
+        out += sorted((ROOT / code / "articles").glob("*.html"))
     return out
 
 
 def self_href(rel: str, text: str) -> str | None:
     """各語系公開頁在導覽中的網址；其他頁（404、noindex、文章頁）沒有 aria-current。"""
-    if rel == "404.html" or rel.startswith("articles/") or "noindex" in L.robots_of(text):
+    if rel == "404.html" or I.base_page(rel).startswith("articles/") or "noindex" in L.robots_of(text):
         return None
     loc = I.locale_of(rel)
     return I.page_href(loc, I.base_page(rel))
