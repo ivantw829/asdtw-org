@@ -26,6 +26,11 @@
   updated: 2026-12-01         # 選填：發布後修改過才填
   draft: true                 # 選填：草稿。不進列表／sitemap／feed，頁面 noindex；拿掉後重跑就是正式發布
   ---
+
+譯文（英／日文版）：同一份格式另寫一份原稿，frontmatter 加 `lang: en` 或 `lang: ja`，slug 與中文原文相同，
+  只填 title、slug、lang、tags（譯名）、summary、lead，選填 readingTime、updated；日期、分類、作者、行動沿用原文
+  （原文必須先上架）。產生 en/articles/<slug>.html 或 ja/articles/<slug>.html，登錄在原文的 translations 欄位。
+  內文的 `## 參考資料` 依語系寫成 `## References`／`## 参考資料`；`[[目錄]]` 等標記照用中文寫法。
   內文 Markdown。支援：
     ## 大標、### 小標、#### 小小標、段落、- 清單、1. 清單、| 表格 |、> 引言、--- 分隔線、```程式碼區塊```
     ![替代文字](檔名.png "圖說")  # 輸出一律 .webp。只放示意圖，不放現場照片或社員截圖
@@ -48,13 +53,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import articles_lib as L  # noqa: E402
+import i18n as I  # noqa: E402
 
 ROOT = L.ROOT
 TEMPLATE = ROOT / "authoring" / "article-template.html"
 MAX_IMG_KB = 300
 MAX_W = 1600
 IMG_EXT = (".png", ".jpg", ".jpeg")
-NEW_WINDOW = "（另開新視窗）"
+LOC = "zh"  # 目前產生的語系；main() 依 frontmatter 的 lang 設定
+NEW_WINDOW = I.fmt_external_suffix("zh")
+
+
+def S(key: str) -> str:
+    """文章頁的介面文字（authoring/i18n.py 的 LOCALES[語系]["article"]）。"""
+    return I.LOCALES[LOC]["article"][key]
 
 
 def die(msg: str) -> None:
@@ -258,7 +270,7 @@ def convert(body: str, slug: str, dims):
             continue
         if s.startswith("## "):
             title = s[3:].strip()
-            if title == "參考資料":
+            if title in ("參考資料", S("sources")):
                 i += 1
                 items = []
                 while i < len(lines) and not lines[i].startswith("## "):
@@ -309,8 +321,9 @@ def convert(body: str, slug: str, dims):
             tables += 1
             head_tables[last_head] = head_tables.get(last_head, 0) + 1
             n = head_tables[last_head]
-            label = (f"表格{' ' + str(n) if n > 1 else ''}：{last_head}" if last_head else f"表格 {tables}")
-            out.append(f'<div class="table-wrap" role="region" aria-label="{html.escape(label)}（可左右捲動）" tabindex="0">\n'
+            colon = ": " if LOC == "en" else "："
+            label = (f"{S('table')}{' ' + str(n) if n > 1 else ''}{colon}{last_head}" if last_head else f"{S('table')} {tables}")
+            out.append(f'<div class="table-wrap" role="region" aria-label="{html.escape(label)}{S("scroll")}" tabindex="0">\n'
                        "<table>\n  <thead><tr>" + "".join(f'<th scope="col">{inline(c)}</th>' for c in head)
                        + "</tr></thead>\n  <tbody>\n"
                        + "\n".join("    <tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in rest)
@@ -329,7 +342,7 @@ def convert(body: str, slug: str, dims):
 
     toc = ""
     if want_toc and h2s:
-        toc = ('<nav class="note toc" aria-label="本文目錄">\n  <p class="note-title">本文目錄</p>\n  <ol>\n'
+        toc = (f'<nav class="note toc" aria-label="{S("toc")}">\n  <p class="note-title">{S("toc")}</p>\n  <ol>\n'
                + "\n".join(f'    <li><a href="#s{n + 1}">{inline(t)}</a></li>' for n, t in enumerate(h2s))
                + "\n  </ol>\n</nav>")
     return "\n\n".join(out).replace("@@TOC@@", toc), sources
@@ -337,18 +350,20 @@ def convert(body: str, slug: str, dims):
 
 # ---------------------------------------------------------------- 組頁
 def ldjson(a: dict) -> str:
-    url, b = L.article_url(a["slug"]), L.base()
-    org = {"@type": "Organization", "name": L.SITE_NAME, "url": f"{b}/"}
+    url, b = L.article_url(a["slug"], LOC), L.base()
+    org = {"@type": "Organization", "name": L.site_name(LOC), "url": I.page_url(b, LOC, "index.html")}
     author = {"@type": "Person", "name": a["author"]} if a.get("author") else org
     data = {"@context": "https://schema.org", "@graph": [
         {"@type": "Article", "headline": a["title"], "description": a["summary"],
          "datePublished": a["date"], "dateModified": a.get("updated") or a["date"],
-         "inLanguage": "zh-Hant-TW", "articleSection": a["category"], "keywords": "、".join(a["tags"]),
-         "image": [L.og_url(a["slug"])], "mainEntityOfPage": url, "author": author,
+         "inLanguage": I.LOCALES[LOC]["html_lang"], "articleSection": I.LOCALES[LOC]["categories"][a["category"]],
+         "keywords": (", " if LOC == "en" else "、").join(a["tags"]),
+         "image": [L.og_url(a["slug"], LOC)], "mainEntityOfPage": url, "author": author,
          "publisher": {**org, "logo": f"{b}/assets/img/icon-192.png"}},
         {"@type": "BreadcrumbList", "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "首頁", "item": f"{b}/"},
-            {"@type": "ListItem", "position": 2, "name": "文章", "item": f"{b}/articles.html"},
+            {"@type": "ListItem", "position": 1, "name": S("home"), "item": I.page_url(b, LOC, "index.html")},
+            {"@type": "ListItem", "position": 2, "name": {"zh": "文章", "en": "Articles", "ja": "記事"}[LOC],
+             "item": I.page_url(b, LOC, "articles.html")},
             {"@type": "ListItem", "position": 3, "name": a["title"], "item": url}]},
     ]}
     return json.dumps(data, ensure_ascii=False, indent=2).replace("</", "<\\/")
@@ -356,36 +371,41 @@ def ldjson(a: dict) -> str:
 
 def build(a: dict, lead: str, body_html: str, sources) -> str:
     e = L.esc
+    info = I.LOCALES[LOC]
     t = TEMPLATE.read_text(encoding="utf-8")
     t = re.sub(r"<!--\n.*?-->\n", "", t, count=1, flags=re.S)  # 移除範本說明
-    shared = L.shared_blocks(f"articles/{a['slug']}.html")
+    shared = L.shared_blocks(L.article_rel(a["slug"], LOC))
     sep = '<span aria-hidden="true"> · </span>'
-    meta = (f'<time datetime="{a["date"]}">{L.fmt_date(a["date"])}</time>{sep}'
-            f'作者：{e(L.author_name(a))}{sep}閱讀約 {a["readingTime"]} 分鐘')
+    meta = (f'<time datetime="{a["date"]}">{I.fmt_date(a["date"], LOC)}</time>{sep}'
+            f'{S("by")}{e(L.author_name(a, LOC))}{sep}{I.fmt_reading_time(a["readingTime"], LOC)}')
     if a.get("updated"):
-        meta += f'{sep}更新於 <time datetime="{a["updated"]}">{L.fmt_date(a["updated"])}</time>'
+        meta += f'{sep}{S("updated")}<time datetime="{a["updated"]}">{I.fmt_date(a["updated"], LOC)}</time>'
     metas = []
     if a.get("updated"):
         metas.append(f'<meta property="article:modified_time" content="{a["updated"]}">')
-    metas.append(f'<meta property="article:section" content="{e(a["category"])}">')
-    metas += [f'<meta property="article:tag" content="{e(x)}">' for x in a["tags"]]
     cat = a["category"]
-    tags = (f'<span class="visually-hidden">分類：</span><a class="tag" href="/articles.html#{L.CATEGORIES[cat]}">{e(cat)}</a>'
-            '<span class="visually-hidden">；標籤：</span>'
+    cat_name = info["categories"][cat]
+    metas.append(f'<meta property="article:section" content="{e(cat_name)}">')
+    metas += [f'<meta property="article:tag" content="{e(x)}">' for x in a["tags"]]
+    tags = (f'<span class="visually-hidden">{S("category")}</span>'
+            f'<a class="tag" href="{I.page_href(LOC, "articles.html")}#{L.CATEGORIES[cat]}">{e(cat_name)}</a>'
+            f'<span class="visually-hidden">{S("tags")}</span>'
             + "".join(f'<span class="tag tag-sub">{e(x)}</span>' for x in a["tags"]))
     action = ""
     if a.get("action"):
-        title = L.action_title(a["action"])
-        action = (f'        <p class="article-action">相關行動：<a href="/actions.html#{a["action"]}">'
+        title = L.action_title(a["action"], LOC)
+        action = (f'        <p class="article-action">{S("action")}<a href="{I.page_href(LOC, "actions.html")}#{a["action"]}">'
                   f'{e(title)}</a></p>')
+    note = ""
+    if LOC != "zh":
+        note = f'        <p class="article-translation muted">{S("translation_note").format(href="/" + L.article_rel(a["slug"]))}</p>'
     draft = ""
     if a.get("draft"):
-        draft = ('      <div class="note">\n        <p>這是草稿，尚未公開：不會出現在文章列表、網站地圖與訂閱源，'
-                 '也不會被搜尋引擎收錄。</p>\n      </div>')
+        draft = f'      <div class="note">\n        <p>{S("draft")}</p>\n      </div>'
     src = ""
     if sources:
         src = ('      <aside class="article-sources" aria-labelledby="sources-title">\n'
-               '        <h2 id="sources-title">參考資料</h2>\n        <ol>\n'
+               f'        <h2 id="sources-title">{S("sources")}</h2>\n        <ol>\n'
                + "\n".join(f"          <li>{inline(x)}</li>" for x in sources)
                + "\n        </ol>\n      </aside>")
     pres = []
@@ -393,12 +413,15 @@ def build(a: dict, lead: str, body_html: str, sources) -> str:
     body = "\n".join((" " * 8 + x if x else x) for x in body.split("\n"))
     body = re.sub(r"@@PRE(\d+)@@", lambda m: pres[int(m.group(1))], body)
     rep = {
-        "TITLE": e(a["title"]), "SUMMARY": e(a["summary"]), "URL": L.article_url(a["slug"]),
+        "TITLE": e(a["title"]), "PAGE_TITLE": e(L.page_title(a["title"], LOC)), "SUMMARY": e(a["summary"]),
+        "URL": L.article_url(a["slug"], LOC), "ALTERNATES": "",
+        "HTML_LANG": info["html_lang"], "OG_LOCALE": info["og_locale"], "SITE_NAME": e(info["site_name"]),
+        "FEED_TITLE": e(S("feed")), "SKIP": e(info["skip_link"]), "NAV_LABEL": e(S("nav")),
         "ROBOTS": "noindex,follow" if a.get("draft") else "index,follow,max-image-preview:large",
-        "OG_IMAGE": L.og_url(a["slug"]), "OG_ALT": e(L.og_alt(a["title"])), "DATE": a["date"],
+        "OG_IMAGE": L.og_url(a["slug"], LOC), "OG_ALT": e(L.og_alt(a["title"], LOC)), "DATE": a["date"],
         "ARTICLE_METAS": "\n".join(metas), "LDJSON": ldjson(a), "SLUG": a["slug"],
         "PREFS": shared["prefs"], "HEADER": shared["header"], "FOOTER": shared["footer"],
-        "TAGS": tags, "LEAD": e(lead), "META": meta, "ACTION": action, "DRAFT_NOTE": draft,
+        "TAGS": tags, "LEAD": e(lead), "META": meta, "ACTION": action, "TRANSLATION_NOTE": note, "DRAFT_NOTE": draft,
         "BODY": body, "SOURCES": src,
     }
     # 獨占一行的選填區塊：沒有內容就連同整行刪除
@@ -417,6 +440,8 @@ def main() -> None:
         images_dir = Path(args[k + 1]).expanduser()
         del args[k:k + 2]
     fm, body = parse_frontmatter(Path(args[0]).expanduser().read_text(encoding="utf-8"))
+    if fm.get("lang"):
+        return main_translation(fm, body, images_dir)
     for k in ("title", "slug", "date", "category", "tags", "summary", "lead"):
         if not fm.get(k):
             die(f"frontmatter 缺少 {k}")
@@ -467,6 +492,9 @@ def main() -> None:
 
     for k, a in enumerate(data):
         if a["slug"] == slug:
+            if a.get("translations"):
+                entry["translations"] = a["translations"]  # 重新產生原文時保留譯文登錄
+                print("! 這篇有譯文（" + "、".join(a["translations"]) + "）：原文內容改了的話，譯文也要跟著改並重新產生。")
             data[k] = entry
             break
     else:
@@ -476,10 +504,75 @@ def main() -> None:
 
     py, au = sys.executable, ROOT / "authoring"
     subprocess.run([py, str(au / "build-og.py"), slug], check=True)
+    rebuild()
+
+
+def rebuild() -> None:
+    py, au = sys.executable, ROOT / "authoring"
+    subprocess.run([py, str(au / "build-shared.py")], check=True)  # 語言切換器依譯文是否存在而變
     subprocess.run([py, str(au / "build-lists.py")], check=True)
     subprocess.run([py, str(au / "build-feed.py")], check=True)
     subprocess.run([py, str(au / "build-sitemap.py")], check=True)
     sys.exit(subprocess.run([py, str(au / "check.py")]).returncode)
+
+
+def main_translation(fm: dict, body: str, images_dir) -> None:
+    """英／日文譯文：登錄在原文的 translations.<語系>，產生 <語系>/articles/<slug>.html。"""
+    global LOC, NEW_WINDOW
+    loc = fm["lang"]
+    if loc not in L.TRANSLATION_LOCALES:
+        die(f"lang 必須是 {'、'.join(L.TRANSLATION_LOCALES)}（中文原文不寫 lang）")
+    LOC, NEW_WINDOW = loc, I.fmt_external_suffix(loc)
+    for k in ("title", "slug", "tags", "summary", "lead"):
+        if not fm.get(k):
+            die(f"frontmatter 缺少 {k}")
+    for k in ("date", "category", "author", "action", "draft"):
+        if fm.get(k):
+            die(f"譯文不寫 {k}：日期、分類、作者、行動與草稿狀態沿用中文原文")
+    slug = fm["slug"]
+    data = L.load_articles()
+    src = next((a for a in data if a["slug"] == slug and not L.is_external(a)), None)
+    if src is None:
+        die(f"data/articles.json 沒有 {slug}：請先上架中文原文，譯文的 slug 要與原文相同")
+    if fm.get("updated"):
+        if not L.DATE_RE.fullmatch(fm["updated"]):
+            die("updated 格式必須是 YYYY-MM-DD")
+        if fm["updated"] < src["date"]:
+            die("updated 不能早於原文的 date")
+    tags = [x.strip() for x in re.sub(r"^\[|\]$", "", fm["tags"]).split(",") if x.strip()]
+    if len(tags) != len(src["tags"]):
+        die(f"標籤數量要與原文相同（原文：{'、'.join(src['tags'])}），逐一翻譯")
+    if not 50 <= len(fm["summary"]) <= 160:
+        die(f"summary 必須是 50～160 字元（目前 {len(fm['summary'])}）")
+    for k in ("title", "summary", "lead"):
+        if "捍衛全台學權行動" in fm[k] or "捍衛全台學權行動" in body:
+            die("網站上不得出現「捍衛全台學權行動」（內容守則）")
+
+    body = normalize_refs(body)
+    dims = prepare_images(body, slug, images_dir)
+    body_html, sources = convert(body, slug, dims)
+    if fm.get("readingTime"):
+        rt = int(fm["readingTime"])
+    else:
+        text = re.sub(r"<[^>]+>", " ", body_html)
+        rt = max(1, round(len(text.split()) / 200)) if loc == "en" else max(1, round(len(re.sub(r"\s", "", text)) / 500))
+    tr = {"title": fm["title"], "summary": fm["summary"], "tags": tags, "readingTime": rt}
+    if fm.get("updated"):
+        tr["updated"] = fm["updated"]
+    src.setdefault("translations", {})[loc] = tr
+    src["translations"] = {k: src["translations"][k] for k in L.TRANSLATION_LOCALES if k in src["translations"]}
+    entry = L.localized(src, loc)
+
+    out = L.article_path(slug, loc)
+    existed = out.exists()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(build(entry, fm["lead"], body_html, sources), encoding="utf-8")
+    print(f"{'更新' if existed else '建立'} {out.relative_to(ROOT)}（{I.fmt_reading_time(rt, loc)}）")
+    L.save_articles(data)
+
+    py, au = sys.executable, ROOT / "authoring"
+    subprocess.run([py, str(au / "build-og.py"), L.og_key(slug, loc)], check=True)
+    rebuild()
 
 
 if __name__ == "__main__":

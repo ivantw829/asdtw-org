@@ -95,7 +95,9 @@ git push
 - 不放現場照片與社員截圖；說明用的圖重畫成示意圖，圖說標明「示意圖」，圖中資訊在正文也要有文字。
 - 文章列表、上下篇與首頁「最新文章」都由腳本產生（見第 9 節），不要手改。`articles.html` 公開（index）時導覽必須有「文章」，反之亦然，`check.py` 會驗證。
 - 草稿（`draft: true`）不會出現在列表、sitemap 與訂閱源，但知道網址的人看得到，不要放敏感內容。
-- 刪除文章：刪掉 `articles/<slug>.html` 與 `data/articles.json` 那一筆，再跑 `python3 authoring/build-og.py --articles`、`build-lists.py`、`build-feed.py`、`build-sitemap.py`。
+- **譯文（英／日文版）**：原文上架後，另寫一份原稿，frontmatter 加 `lang: en` 或 `lang: ja`，`slug` 與原文相同，只填 `title`、`tags`（逐一翻譯，數量與原文相同）、`summary`、`lead`，選填 `readingTime`、`updated`；日期、分類、作者、行動沿用原文。`## 參考資料` 依語系寫成 `## References`／`## 参考資料`，`[[目錄]]`、`[[提示框：…]]` 照用中文寫法。同樣用 `md2article.py` 產生 `en/articles/<slug>.html`／`ja/articles/<slug>.html`，登錄在原文的 `translations` 欄位；頁首會註明是譯文並連回原文、以原文為準。英／日文列表、上下篇、語言切換器與 hreflang 都會自動連到譯文。譯文分享圖用 `authoring/og/article-card-i18n.html` 產生（`assets/img/og/<語系>/<slug>.jpg`），與中文分享圖分開，改它不會讓中文分享圖重產。訂閱源只收中文原文。
+- 原文改稿後，譯文要跟著改並重新產生；`md2article.py` 重產原文時會保留 `translations` 並提醒。
+- 刪除文章：刪掉 `articles/<slug>.html`（與譯文頁）和 `data/articles.json` 那一筆，再跑 `python3 authoring/build-og.py --articles`、`build-lists.py`、`build-feed.py`、`build-sitemap.py`。
 
 ## 5. 無障礙規範（嚴格實施，CI 強制）
 
@@ -166,7 +168,7 @@ git push
 
 ## 10. 新增頁面（與多語系）
 
-本站採純靜態子目錄多語系：繁體中文為預設（根目錄 `/`）、英文在 `/en/`、日文在 `/ja/`；文章頁（`/articles/*.html`）維持原語言，英／日文文章列表頁（`/en/articles.html`、`/ja/articles.html`）提供翻譯後的介面並連向原語言文章頁。多語系共用設定在 `authoring/i18n.py`。
+本站採純靜態子目錄多語系：繁體中文為預設（根目錄 `/`）、英文在 `/en/`、日文在 `/ja/`；文章頁原文在 `/articles/*.html`，有譯文的另有 `/en/articles/*.html`、`/ja/articles/*.html`（見 4.1「譯文」）；英／日文文章列表頁有譯文就連到譯文，沒有就連向原語言文章頁。多語系共用設定在 `authoring/i18n.py`。
 
 1. 在根目錄、`en/`、`ja/` 各複製既有頁面，保留 `<head>`（canonical、og:url、四條 `hreflang` 寫完整網址，網域以 `CNAME` 為準）與三組 `<!--shared:…-->` 標記。
 2. 保留切頁轉場需要的 `<link rel="expect" href="#page-end" blocking="render">` 和 `</footer>` 後的 `<span id="page-end" hidden></span>`，少了切頁會閃白。
