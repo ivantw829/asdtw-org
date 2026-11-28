@@ -712,7 +712,8 @@ h4 { font-size: 1.05rem; margin-top: 1.5rem; }
 .article-cards > li { display: flex; flex-direction: column; }
 .article-cards h3 { line-height: 1.5; }
 .article-cards .article-card-meta { order: -1; margin: 0 0 0.5rem; font-size: 0.9rem; }
-.article-cards .article-card-meta span { white-space: nowrap; }
+/* 分隔點不可 nowrap：它前後的空格是唯一的換行點，鎖住後 Safari 整列不換行、超出卡片 */
+.article-cards .article-card-meta span:not([aria-hidden]) { white-space: nowrap; }
 :root[data-text="3"] .article-cards .article-card-meta span,
 :root[data-text="4"] .article-cards .article-card-meta span { white-space: normal; }
 .article-cards .article-card-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: auto; padding-top: 1rem; }
